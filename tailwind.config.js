@@ -14,8 +14,21 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+
+                    "verd1": "#84f5a4",
+                    "verd2": "#61FF7E",
+                    "verd3": "#5EEB5B",
+                    "verd4": "#62AB37",
+                    "verd5": "#4E702E",
+                    "verd6": "#393424",
+                
+				
+			},
+
         },
     },
+
 
     plugins: [forms],
 };
