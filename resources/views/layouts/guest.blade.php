@@ -34,13 +34,19 @@
                 {{ $slot }}
             </div>
         </div>
-        <footer class="bg-verd4">
-            <p class="flex justify-center">{{__('Informació de contacte')}}</p>
+        <footer class="bg-verd4 pb-2">
+            <p class="flex justify-center font-bold">{{__('Informació de contacte')}}</p>
             <div class="flex justify-center">
-            <p class="pl-2 pr-2">Plaça Major, 5, Roda de Ter</p>
+            <p class="pl-2 pr-2">Plaça Major 5, Roda de Ter</p>
             <p class="pl-2 pr-2">contact@p41t.com</p>
             <p class="pl-2 pr-2">+34 612 34 56 78</p>
             </div>
+            <li class="list-inline flex justify-center">
+                <ul class="pl-2 pr-2"><x-twitter-logo /></ul>
+                <ul class="pl-2 pr-2"><x-facebook-logo /></ul>
+                <ul class="pl-2 pr-2"><x-instagram-logo /></ul>
+                <ul class="pl-2 pr-2"><x-tiktok-logo /></ul>
+            </li>
         </footer>
     </body>
 </html>
