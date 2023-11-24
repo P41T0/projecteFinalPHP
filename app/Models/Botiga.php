@@ -7,5 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Botiga extends Model
 {
-    use HasFactory;
+
+  protected $table="botiga";
+
+ public function productes()
+ {
+        return $this->belongsToMany(Producte::class,'estoc_botiga');
+ }
 }

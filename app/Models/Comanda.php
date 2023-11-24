@@ -7,5 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comanda extends Model
 {
-    use HasFactory;
+    public function usuari()
+    {
+           return $this->belongsTo(User::class);
+    }
+    public function linia_comanda(){
+        return $this->belongsToMany(Producte::class,"linia_comanda");
+    }
+
 }

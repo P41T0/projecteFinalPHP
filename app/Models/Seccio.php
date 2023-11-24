@@ -7,5 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Seccio extends Model
 {
-    use HasFactory;
+    public function Producte(){
+        return $this->hasMany(Producte::class);
+    }
 }
