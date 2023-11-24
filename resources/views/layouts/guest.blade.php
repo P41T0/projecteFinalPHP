@@ -20,13 +20,13 @@
                 <a href="/" >
                     <x-application-logo class="fill-current text-gray-500" />
                 </a>
-                <h1 class="font-bold w-full text-center text-6xl">p41 technology</h1>
+                <h1 class="font-bold w-full text-center text-6xl">P41 Technology S.L.</h1>
             </div>
-            <div class="bg-verd2">
-                <li class="flex flex-inline p-2">
-                    <ul class="ml-5 mr-5">{{ __('Inici') }}</ul>
-                    <ul class="ml-5 mr-5">{{__('Iniciar sessió')}}</ul>
-                    <ul class="ml-5 mr-5">{{__('contacte')}}</ul>
+            <div class="bg-verd1">
+                <li class="flex p-2 text-top-center justify-center">
+                    <a href="#"><ul class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1">{{ __('Inici') }}</ul></a>
+                    <a href="#"><ul class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1">{{__('Iniciar sessió')}}</ul></a>
+                    <a href="#"><ul class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1">{{__('contacte')}}</ul></a>
                 </li>
             </div>
 
@@ -35,9 +35,12 @@
             </div>
         </div>
         <footer class="bg-verd4">
-            <p>{{__('contacte')}}</p>
-            <p>Plaça Major, 5, Roda de Ter</p>
-            <p>contact@p41t.com</p>
+            <p class="flex justify-center">{{__('Informació de contacte')}}</p>
+            <div class="flex justify-center">
+            <p class="pl-2 pr-2">Plaça Major, 5, Roda de Ter</p>
+            <p class="pl-2 pr-2">contact@p41t.com</p>
+            <p class="pl-2 pr-2">+34 612 34 56 78</p>
+            </div>
         </footer>
     </body>
 </html>
