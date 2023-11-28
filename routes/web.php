@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\IniciController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,9 +16,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('inici');
-});
+Route::get('/', [IniciController::class, 'index'])->name('inici');
+
+Route::get('/comprar', [ComandaController::class, 'afegir'])->middleware(['auth'])->name('comprar');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

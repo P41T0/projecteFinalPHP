@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comanda extends Model
 {
+    protected $table='Comanda';
     public function usuari()
     {
            return $this->belongsTo(User::class);

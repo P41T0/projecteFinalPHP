@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Producte extends Model
 {
+    protected $table='Producte';
     public function Seccio(){
         return $this->belongsTo(Seccio::class);
     }

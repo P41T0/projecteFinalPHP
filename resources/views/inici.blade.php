@@ -5,13 +5,27 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    {{ __("Pàgina inicial") }}
+                    @forelse ($seccions as $seccio)
+                        <div class="max-w-2xl bg-verd1 m-2 p-2 rounded-md">
+                        <h2 class="text-center font-bold text-2xl">{{$seccio->nom}}</h2>
+                        <caption>{{$seccio->descripcio}}</caption>
+                        <div class="flex text-center">
+                        @foreach ($seccio->productes as $producte)
+                            <div class="bg-verd3 m-2 p-2 rounded-md">
+                            <p class="font-semibold text-lg">{{$producte->nom}}</p>
+                            <img src="{{$producte->foto}}" alt="">
+                            <p>{{$producte->preu_unitari,}}€</p>
+                            <a href="{{route('comprar')}}">comprar</a>
+                            </div>
+                        @endforeach
+                        </div>
+                        </div>
+                    @empty
+                        {{__('No hi ha seccions')}}
+                    @endforelse
                 </div>
             </div>
-        </div>
     </div>
 </x-guest-layout>

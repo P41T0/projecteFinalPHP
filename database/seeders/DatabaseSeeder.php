@@ -18,8 +18,8 @@ class DatabaseSeeder extends Seeder
             DB::table('users')->insert(['name' => 'Pau', 'email' => 'pau.tort@uvic.cat', 'password' => bcrypt('123456')]);
             DB::table('seccio')->insert(['nom'=>'Telefonia mòbil','descripcio'=>'telèfons mòbils, smartwatches, auriculars i altres accessoris']);
             DB::table('seccio')->insert(['nom'=>'Ordinadors','descripcio'=>'Ordinadors portàtils i accessoris']);
-            DB::table('producte')->insert(['nom'=>'IPhone 15','descripcio'=>'telefon mòbil', 'preu_unitari'=>'1499.99','seccio_id'=>'1']);
-            DB::table('producte')->insert(['nom'=>'Google Pixel 8','descripcio'=>'telefon mòbil', 'preu_unitari'=>'899.99','seccio_id'=>'1']);
+            DB::table('producte')->insert(['nom'=>'IPhone 15','descripcio'=>'telefon mòbil','foto'=>'https://www.tu.com/cdn/shop/files/iPhone15_black_338521fe-833d-4a5b-986f-34b23bdc3265_830x@2x.webp?v=1696928929', 'preu_unitari'=>'1499.99','seccio_id'=>'1']);
+            DB::table('producte')->insert(['nom'=>'Google Pixel 8','descripcio'=>'telefon mòbil','foto'=>'https://catalogo.orange.es/catalogo/Imagenes/Dispositivos/google_pixel_8_5g_rosa_Frontback.webp', 'preu_unitari'=>'899.99','seccio_id'=>'1']);
             DB::table('producte')->insert(['nom'=>'ASUS TUF GAMING','descripcio'=>'ordinador portàtil', 'preu_unitari'=>'1299.99','seccio_id'=>'2']);
             DB::table('producte')->insert(['nom'=>'Chromebook','descripcio'=>'ordinador portàtil', 'preu_unitari'=>'399.99','seccio_id'=>'2']);
             DB::table('botiga')->insert(['poblacio'=>'Roda de Ter','adreca'=>'Carrer Nou, nº 25','telefon'=>'938256145','correu'=>'botigaroda@botiga.cat']);

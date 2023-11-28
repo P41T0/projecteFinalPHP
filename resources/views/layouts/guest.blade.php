@@ -30,15 +30,13 @@
                 </li>
             </div>
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
                 {{ $slot }}
-            </div>
         </div>
         <footer class="bg-verd4 pb-2">
             <p class="flex justify-center font-bold">{{__('Informació de contacte')}}</p>
             <div class="flex justify-center">
                 <p class="pl-2 pr-2">P41 Technology S.L.</p>
-            <p class="pl-2 pr-2">Plaça Major 5, Roda de Ter</p>
+            <p class="pl-2 pr-2">Plaça Major nº5, Roda de Ter</p>
             <p class="pl-2 pr-2">contact@p41t.com</p>
             <p class="pl-2 pr-2">+34 612 34 56 78</p>
             </div>

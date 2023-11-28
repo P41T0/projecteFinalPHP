@@ -18,6 +18,7 @@ return new class extends Migration
   $table->float('preu_unitari');
   $table->unsignedBigInteger('seccio_id');
   $table->foreign('seccio_id')->references('id')->on('seccio');
+  $table->string('foto')->nullable();
   $table->timestamp('created_at')->useCurrent();
   $table->timestamp('updated_at')->useCurrent();
  });

@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Seccio extends Model
 {
-    public function Producte(){
+    protected $table='Seccio';
+    
+    public function productes(){
         return $this->hasMany(Producte::class);
     }
 }
