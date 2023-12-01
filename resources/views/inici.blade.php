@@ -17,7 +17,7 @@
                             <p class="font-semibold text-lg">{{$producte->nom}}</p>
                             <img src="{{$producte->foto}}" alt="">
                             <p>{{$producte->preu_unitari,}}€</p>
-                            <a href="{{route('comprar')}}">comprar</a>
+                            <a href="{{route('detall.producte', $producte->id)}}">comprar</a>
                             </div>
                         @endforeach
                         </div>

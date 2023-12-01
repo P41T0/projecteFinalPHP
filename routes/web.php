@@ -15,10 +15,11 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
 Route::get('/', [IniciController::class, 'index'])->name('inici');
+Route::get('/productes/{producte}', [IniciController::class, 'showProducte'])
+    ->name('detall.producte');
 
-Route::get('/comprar', [ComandaController::class, 'afegir'])->middleware(['auth'])->name('comprar');
+//Route::get('/comprar', [ComandaController::class, 'afegir'])->middleware(['auth'])->name('comprar');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
