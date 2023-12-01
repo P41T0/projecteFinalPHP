@@ -5,6 +5,7 @@
         <p>{{$producte->descripcio}}</p>
         <img class="max-w-xl" src="{{$producte->foto}}" alt="{{$producte->nom}}">
         <p>Preu: {{$producte->preu_unitari}}</p>
-        <a href="#">Afegir a la llista de la compra</a>
+        <a href="{{route('comprar', $producte->id)}}">Afegir a la llista de la compra</a>
+
         </div>
     </x-guest-layout>

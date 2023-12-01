@@ -3,10 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comanda;
+use App\Models\Producte;
 use Illuminate\Http\Request;
 
 class ComandaController extends Controller
 {
+    public function afegir(Producte $producte)
+    {
+        //
+        
+        echo "Has comprat $producte->nom";
+    }
+
     /**
      * Display a listing of the resource.
      */

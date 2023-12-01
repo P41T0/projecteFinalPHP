@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\IniciController;
+use App\Http\Controllers\ComandaController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -19,7 +20,7 @@ Route::get('/', [IniciController::class, 'index'])->name('inici');
 Route::get('/productes/{producte}', [IniciController::class, 'showProducte'])
     ->name('detall.producte');
 
-//Route::get('/comprar', [ComandaController::class, 'afegir'])->middleware(['auth'])->name('comprar');
+Route::get('/comprar/{producte}', [ComandaController::class, 'afegir'])->middleware(['auth'])->name('comprar');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -24,8 +24,8 @@
             </div>
             <div class="bg-verd1">
                 <li class="flex p-2 text-top-center justify-center">
-                    <a href="#"><ul class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1">{{ __('Inici') }}</ul></a>
-                    <a href="#"><ul class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1">{{__('Iniciar sessió')}}</ul></a>
+                    <a href="{{route('inici')}}"><ul class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1">{{ __('Inici') }}</ul></a>
+                    <a href="{{route('login')}}"><ul class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1">{{__('Iniciar sessió')}}</ul></a>
                     <a href="#"><ul class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1">{{__('contacte')}}</ul></a>
                 </li>
             </div>
