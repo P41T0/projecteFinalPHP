@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign('usuari_id')->references('id')->on('users');
             $table->unsignedBigInteger('botiga_id');
             $table->foreign('botiga_id')->references('id')->on('botiga');
+            $table->boolean('oberta')->default(true);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });

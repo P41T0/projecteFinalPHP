@@ -12,7 +12,7 @@ class Comanda extends Model
     {
            return $this->belongsTo(User::class);
     }
-    public function linia_comanda(){
+    public function linies_comanda(){
         return $this->belongsToMany(Producte::class,"linia_comanda");
     }
 
