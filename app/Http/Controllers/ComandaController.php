@@ -36,8 +36,29 @@ class ComandaController extends Controller
 
             $comanda->productes()->attach($producte->id, ['quantitat' => $novaQuantitat]);
         }
-    
-       return view('compres.detall',compact('comanda'));
+        $preuTotal=0;
+        foreach($comanda->productes as $prods){
+            $preuTotal+=$prods->preu_unitari * $prods->pivot->quantitat;
+        }
+        $usuari=Auth()->user()->id;
+       return view('compres.detall',compact('comanda','preuTotal','usuari'));
+    }
+    public function confirmar(Comanda $comanda,$usuari){
+        $preuTotal=0;
+        if($comanda->usuari_id==$usuari){
+        $comanda->oberta=0;
+        $comanda->save();
+        
+        echo "usuari correcte";       
+         foreach($comanda->productes as $prods){
+            $preuTotal+=$prods->preu_unitari * $prods->pivot->quantitat;
+        }
+       
+    } else{
+            echo "usuari incorrecte";
+        }
+
+        return view('compres.confirma',compact('comanda','preuTotal'));
     }
     /**
      * Display a listing of the resource.

@@ -4,9 +4,9 @@
         <h2 class="text-3xl text-center font-extrabold">{{$producte->nom}}</h2>
         <p>{{$producte->descripcio}}</p>
         <img class="max-w-xl" src="{{$producte->foto}}" alt="{{$producte->nom}}">
-        <p>Preu: {{$producte->preu_unitari}}</p>
+        <p>Preu: {{$producte->preu_unitari}}€</p>
         <a href="{{route('comprar', $producte->id)}}">Afegir a la llista de la compra</a>
-        <p>Disponible a:</p>
+        <p>El producte es troba disponible en les botigues de:</p>
         <ul>
         @forelse ($producte->botiga as $botiga)
             @if($botiga->pivot->quantitat>0)

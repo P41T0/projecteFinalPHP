@@ -21,7 +21,7 @@ Route::get('/productes/{producte}', [IniciController::class, 'showProducte'])
     ->name('detall.producte');
 
 Route::get('/comprar/{producte}', [ComandaController::class, 'afegir'])->middleware(['auth'])->name('comprar');
-
+Route::get('/confcompra/{comanda}/{usuari}', [ComandaController::class, 'confirmar'])->middleware(['auth'])->name('confirma.compres');
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
