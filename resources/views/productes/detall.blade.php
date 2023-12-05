@@ -6,6 +6,17 @@
         <img class="max-w-xl" src="{{$producte->foto}}" alt="{{$producte->nom}}">
         <p>Preu: {{$producte->preu_unitari}}</p>
         <a href="{{route('comprar', $producte->id)}}">Afegir a la llista de la compra</a>
-
+        <p>Disponible a:</p>
+        <ul>
+        @forelse ($producte->botiga as $botiga)
+            @if($botiga->pivot->quantitat>0)
+                <li>{{$botiga->poblacio}} --> {{$botiga->pivot->quantitat}}</li>
+            @elseif($botiga->pivot->quantitat==0)
+                <li>El produte no es troba disponible temporalment a {{$botiga->poblacio}}</li>
+            @endif
+        @empty
+            <li>El producte no es troba disponible en cap botiga</li>
+        @endforelse
+        </ul>
         </div>
     </x-guest-layout>

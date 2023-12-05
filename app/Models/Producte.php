@@ -13,9 +13,9 @@ class Producte extends Model
         return $this->belongsTo(Seccio::class);
     }
     public function Botiga(){
-        return $this->belongsToMany(Botiga::class,'estoc_botiga');
+        return $this->belongsToMany(Botiga::class,'estoc_botiga')->withPivot('quantitat');
     }
     public function Comanda(){
-        return $this->belongsToMany(Comanda::class,'linia_comanda');
+        return $this->belongsToMany(Comanda::class,'linia_comanda')->withPivot('quantitat');
     }
 }

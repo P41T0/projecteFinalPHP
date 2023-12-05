@@ -25,23 +25,19 @@ class ComandaController extends Controller
             $comanda->save();
         }
         echo $comanda;
-        $liniaComanda = $comanda->linies_comanda()->where('producte_id', $producte->id)->first();
-        print($liniaComanda->quantitat);
-        // Cantidad inicial
-        $novaQuantitat = 260;
+        $liniaComanda = $comanda->productes()->where('producte_id', $producte->id)->first();
+
+        $novaQuantitat = 1;
     
         if ($liniaComanda) {
-            // Si el producto ya está en la comanda, actualiza la cantidad
-            $novaQuantitatTotal = $liniaComanda->quantitat + $novaQuantitat;
-            $comanda->linies_comanda()->updateExistingPivot($producte->id, ['quantitat' => $novaQuantitatTotal]);
-            echo "Ja has comprat aquest producte. Nova quantitat: $novaQuantitatTotal";
+
+            
         } else {
-            // Si el producto no está en la comanda, agrégalo
-            $comanda->linies_comanda()->attach($producte->id, ['quantitat' => $novaQuantitat]);
-            echo "No has comprat aquest producte. Afegit a la comanda.";
+
+            $comanda->productes()->attach($producte->id, ['quantitat' => $novaQuantitat]);
         }
     
-        echo "Has comprat $novaQuantitat unitat(s) de $producte->nom.";
+       return view('compres.detall',compact('comanda'));
     }
     /**
      * Display a listing of the resource.

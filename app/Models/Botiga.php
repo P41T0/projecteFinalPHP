@@ -12,6 +12,6 @@ class Botiga extends Model
 
  public function productes()
  {
-        return $this->belongsToMany(Producte::class,'estoc_botiga');
+        return $this->belongsToMany(Producte::class,'estoc_botiga')->withPivot('quantitat');
  }
 }
