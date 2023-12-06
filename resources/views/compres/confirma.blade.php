@@ -10,7 +10,7 @@
         <p>No hi ha productes comprats</p>
     @endforelse
     </table>
-    <p>Preu total a pagar: {{$preuTotal}}€</p>
+    <p>{{$missatge}}</p>
     <a class="justify-center font-bold hover:bg-verd4 p-2 rounded"href="{{route('inici')}}">Tornar a l'inici</a>
     </div>
 </x-guest-layout>

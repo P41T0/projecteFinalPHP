@@ -12,53 +12,90 @@ class ComandaController extends Controller
     public function afegir(Producte $producte)
     {
         //
-        $comandesObertes=Auth()->user()->comandes->where('oberta');
-        if ($comandesObertes->count()>0){
+        $comandesObertes = Auth()->user()->comandes->where('oberta');
+        if ($comandesObertes->count() > 0) {
             echo "Hi ha comandes obertes";
-            $comanda = $comandesObertes->first();            
-        }else{
+            $comanda = $comandesObertes->first();
+        } else {
             echo "no hi ha comandes obertes";
             $comanda = new Comanda;
 
-            $comanda->usuari_id=Auth()->user()->id;
-            $comanda->botiga_id=1;
+            $comanda->usuari_id = Auth()->user()->id;
+            $comanda->botiga_id = 1;
             $comanda->save();
         }
         echo $comanda;
         $liniaComanda = $comanda->productes()->where('producte_id', $producte->id)->first();
 
         $novaQuantitat = 1;
-    
-        if ($liniaComanda) {
 
-            
+        if ($liniaComanda) {
         } else {
 
             $comanda->productes()->attach($producte->id, ['quantitat' => $novaQuantitat]);
         }
-        $preuTotal=0;
-        foreach($comanda->productes as $prods){
-            $preuTotal+=$prods->preu_unitari * $prods->pivot->quantitat;
+        $preuTotal = 0;
+        foreach ($comanda->productes as $prods) {
+            $preuTotal += $prods->preu_unitari * $prods->pivot->quantitat;
         }
-        $usuari=Auth()->user()->id;
-       return view('compres.detall',compact('comanda','preuTotal','usuari'));
+        $usuari = Auth()->user()->id;
+        return view('compres.detall', compact('comanda', 'preuTotal', 'usuari'));
     }
-    public function confirmar(Comanda $comanda,$usuari){
-        $preuTotal=0;
-        if($comanda->usuari_id==$usuari){
-        $comanda->oberta=0;
-        $comanda->save();
-        
-        echo "usuari correcte";       
-         foreach($comanda->productes as $prods){
-            $preuTotal+=$prods->preu_unitari * $prods->pivot->quantitat;
+    public function confirmar(Comanda $comanda, $usuari)
+    {
+        $missatge = "";
+        $preuTotal = 0;
+        if ($comanda->usuari_id == $usuari){
+        if ($comanda->oberta != 1){
+            foreach ($comanda->productes as $prods) {
+                $preuTotal += $prods->preu_unitari * $prods->pivot->quantitat;
+            }
+            $missatge = "La comanda ja s'ha tancat anteriorment, el preu total de la comanda és de $preuTotal €";
+        }else if($comanda->productes->isEmpty()){
+        $missatge = "No hi ha cap producte en la comanda seleccionada";
         }
-       
-    } else{
-            echo "usuari incorrecte";
+        else {
+            $comanda->oberta = 0;
+            $comanda->save();
+            
+            
+            foreach ($comanda->productes as $prods) {
+                $preuTotal += $prods->preu_unitari * $prods->pivot->quantitat;
+            }
+            $missatge = "Comanda tancada, el cost total és de $preuTotal €";
+        }
+        } else {
+            $missatge = "La comanda no es correspon amb l'usuari introduït";
         }
 
-        return view('compres.confirma',compact('comanda','preuTotal'));
+        return view('compres.confirma', compact('comanda', 'missatge'));
+    }
+
+
+    public function canviQuantitat(Request $request, Comanda $comanda)
+    {
+        $productos = $request->input('productes');
+        if($productos != NULL){
+        foreach ($productos as $producteId => $quantitat) {
+
+            if ($quantitat <= 0) {
+                $comanda->productes()->detach($producteId);
+            }else{
+                if ($quantitat==NULL){
+                    $quantitat=1;
+                }
+                if ($quantitat>10){
+                    $quantitat = 10;
+                }
+            $comanda->productes()->updateExistingPivot($producteId, ['quantitat' => $quantitat]);
+            }
+        }
+    }
+        if ($comanda->productes->isEmpty()) {
+            // Si no hay productos, redirige a la página inicial (o cualquier otra ruta deseada)
+            return redirect()->route('inici');
+        }
+        return redirect()->route('comprarNP');
     }
     /**
      * Display a listing of the resource.
