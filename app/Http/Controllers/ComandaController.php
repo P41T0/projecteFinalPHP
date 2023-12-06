@@ -41,10 +41,11 @@ class ComandaController extends Controller
         $usuari = Auth()->user()->id;
         return view('compres.detall', compact('comanda', 'preuTotal', 'usuari'));
     }
-    public function confirmar(Comanda $comanda, $usuari)
+    public function confirmar(Comanda $comanda)
     {
         $missatge = "";
         $preuTotal = 0;
+        $usuari = Auth()->user()->id;
         if ($comanda->usuari_id == $usuari){
         if ($comanda->oberta != 1){
             foreach ($comanda->productes as $prods) {

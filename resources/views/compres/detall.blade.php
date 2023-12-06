@@ -31,6 +31,6 @@
     <p>Preu total dels productes de la llista de la compra: {{$preuTotal}}€</p>
     <a class="justify-center font-bold hover:bg-verd4 p-2 rounded"href="{{route('inici')}}">Seguir comprant</a>
    
-    <a class="justify-center font-bold hover:bg-verd4 p-2 rounded"  onclick="return confirm('Segur que vols confirmar la compra?')"href="{{route('confirma.compres', [$comanda->id,$usuari])}}">Confirma la comanda</a>
+    <a class="justify-center font-bold hover:bg-verd4 p-2 rounded"  onclick="return confirm('Segur que vols confirmar la compra?')"href="{{route('confirma.compres', $comanda->id)}}">Confirma la comanda</a>
     </div>
 </x-guest-layout>
