@@ -14,17 +14,14 @@ class ComandaController extends Controller
         //
         $comandesObertes = Auth()->user()->comandes->where('oberta');
         if ($comandesObertes->count() > 0) {
-            echo "Hi ha comandes obertes";
             $comanda = $comandesObertes->first();
         } else {
-            echo "no hi ha comandes obertes";
             $comanda = new Comanda;
 
             $comanda->usuari_id = Auth()->user()->id;
             $comanda->botiga_id = 1;
             $comanda->save();
         }
-        echo $comanda;
         $liniaComanda = $comanda->productes()->where('producte_id', $producte->id)->first();
 
         $novaQuantitat = 1;
@@ -51,9 +48,9 @@ class ComandaController extends Controller
             foreach ($comanda->productes as $prods) {
                 $preuTotal += $prods->preu_unitari * $prods->pivot->quantitat;
             }
-            $missatge = "La comanda ja s'ha tancat anteriorment, el preu total de la comanda és de $preuTotal €";
+            $missatge = 0;
         }else if($comanda->productes->isEmpty()){
-        $missatge = "No hi ha cap producte en la comanda seleccionada";
+            $missatge = 1;
         }
         else {
             $comanda->oberta = 0;
@@ -63,13 +60,13 @@ class ComandaController extends Controller
             foreach ($comanda->productes as $prods) {
                 $preuTotal += $prods->preu_unitari * $prods->pivot->quantitat;
             }
-            $missatge = "Comanda tancada, el cost total és de $preuTotal €";
+            $missatge = 2;
         }
         } else {
-            $missatge = "La comanda no es correspon amb l'usuari introduït";
+            $missatge = 3;
         }
 
-        return view('compres.confirma', compact('comanda', 'missatge'));
+        return view('compres.confirma', compact('comanda', 'missatge','preuTotal'));
     }
 
 

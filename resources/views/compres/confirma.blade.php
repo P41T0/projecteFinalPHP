@@ -10,7 +10,25 @@
         <p>No hi ha productes comprats</p>
     @endforelse
     </table>
-    <p>{{$missatge}}</p>
+
+    @switch($missatge)
+        @case(0)
+        <p>{{_("La comanda ja s'ha tancat anteriorment, el preu total de la comanda és de")}} {{$preuTotal}} €</p>
+            @break
+        @case(1)
+        <p>{{_("No hi ha cap producte en la comanda seleccionada")}}</p>
+            @break
+        @case(2)
+        <p>{{_("Comanda tancada, el cost total és de")}}{{$preuTotal}}€</p>
+        @break
+        @case(3)
+        <p>{{_("La comanda no es correspon amb l'usuari introduït")}}</p>
+        @break
+        @default
+            <p>{{_("S'ha produit un error en el controlador")}}</p>
+            @break
+    @endswitch
+
     <a class="justify-center font-bold hover:bg-verd4 p-2 rounded"href="{{route('inici')}}">Tornar a l'inici</a>
     </div>
 </x-guest-layout>

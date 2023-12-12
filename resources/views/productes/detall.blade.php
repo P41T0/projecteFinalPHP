@@ -4,18 +4,18 @@
         <h2 class="text-3xl text-center font-extrabold">{{$producte->nom}}</h2>
         <p>{{$producte->descripcio}}</p>
         <img class="max-w-xl" src="{{$producte->foto}}" alt="{{$producte->nom}}">
-        <p>Preu: {{$producte->preu_unitari}}€</p>
-        <a href="{{route('comprar', $producte->id)}}">Afegir a la llista de la compra</a>
-        <p>El producte es troba disponible en les botigues de:</p>
+        <p>{{__("Preu")}}: {{$producte->preu_unitari}}€</p>
+        <a href="{{route('comprar', $producte->id)}}">{{__("Afegir a la llista de la compra")}}</a>
+        <p>{{__("El producte es troba disponible en les botigues de")}}:</p>
         <ul>
         @forelse ($producte->botiga as $botiga)
             @if($botiga->pivot->quantitat>0)
                 <li>{{$botiga->poblacio}} --> {{$botiga->pivot->quantitat}}</li>
             @elseif($botiga->pivot->quantitat==0)
-                <li>El produte no es troba disponible temporalment a {{$botiga->poblacio}}</li>
+                <li>{{__("El produte no es troba disponible temporalment a")}} {{$botiga->poblacio}}</li>
             @endif
         @empty
-            <li>El producte no es troba disponible en cap botiga</li>
+            <li>{{__("El producte no es troba disponible en cap botiga")}}</li>
         @endforelse
         </ul>
         </div>

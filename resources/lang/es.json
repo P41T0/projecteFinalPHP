@@ -1,0 +1,23 @@
+{
+  "Afegir a la llista de la compra":"Añadir a la lista de la compra",
+  "contacte":"contacto",
+  "Comprar":"Comprar",
+  "El producte es troba disponible en les botigues de": "El producto se encuentra disponible en las tiendas de",
+  "El producte no es troba disponible en cap botiga":"El producto no se encuentra disponible en ninguna tienda",
+  "El produte no es troba disponible temporalment a":"El producto no se encuentra disponible temporalmente en",
+  "Email":"Correo electronico",
+  "Email Password Reset Link":"Enlace para restablecer la contraseña a traves del correo electronico",
+  "Forgot your password?":"Olvidaste tu contraseña?",
+  "Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.":"¿Has olvidado tu contraseña? No hay problema. Simplemente háganos saber tu dirección de correo electrónico y te enviaremos un enlace para restablecer tu contraseña que te permitirá elegir una nueva.",
+  "Inici": "Inicio",
+  "Iniciar sessió":"Iniciar session",
+  "Informació de contacte":"Informacion de contacto",
+  "Log in":"Iniciar sessión",
+  "Password":"Contraseña",
+  "Preu":"Precio",
+  "Productes comprats":"Productos comprados",
+  "Remember me": "Recuerdame",
+  "Estàs segur que vols confirmar la compra?":"Estas seguro que quieres confirmar la compra?",
+  "Selecciona la quantitat del producte que vols comprar entre 1 i 10 i guarda els canvis. Si selecciones 0, el producte s'eliminarà de la comanda.":"Selecciona la cantidad del producto que quieres comprar entre 1 i 10 i guarda los cambios. Si seleccionas 0, el producto se eliminara de la comanda."
+  
+}
