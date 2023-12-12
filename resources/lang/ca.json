@@ -1,3 +1,22 @@
 {
-  "Remember me": "Recorda'm"
+  "Current Password":"Contrassenya actual",
+  "Confirm Password":"Confirmar contrassenya",
+  "Delete Account":"Eliminar el compte",
+  "Email":"Correu electrònic",
+  "Email Password Reset Link":"Enllaç per restablir la contrasenya a través del correu electrònic",
+  "Ensure your account is using a long, random password to stay secure.":"Assegureu-vos que el vostre compte utilitzi una contrasenya llarga i aleatòria per mantenir-la segura.",
+  "Forgot your password?":"Has oblidat la contrassenya?",
+  "Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.":"Heu oblidat la vostra contrasenya? Cap problema. Simplement faci'ns saber la teva adreça de correu electrònic i t'enviarem un enllaç per restablir la teva contrasenya que et permetrà triar-ne una de nova.",
+  "Log in":"Iniciar sessió",
+  "Log Out":"Tancar sessió",
+  "Name":"Nom",
+  "New Password":"Contrassenya nova",
+  "Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.":"Quan s'elimini el vostre compte, tots els vostres recursos i dades s'eliminaran permanentment. Abans d'eliminar el vostre compte, descarregueu qualsevol dada o informació que vulgueu conservar.",
+  "Password":"Contrassenya",
+  "Profile":"Perfil",
+  "Profile Information":"Informació del perfil",
+  "Remember me": "Recorda'm",
+  "Save":"Guardar",
+  "Update Password":"Actualitzar la contrassenya",
+  "Update your account's profile information and email address.":"Actualitza la informació de perfil i l'adreça de correu electrònic del teu compte"
 }
