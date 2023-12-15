@@ -1,4 +1,6 @@
 {
+  "Are you sure you want to delete your account?":"Estàs segur que vols eliminar el teu compte?",
+  "Cancel":"Cancel·lar",
   "Current Password":"Contrassenya actual",
   "Confirm Password":"Confirmar contrassenya",
   "Delete Account":"Eliminar el compte",
@@ -12,6 +14,7 @@
   "Name":"Nom",
   "New Password":"Contrassenya nova",
   "Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.":"Quan s'elimini el vostre compte, tots els vostres recursos i dades s'eliminaran permanentment. Abans d'eliminar el vostre compte, descarregueu qualsevol dada o informació que vulgueu conservar.",
+  "Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.":"Un cop s'hagi eliminat el teu compte, tots els seus recursos i dades s'eliminaran permanentment. Introdueix la teva contrasenya per confirmar que vols eliminar el teu compte permanentment.",
   "Password":"Contrassenya",
   "Profile":"Perfil",
   "Profile Information":"Informació del perfil",
