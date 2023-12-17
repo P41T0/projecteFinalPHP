@@ -1,4 +1,5 @@
 {
+  "Already registered?":"Ja estàs registrat?",
   "Are you sure you want to delete your account?":"Estàs segur que vols eliminar el teu compte?",
   "Cancel":"Cancel·lar",
   "Current Password":"Contrassenya actual",
@@ -18,6 +19,7 @@
   "Password":"Contrassenya",
   "Profile":"Perfil",
   "Profile Information":"Informació del perfil",
+  "Register":"Registrar-me",
   "Remember me": "Recorda'm",
   "Save":"Guardar",
   "Update Password":"Actualitzar la contrassenya",

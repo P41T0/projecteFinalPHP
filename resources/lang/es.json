@@ -1,5 +1,6 @@
 {
   "Afegir a la llista de la compra": "Añadir a la lista de la compra",
+  "Already registered?":"Ya estas registrado?",
   "Are you sure you want to delete your account?":"¿Estás seguro de que quieres eliminar tu cuenta?",
   "Cancel":"Cancelar",
   "contacte": "contacto",
@@ -7,7 +8,7 @@
   "Comprar": "Comprar",
   "Compra confirmada": "Compra confirmada",
   "Confirma la comanda": "Confirma el pedido",
-  "Confirmar contraseña": "Confirmar contraseña",
+  "Confirm Password": "Confirmar contraseña",
   "Contraseña actual": "Contraseña actual",
   "Eliminar cuenta": "Eliminar cuenta",
   "El producte es troba disponible en les botigues de": "El producto se encuentra disponible en las tiendas de",
@@ -39,6 +40,7 @@
   "Profile Information": "Información del perfil",
   "Quantitat": "Cantidad",
   "Productes comprats": "Productos comprados",
+  "Register":"Registrarme",
   "Remember me": "Recordarme",
   "Estàs segur que vols confirmar la compra?": "¿Estás seguro de que quieres confirmar la compra?",
   "Save": "Guardar",
