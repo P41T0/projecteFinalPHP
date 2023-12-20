@@ -41,9 +41,11 @@ Route::middleware('auth')->group(function () {
 });
 
 // CRUD
+Route::get('/dashboard/modifElems')->middleware(['auth','admin'])->name('modifElems');
 Route::get('/dashboard/productes/{producte}/edit', [App\Http\Controllers\ProducteController::class, 'edit'])
 ->middleware(['auth','admin'])
 ->name('productes.edit');
+
 Route::put('/dashboard/productes/{producte}', [App\Http\Controllers\ProducteController::class, 'update'])
     ->middleware(['auth','admin'])
     ->name('productes.update');

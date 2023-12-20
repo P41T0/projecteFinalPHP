@@ -29,7 +29,12 @@
                 <a href="{{ route('inici') }}">
                     <li class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1">{{ __('Inici') }}</li>
                 </a>
-                @if (Auth::User())
+                @if (Auth::User())                
+                @if (Auth::user()->admin == true)
+                <a href="#">
+                    <li class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1">{{ __('Modificar elements') }}</li>
+                </a>
+                @endif
                     <!-- Settings Dropdown -->
                     <div class="hidden sm:flex sm:items-center sm:ms-6">
                         <x-dropdown align="right" width="48">
@@ -72,9 +77,10 @@
                         <li class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1">{{ __('Iniciar sessió') }}</li>
                     </a>
                 @endif
-                <a href="#">
-                    <li class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1">{{ __('contacte') }}</li>
-                </a>
+                    <a href="#">
+                        <li class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1">{{ __('contacte') }}</li>
+                    </a>
+
             <div class="pl-10 hidden sm:flex sm:items-center sm:ml-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
