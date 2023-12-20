@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
     {
          \App\Models\User::factory(10)->create();
 
-            DB::table('users')->insert(['name' => 'Pau', 'email' => 'pau.tort@uvic.cat', 'password' => bcrypt('123456')]);
+            DB::table('users')->insert(['name' => 'Pau', 'email' => 'pau.tort@uvic.cat', 'password' => bcrypt('123456'), 'admin' => TRUE]);
             DB::table('seccio')->insert(['nom'=>'Telefonia mòbil','descripcio'=>'telèfons mòbils, smartwatches, auriculars i altres accessoris']);
             DB::table('seccio')->insert(['nom'=>'Ordinadors','descripcio'=>'Ordinadors portàtils i accessoris']);
             DB::table('producte')->insert(['nom'=>'IPhone 15','descripcio'=>'telefon mòbil','foto'=>'https://www.tu.com/cdn/shop/files/iPhone15_black_338521fe-833d-4a5b-986f-34b23bdc3265_830x@2x.webp?v=1696928929', 'preu_unitari'=>'1499.99','seccio_id'=>'1']);

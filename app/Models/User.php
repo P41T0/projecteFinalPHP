@@ -45,4 +45,9 @@ class User extends Authenticatable
     public function comandes(){
         return $this->hasMany(Comanda::class, 'usuari_id');
     }
+    public function isAdmin()
+{
+return $this->admin;
+}
+
 }
