@@ -45,10 +45,15 @@ Route::get('/dashboard/modifElems')->middleware(['auth','admin'])->name('modifEl
 Route::get('/dashboard/productes/{producte}/edit', [App\Http\Controllers\ProducteController::class, 'edit'])
 ->middleware(['auth','admin'])
 ->name('productes.edit');
+Route::get('/dashboard/seccions/{seccio}/edit', [App\Http\Controllers\SeccioController::class, 'edit'])
+->middleware(['auth','admin'])
+->name('seccions.edit');
 
 Route::put('/dashboard/productes/{producte}', [App\Http\Controllers\ProducteController::class, 'update'])
     ->middleware(['auth','admin'])
     ->name('productes.update');
-
+    Route::put('/dashboard/seccions/{seccio}', [App\Http\Controllers\SeccioController::class, 'update'])
+    ->middleware(['auth','admin'])
+    ->name('seccions.update');
 
 require __DIR__.'/auth.php';

@@ -16,7 +16,7 @@
             </div>
         @endif
 
-        <form action="{{ route('productes.update', ['producte' => $producte->id]) }}" method="post" class="col-lg-6">
+        <form action="{{ route('productes.update', ['producte' => $producte->id]) }}" method="post" class="col-lg-6" enctype="multipart/form-data">
             {{ csrf_field() }}
             {{ method_field('PUT') }}
             <label class="block py-2">
@@ -26,11 +26,11 @@
             <label class="block py-2">
                 <span class="text-gray-700">Imatge
                     
-                    <input type="file" accept="image/x-png,image/gif,image/jpeg" name="" id="">
+                    <input type="file" accept="image/x-png,image/gif,image/jpeg" name="imatge" id="">
             </label>
             <label class="block py-2">
-                <span class="text-gray-700">Imatge
-                    <input type="number" name="preu" step="0.01" min="0" id="">
+                <span class="text-gray-700">Preu
+                    <input type="number" name="preu" step="0.01" min="0" id="" value={{$producte->preu_unitari}}>
                     
             </label>
 

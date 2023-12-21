@@ -18,10 +18,10 @@ class DatabaseSeeder extends Seeder
             DB::table('users')->insert(['name' => 'Pau', 'email' => 'pau.tort@uvic.cat', 'password' => bcrypt('123456'), 'admin' => TRUE]);
             DB::table('seccio')->insert(['nom'=>'Telefonia mòbil','descripcio'=>'telèfons mòbils, smartwatches, auriculars i altres accessoris']);
             DB::table('seccio')->insert(['nom'=>'Ordinadors','descripcio'=>'Ordinadors portàtils i accessoris']);
-            DB::table('producte')->insert(['nom'=>'IPhone 15','descripcio'=>'telefon mòbil','foto'=>'https://www.tu.com/cdn/shop/files/iPhone15_black_338521fe-833d-4a5b-986f-34b23bdc3265_830x@2x.webp?v=1696928929', 'preu_unitari'=>'1499.99','seccio_id'=>'1']);
-            DB::table('producte')->insert(['nom'=>'Google Pixel 8','descripcio'=>'telefon mòbil','foto'=>'https://catalogo.orange.es/catalogo/Imagenes/Dispositivos/google_pixel_8_5g_rosa_Frontback.webp', 'preu_unitari'=>'899.99','seccio_id'=>'1']);
-            DB::table('producte')->insert(['nom'=>'ASUS TUF GAMING','descripcio'=>'ordinador portàtil','foto'=>'https://dlcdnwebimgs.asus.com/files/media/7fb18ec0-d2fc-4d67-868f-d43769bf59d4/v1/images/desktop/audio/audio_pd.png', 'preu_unitari'=>'1299.99','seccio_id'=>'2']);
-            DB::table('producte')->insert(['nom'=>'Chromebook','descripcio'=>'ordinador portàtil','foto'=>'https://p1-ofp.static.pub/medias/bWFzdGVyfHJvb3R8MTA2NTYwfGltYWdlL3BuZ3xoNDUvaDczLzExNTExNjcxNDU1Nzc0LnBuZ3xiZWVmMjE1OTMzMTE3YzU5NmYzOGNhNTdjOTFmNmU1MDJlYTM2NzI4NmYxYzdkMjhlODJlZjgyMTIwMDU4OTVk/lenovo-laptop-lenovo-500e-gen3-hero.png', 'preu_unitari'=>'399.99','seccio_id'=>'2']);
+            DB::table('producte')->insert(['nom'=>'IPhone 15','descripcio'=>'telefon mòbil','foto'=>'iPhone15_black.webp', 'preu_unitari'=>'1499.99','seccio_id'=>'1']);
+            DB::table('producte')->insert(['nom'=>'Google Pixel 8','descripcio'=>'telefon mòbil','foto'=>'google_pixel_8_5g_rosa_Frontback.webp', 'preu_unitari'=>'899.99','seccio_id'=>'1']);
+            DB::table('producte')->insert(['nom'=>'ASUS TUF GAMING','descripcio'=>'ordinador portàtil','foto'=>'audio_pd.png', 'preu_unitari'=>'1299.99','seccio_id'=>'2']);
+            DB::table('producte')->insert(['nom'=>'Chromebook','descripcio'=>'ordinador portàtil','foto'=>'lenovo-laptop-lenovo-500e-gen3-hero.webp', 'preu_unitari'=>'399.99','seccio_id'=>'2']);
             DB::table('botiga')->insert(['poblacio'=>'Roda de Ter','adreca'=>'Carrer Nou, nº 25','telefon'=>'938256145','correu'=>'botigaroda@botiga.cat']);
             DB::table('botiga')->insert(['poblacio'=>'Vic','adreca'=>'Plaça Major, nº 10','telefon'=>'938542662','correu'=>'botigavic@botiga.cat']);
             DB::table('botiga')->insert(['poblacio'=>'Manlleu','adreca'=>'Plaça Fra Bernardí, nº 1','telefon'=>'938234512','correu'=>'botigamanlleu@botiga.cat']);

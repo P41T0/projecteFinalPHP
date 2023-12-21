@@ -15,7 +15,7 @@
                         @foreach ($seccio->productes as $producte)
                             <div class="bg-verd3 m-2 p-2 rounded-md">
                             <p class="font-semibold text-lg">{{$producte->nom}}</p>
-                            <img src="{{$producte->foto}}" alt="">
+                            <img src={{asset("/storage/$producte->foto")}} alt="imatge d'un element">
                             <p>{{$producte->preu_unitari,}}€</p>
                             <a href="{{route('detall.producte', $producte->id)}}">{{__("Comprar")}}</a>
                             </div>

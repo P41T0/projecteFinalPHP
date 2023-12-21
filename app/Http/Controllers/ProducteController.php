@@ -65,7 +65,7 @@ class ProducteController extends Controller
 			$request,
 			[
 				 'nom' => 'required|max:100',
-                 'imatge' => 'image',
+                 'imatge' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
                  'preu' => 'required'
                 // 'seccio' => 'required'
 			],
@@ -77,6 +77,16 @@ class ProducteController extends Controller
 
         $producte->nom = $request->input('nom');
         $producte->seccio_id = $request->input('seccio');
+        if ($request->hasFile('imatge')) {
+            
+            $imatge = $request->file('imatge');
+
+            $nomImg = time() . '_' . $imatge->getClientOriginalName();
+
+           $request->file('imatge')->storeAs("/public/$nomImg");
+           $producte->foto=$nomImg;
+
+        }
         if ($request->input("preu")>0){
             $producte->preu_unitari = $request->input('preu');
         }

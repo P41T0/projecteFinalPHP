@@ -31,7 +31,7 @@
                 </a>
                 @if (Auth::User())                
                 @if (Auth::user()->admin == true)
-                <a href="#">
+                <a href="{{route('modifElems')}}">
                     <li class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1">{{ __('Modificar elements') }}</li>
                 </a>
                 @endif
