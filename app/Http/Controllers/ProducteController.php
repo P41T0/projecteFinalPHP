@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Botiga;
 use App\Models\Producte;
 use Illuminate\Http\Request;
 use App\Models\Seccio;
@@ -64,7 +65,13 @@ class ProducteController extends Controller
         if ($request->input("preu")>0){
             $producte->preu_unitari = $request->input('preu');
         }
-		$producte->save();
+        $producte->save();
+        $botigues = Botiga::all();
+        foreach($botigues as $botiga){
+            $producte->botiga()->attach($botiga->id, ["quantitat"=>0]);
+        }
+        $producte->save();
+		
 //dd($producte);
 		Session::flash('message', 'producte modificat !');
 		return redirect()->route("inici");

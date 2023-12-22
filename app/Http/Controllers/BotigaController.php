@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Botiga;
 use Illuminate\Http\Request;
+use App\Models\Producte;
 
 class BotigaController extends Controller
 {
@@ -12,7 +13,8 @@ class BotigaController extends Controller
      */
     public function index()
     {
-        //
+        $botiga = Botiga::All();
+        return view('botigues.selBotiga',['botigues'=>$botiga]);
     }
 
     /**
@@ -44,7 +46,10 @@ class BotigaController extends Controller
      */
     public function edit(Botiga $botiga)
     {
-        //
+        return View(
+			'botigues.edit',
+            
+			['botiga' => $botiga, 'productes' => Producte::all()]);
     }
 
     /**
@@ -52,8 +57,21 @@ class BotigaController extends Controller
      */
     public function update(Request $request, Botiga $botiga)
     {
-        //
-    }
+        $productes = $request->input('productes');
+        if($productes != NULL){
+        foreach ($productes as $producteId => $quantitat) {
+
+            if($quantitat>0){
+                $quantitat=0;
+            }
+            if ($quantitat==NULL){
+                    $quantitat=1;
+            }
+            $botiga->productes()->updateExistingPivot($producteId, ['quantitat' => $quantitat]);
+            
+    }}
+return back();
+}
 
     /**
      * Remove the specified resource from storage.

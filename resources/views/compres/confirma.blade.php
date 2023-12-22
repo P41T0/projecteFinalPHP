@@ -13,13 +13,13 @@
 
     @switch($missatge)
         @case(0)
-        <p>{{__("La comanda ja s'ha tancat anteriorment, el preu total de la comanda és de")}} {{$preuTotal}} €</p>
+        <p>{{__("La comanda ja s'ha tancat anteriorment, el preu total de la comanda és de")}} {{$preuTotal}} € {{__("i la comanda es passara a recollir a la botiga de ")}}{{$botiga}}</p>
             @break
         @case(1)
         <p>{{__("No hi ha cap producte en la comanda seleccionada")}}</p>
             @break
         @case(2)
-        <p>{{__("Comanda tancada, el cost total és de")}}{{$preuTotal}}€</p>
+        <p>{{__("Comanda tancada, el cost total és de")}}{{$preuTotal}}€ {{__("i la comanda es passara a recollir a la botiga de ")}}{{$botiga}}</p>
         @break
         @case(3)
         <p>{{__("La comanda no es correspon amb l'usuari introduït")}}</p>

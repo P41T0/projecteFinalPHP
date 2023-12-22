@@ -40,15 +40,16 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// CRUD
-Route::get('/dashboard/modifElems')->middleware(['auth','admin'])->name('modifElems');
-Route::get('/dashboard/productes/{producte}/edit', [App\Http\Controllers\ProducteController::class, 'edit'])
-->middleware(['auth','admin'])
-->name('productes.edit');
-
+// CRUD Botigues
 Route::get('/dashboard/botigues/{botiga}/edit', [App\Http\Controllers\BotigaController::class, 'edit'])
 ->middleware(['auth','admin'])
 ->name('botigues.edit');
+Route::get('/dashboard/modificaBotigues', [App\Http\Controllers\BotigaController::class, 'index'])
+->middleware(['auth','admin'])
+->name('botigues.select');
+Route::put('/dashboard/botigues/{botiga}', [App\Http\Controllers\BotigaController::class, 'update'])
+    ->middleware(['auth','admin'])
+    ->name('botigues.update');
 //CRUD Productes
 Route::put('/dashboard/productes/{producte}', [App\Http\Controllers\ProducteController::class, 'update'])
     ->middleware(['auth','admin'])
@@ -62,7 +63,10 @@ Route::get('/dashboard/creaProd', [App\Http\Controllers\ProducteController::clas
 Route::put('/dashboard/storeProd', [App\Http\Controllers\ProducteController::class, 'store'])
     ->middleware(['auth','admin'])
     ->name('productes.store');
-
+Route::get('/dashboard/modifElems')->middleware(['auth','admin'])->name('modifElems');
+Route::get('/dashboard/productes/{producte}/edit', [App\Http\Controllers\ProducteController::class, 'edit'])
+->middleware(['auth','admin'])
+->name('productes.edit');
 
 
 

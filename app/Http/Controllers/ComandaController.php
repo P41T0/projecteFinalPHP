@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Comanda;
 use App\Models\Producte;
+use App\Models\Botiga;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,7 +20,7 @@ class ComandaController extends Controller
             $comanda = new Comanda;
 
             $comanda->usuari_id = Auth()->user()->id;
-            $comanda->botiga_id = 1;
+            $comanda->botiga_id = 2;
             $comanda->save();
         }
         $liniaComanda = $comanda->productes()->where('producte_id', $producte->id)->first();
@@ -36,12 +37,16 @@ class ComandaController extends Controller
             $preuTotal += $prods->preu_unitari * $prods->pivot->quantitat;
         }
         $usuari = Auth()->user()->id;
-        return view('compres.detall', compact('comanda', 'preuTotal', 'usuari'));
+        $botiga = Botiga::all();
+       // dd($botiga);
+        return view('compres.detall',['comanda'=>$comanda, 'preuTotal'=>$preuTotal, 'usuari'=>$usuari,'botigues'=>$botiga]);
     }
     public function confirmar(Comanda $comanda)
     {
         $missatge = "";
         $preuTotal = 0;
+        $botigues = Botiga::find($comanda->botiga_id);
+        $botiga = $botigues->poblacio;
         $usuari = Auth()->user()->id;
         if ($comanda->usuari_id == $usuari){
         if ($comanda->oberta != 1){
@@ -66,15 +71,15 @@ class ComandaController extends Controller
             $missatge = 3;
         }
 
-        return view('compres.confirma', compact('comanda', 'missatge','preuTotal'));
+        return view('compres.confirma', compact('comanda', 'missatge','preuTotal','botiga'));
     }
 
 
     public function canviQuantitat(Request $request, Comanda $comanda)
     {
-        $productos = $request->input('productes');
-        if($productos != NULL){
-        foreach ($productos as $producteId => $quantitat) {
+        $productes = $request->input('productes');
+        if($productes != NULL){
+        foreach ($productes as $producteId => $quantitat) {
 
             if ($quantitat <= 0) {
                 $comanda->productes()->detach($producteId);
@@ -88,6 +93,8 @@ class ComandaController extends Controller
             $comanda->productes()->updateExistingPivot($producteId, ['quantitat' => $quantitat]);
             }
         }
+        $comanda->botiga_id=$request->input('botiga');
+        $comanda->save();
     }
         if ($comanda->productes->isEmpty()) {
             // Si no hay productos, redirige a la página inicial (o cualquier otra ruta deseada)

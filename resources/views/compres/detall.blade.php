@@ -26,7 +26,13 @@
                 <p>{{__("No hi ha cap producte comprat en la comanda actual")}}</p>
             @endforelse
         </table>
-    
+        <select name="botiga" id="">
+            @foreach ($botigues as $botiga)
+                
+           
+            <option value="{{$botiga->id}}" {{ $botiga->id == $comanda->botiga_id ? 'selected' : '' }}>{{$botiga->poblacio}}</option> 
+            @endforeach
+        </select>
         <button type="submit">{{__("Guardar canvis")}}</button>
     </form>
     <p>{{__("Preu total dels productes de la llista de la compra:")}} {{$preuTotal}}€</p>

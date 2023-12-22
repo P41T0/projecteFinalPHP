@@ -29,9 +29,16 @@ class DatabaseSeeder extends Seeder
             DB::table('comanda')->insert(['botiga_id'=>'2','usuari_id'=>'3']);
             DB::table('estoc_botiga')->insert(['botiga_id'=>'1','producte_id'=>'1','quantitat'=>'3']);
             DB::table('estoc_botiga')->insert(['botiga_id'=>'2','producte_id'=>'1','quantitat'=>'8']);
+            DB::table('estoc_botiga')->insert(['botiga_id'=>'3','producte_id'=>'1','quantitat'=>'0']);
             DB::table('estoc_botiga')->insert(['botiga_id'=>'1','producte_id'=>'3','quantitat'=>'5']);
+            DB::table('estoc_botiga')->insert(['botiga_id'=>'2','producte_id'=>'3','quantitat'=>'0']);
+            DB::table('estoc_botiga')->insert(['botiga_id'=>'3','producte_id'=>'3','quantitat'=>'0']);
+            DB::table('estoc_botiga')->insert(['botiga_id'=>'1','producte_id'=>'2','quantitat'=>'0']);
+            DB::table('estoc_botiga')->insert(['botiga_id'=>'2','producte_id'=>'2','quantitat'=>'0']);
             DB::table('estoc_botiga')->insert(['botiga_id'=>'3','producte_id'=>'2','quantitat'=>'4']);
+            DB::table('estoc_botiga')->insert(['botiga_id'=>'1','producte_id'=>'4','quantitat'=>'0']);
             DB::table('estoc_botiga')->insert(['botiga_id'=>'2','producte_id'=>'4','quantitat'=>'6']);
+            DB::table('estoc_botiga')->insert(['botiga_id'=>'3','producte_id'=>'4','quantitat'=>'0']);
             DB::table('linia_comanda')->insert(['comanda_id'=>'1','producte_id'=>'1','quantitat'=>'4']);
             DB::table('linia_comanda')->insert(['comanda_id'=>'1','producte_id'=>'3','quantitat'=>'6']);
             DB::table('linia_comanda')->insert(['comanda_id'=>'2','producte_id'=>'1','quantitat'=>'2']);

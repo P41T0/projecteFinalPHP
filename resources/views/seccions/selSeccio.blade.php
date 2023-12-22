@@ -1,7 +1,7 @@
 <x-guest-layout>
     <ul class="flex">
         <li><a href="{{route('productes.select')}}">Modificar productes</a></li>
-        <li><a href="">Modificar botigues</a></li>
+        <li><a href="{{route('botigues.select')}}">Modificar botigues</a></li>
     </ul>
     <h1 class="text-xl font-bold">Modificar seccions</h1>
 @foreach ($seccions as $seccio)
