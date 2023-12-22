@@ -16,34 +16,37 @@
             </div>
         @endif
 
-        <form action="{{ route('productes.update', ['producte' => $producte->id]) }}" method="post" class="col-lg-6" enctype="multipart/form-data">
+        <form action="{{ route('productes.store') }}" method="post" class="col-lg-6" enctype="multipart/form-data">
             {{ csrf_field() }}
             {{ method_field('PUT') }}
             <label class="block py-2">
                 <span class="text-gray-700">Nom:
-                    <input class=" w-full rounded" type="text" name="nom" value="{{ $producte->nom }}">
+                    <input class=" w-full rounded" type="text" name="nom"
+                        placeholder="Introdueix el nom del producte">
             </label>
             <label class="block py-2">
-                <span class="text-gray-700">Descripcio Producte:
-                    <input class=" w-full rounded" type="text" name="descripcio" value="{{ $producte->descripcio }}">
+                <span class="text-gray-700">Descripcio del producte:
+                    <input class=" w-full rounded" type="text" name="descripcio"
+                        placeholder="Introdueix la descripcio del producte">
             </label>
+            
             <label class="block py-2">
                 <span class="text-gray-700">Imatge
-                    
-                    <input type="file" accept="image/x-png,image/gif,image/jpeg" name="imatge" id="" data-defaultvalue="{{asset("/storage/$producte->foto")}}">
+
+                    <input type="file" accept="image/x-png,image/gif,image/jpeg" name="imatge" id="">
             </label>
             <label class="block py-2">
                 <span class="text-gray-700">Preu
-                    <input type="number" name="preu" step="0.01" min="0" id="" value={{$producte->preu_unitari}}>
-                    
+                    <input type="number" name="preu" step="0.01" min="0" id="">
+
             </label>
 
             <label class="block py-2">
                 <span class="text-gray-700">Seccio:
-                    <select class="px-4 py-3 w-full rounded-full" name="seccio" >
+                    <select class="px-4 py-3 w-full rounded-full" name="seccio">
                         @foreach ($seccions as $seccio)
-                        <option value="{{$seccio->id}}" {{ $seccio->id == $producte->seccio_id ? 'selected' : '' }}>
-                            {{$seccio->nom}}</option>
+                            <option value="{{ $seccio->id }}">
+                                {{ $seccio->nom }}</option>
                         @endforeach
                     </select>
 

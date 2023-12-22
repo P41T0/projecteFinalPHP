@@ -15,7 +15,8 @@ class SeccioController extends Controller
      */
     public function index()
     {
-        //
+        $seccio = Seccio::all();
+        return view('seccions.selSeccio',['seccions'=>$seccio]);
     }
 
     /**
@@ -23,15 +24,34 @@ class SeccioController extends Controller
      */
     public function create()
     {
-        //
+        return view("seccions.create");
     }
+
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        $this->validate(
+            $request,
+            [
+                 'nom' => 'required|max:100',
+                 'descripcio' => 'required|max:500'
+            ],
+            $messages = [
+                'required'  => 'El camp :attribute és obligatori',
+                'size'      => 'El camp :attribute no pot superar :max caràcters',
+            ]
+        );
+        $seccio = new Seccio;
+        $seccio->nom = $request->input('nom');
+        $seccio->descripcio = $request->input('descripcio');
+        
+        $seccio->save();
+//dd($seccio);
+        Session::flash('message', 'seccio modificada !');
+        return redirect()->route("inici");
     }
 
     /**
@@ -39,7 +59,7 @@ class SeccioController extends Controller
      */
     public function show(Seccio $seccio)
     {
-        //
+        
     }
 
     /**

@@ -16,7 +16,8 @@ class ProducteController extends Controller
      */
     public function index()
     {
-        //
+        $producte = Producte::all();
+        return view('productes.selProducte',['productes'=>$producte]);
     }
 
     /**
@@ -24,7 +25,7 @@ class ProducteController extends Controller
      */
     public function create()
     {
-        //
+        return view("productes.create",['seccions' => Seccio::all()]);
     }
 
     /**
@@ -32,7 +33,41 @@ class ProducteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate(
+			$request,
+			[
+				 'nom' => 'required|max:100',
+                 'descripcio' => 'required|max:1000',
+                 'imatge' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+                 'preu' => 'required',
+                 'seccio' => 'required'
+			],
+			$messages = [
+				'required'  => 'El camp :attribute és obligatori',
+				'size'      => 'El camp :attribute no pot superar :max caràcters',
+			]
+		);
+        $producte = new Producte;
+        $producte->nom = $request->input('nom');
+        $producte->descripcio = $request->input('descripcio');
+        $producte->seccio_id = $request->input('seccio');
+        if ($request->hasFile('imatge')) {
+            
+            $imatge = $request->file('imatge');
+
+            $nomImg = time() . '_' . $imatge->getClientOriginalName();
+
+           $request->file('imatge')->storeAs("/public/$nomImg");
+           $producte->foto=$nomImg;
+
+        }
+        if ($request->input("preu")>0){
+            $producte->preu_unitari = $request->input('preu');
+        }
+		$producte->save();
+//dd($producte);
+		Session::flash('message', 'producte modificat !');
+		return redirect()->route("inici");
     }
 
     /**
@@ -65,6 +100,7 @@ class ProducteController extends Controller
 			$request,
 			[
 				 'nom' => 'required|max:100',
+                 'descripcio' => 'required|max:1000',
                  'imatge' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
                  'preu' => 'required'
                 // 'seccio' => 'required'
@@ -76,6 +112,7 @@ class ProducteController extends Controller
 		);
 
         $producte->nom = $request->input('nom');
+        $producte->descripcio = $request->input('descripcio');
         $producte->seccio_id = $request->input('seccio');
         if ($request->hasFile('imatge')) {
             

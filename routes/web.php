@@ -45,15 +45,42 @@ Route::get('/dashboard/modifElems')->middleware(['auth','admin'])->name('modifEl
 Route::get('/dashboard/productes/{producte}/edit', [App\Http\Controllers\ProducteController::class, 'edit'])
 ->middleware(['auth','admin'])
 ->name('productes.edit');
-Route::get('/dashboard/seccions/{seccio}/edit', [App\Http\Controllers\SeccioController::class, 'edit'])
-->middleware(['auth','admin'])
-->name('seccions.edit');
 
+Route::get('/dashboard/botigues/{botiga}/edit', [App\Http\Controllers\BotigaController::class, 'edit'])
+->middleware(['auth','admin'])
+->name('botigues.edit');
+//CRUD Productes
 Route::put('/dashboard/productes/{producte}', [App\Http\Controllers\ProducteController::class, 'update'])
     ->middleware(['auth','admin'])
     ->name('productes.update');
-    Route::put('/dashboard/seccions/{seccio}', [App\Http\Controllers\SeccioController::class, 'update'])
+    Route::get('/dashboard/modificaProductes', [App\Http\Controllers\ProducteController::class, 'index'])
+->middleware(['auth','admin'])
+->name('productes.select');
+Route::get('/dashboard/creaProd', [App\Http\Controllers\ProducteController::class, 'create'])
+->middleware(['auth','admin'])
+->name('productes.create');
+Route::put('/dashboard/storeProd', [App\Http\Controllers\ProducteController::class, 'store'])
     ->middleware(['auth','admin'])
-    ->name('seccions.update');
+    ->name('productes.store');
+
+
+
+
+//CRUD seccions  
+Route::get('/dashboard/seccions/{seccio}/edit', [App\Http\Controllers\SeccioController::class, 'edit'])
+->middleware(['auth','admin'])
+->name('seccions.edit');    
+Route::put('/dashboard/seccions/{seccio}', [App\Http\Controllers\SeccioController::class, 'update'])
+    ->middleware(['auth','admin'])
+    ->name('seccions.update');  
+Route::put('/dashboard/storeSeccio', [App\Http\Controllers\SeccioController::class, 'store'])
+    ->middleware(['auth','admin'])
+    ->name('seccions.store');
+    Route::get('/dashboard/modificaSeccions', [App\Http\Controllers\SeccioController::class, 'index'])
+->middleware(['auth','admin'])
+->name('seccions.select');
+Route::get('/dashboard/creaSeccio', [App\Http\Controllers\SeccioController::class, 'create'])
+->middleware(['auth','admin'])
+->name('seccions.create');
 
 require __DIR__.'/auth.php';
