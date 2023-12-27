@@ -70,7 +70,7 @@ class BotigaController extends Controller
             $botiga->productes()->updateExistingPivot($producteId, ['quantitat' => $quantitat]);
             
     }}
-return back();
+    return redirect()->route("botigues.select");
 }
 
     /**

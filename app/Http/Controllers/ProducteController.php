@@ -65,16 +65,18 @@ class ProducteController extends Controller
         if ($request->input("preu")>0){
             $producte->preu_unitari = $request->input('preu');
         }
+        $producte->mostra_prod=FALSE;
         $producte->save();
         $botigues = Botiga::all();
         foreach($botigues as $botiga){
             $producte->botiga()->attach($botiga->id, ["quantitat"=>0]);
         }
+        
         $producte->save();
 		
 //dd($producte);
 		Session::flash('message', 'producte modificat !');
-		return redirect()->route("inici");
+		return redirect()->route("productes.select");
     }
 
     /**
@@ -134,10 +136,11 @@ class ProducteController extends Controller
         if ($request->input("preu")>0){
             $producte->preu_unitari = $request->input('preu');
         }
+        $producte->mostra_prod=$request->input('mostraProd') ? true : false;
 		$producte->save();
 //dd($producte);
 		Session::flash('message', 'producte modificat !');
-		return redirect()->route("inici");
+		return redirect()->route("productes.select");
     }
 
     /**

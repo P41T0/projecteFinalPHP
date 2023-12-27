@@ -47,11 +47,11 @@ class SeccioController extends Controller
         $seccio = new Seccio;
         $seccio->nom = $request->input('nom');
         $seccio->descripcio = $request->input('descripcio');
-        
+        $seccio->mostra_sec = FALSE;
         $seccio->save();
 //dd($seccio);
         Session::flash('message', 'seccio modificada !');
-        return redirect()->route("inici");
+        return redirect()->route("seccions.select");
     }
 
     /**
@@ -93,11 +93,11 @@ class SeccioController extends Controller
         
                 $seccio->nom = $request->input('nom');
                 $seccio->descripcio = $request->input('descripcio');
-                
+                $seccio->mostra_sec=$request->input('mostraSec') ? true : false;
                 $seccio->save();
         //dd($seccio);
                 Session::flash('message', 'seccio modificada !');
-                return redirect()->route("inici");
+                return redirect()->route("seccions.select");
     }
 
     /**

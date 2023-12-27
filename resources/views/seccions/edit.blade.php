@@ -26,7 +26,11 @@
             <span class="text-gray-700">descripcio:
                 <input class=" w-full rounded" type="text" name="descripcio" value="{{ $seccio->descripcio}}">
         </label>
-        
+    </label>
+    <label class="block py-2">
+        <span class="text-gray-700">Mostrar secció:
+            <input type="checkbox" name="mostraSec" {{$seccio->mostra_sec ? 'checked' : ''}} id="">
+    </label>
 
 
 

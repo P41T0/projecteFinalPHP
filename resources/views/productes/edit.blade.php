@@ -48,7 +48,10 @@
                     </select>
 
             </label>
-
+            <label class="block py-2">
+                <span class="text-gray-700">Mostrar producte:
+                    <input type="checkbox" name="mostraProd" {{$producte->mostra_prod ? 'checked' : ''}} id="">
+            </label>
 
             <br /><br />
             <x-primary-button class="ml-4 py-2">

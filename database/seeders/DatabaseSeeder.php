@@ -16,12 +16,12 @@ class DatabaseSeeder extends Seeder
          \App\Models\User::factory(10)->create();
 
             DB::table('users')->insert(['name' => 'Pau', 'email' => 'pau.tort@uvic.cat', 'password' => bcrypt('123456'), 'admin' => TRUE]);
-            DB::table('seccio')->insert(['nom'=>'Telefonia mòbil','descripcio'=>'telèfons mòbils, smartwatches, auriculars i altres accessoris']);
-            DB::table('seccio')->insert(['nom'=>'Ordinadors','descripcio'=>'Ordinadors portàtils i accessoris']);
-            DB::table('producte')->insert(['nom'=>'IPhone 15','descripcio'=>'telefon mòbil','foto'=>'iPhone15_black.webp', 'preu_unitari'=>'1499.99','seccio_id'=>'1']);
-            DB::table('producte')->insert(['nom'=>'Google Pixel 8','descripcio'=>'telefon mòbil','foto'=>'google_pixel_8_5g_rosa_Frontback.webp', 'preu_unitari'=>'899.99','seccio_id'=>'1']);
-            DB::table('producte')->insert(['nom'=>'ASUS TUF GAMING','descripcio'=>'ordinador portàtil','foto'=>'audio_pd.png', 'preu_unitari'=>'1299.99','seccio_id'=>'2']);
-            DB::table('producte')->insert(['nom'=>'Chromebook','descripcio'=>'ordinador portàtil','foto'=>'lenovo-laptop-lenovo-500e-gen3-hero.webp', 'preu_unitari'=>'399.99','seccio_id'=>'2']);
+            DB::table('seccio')->insert(['nom'=>'Telefonia mòbil','descripcio'=>'telèfons mòbils, smartwatches, auriculars i altres accessoris','mostra_sec'=>TRUE,]);
+            DB::table('seccio')->insert(['nom'=>'Ordinadors','descripcio'=>'Ordinadors portàtils i accessoris','mostra_sec'=>TRUE,]);
+            DB::table('producte')->insert(['nom'=>'IPhone 15','descripcio'=>'telefon mòbil','foto'=>'iPhone15_black.webp', 'preu_unitari'=>'1499.99','mostra_prod'=>TRUE,'seccio_id'=>'1']);
+            DB::table('producte')->insert(['nom'=>'Google Pixel 8','descripcio'=>'telefon mòbil','foto'=>'google_pixel_8_5g_rosa_Frontback.webp', 'preu_unitari'=>'899.99','mostra_prod'=>TRUE,'seccio_id'=>'1']);
+            DB::table('producte')->insert(['nom'=>'ASUS TUF GAMING','descripcio'=>'ordinador portàtil','foto'=>'audio_pd.png', 'preu_unitari'=>'1299.99','mostra_prod'=>TRUE,'seccio_id'=>'2']);
+            DB::table('producte')->insert(['nom'=>'Chromebook','descripcio'=>'ordinador portàtil','foto'=>'lenovo-laptop-lenovo-500e-gen3-hero.webp', 'preu_unitari'=>'399.99','mostra_prod'=>TRUE,'seccio_id'=>'2']);
             DB::table('botiga')->insert(['poblacio'=>'Roda de Ter','adreca'=>'Carrer Nou, nº 25','telefon'=>'938256145','correu'=>'botigaroda@botiga.cat']);
             DB::table('botiga')->insert(['poblacio'=>'Vic','adreca'=>'Plaça Major, nº 10','telefon'=>'938542662','correu'=>'botigavic@botiga.cat']);
             DB::table('botiga')->insert(['poblacio'=>'Manlleu','adreca'=>'Plaça Fra Bernardí, nº 1','telefon'=>'938234512','correu'=>'botigamanlleu@botiga.cat']);
