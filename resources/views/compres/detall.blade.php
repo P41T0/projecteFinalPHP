@@ -36,7 +36,7 @@
             @endforeach
         </select>
         </label>
-        <button type="submit">{{__("Guardar canvis")}}</button>
+        <button class="hover:bg-verd4 p-2 rounded" type="submit">{{__("Guardar canvis")}}</button>
     </form>
     <p>{{__("Preu total dels productes de la llista de la compra:")}} {{$preuTotal}}€</p>
     <a class="justify-center font-bold hover:bg-verd4 p-2 rounded"href="{{route('inici')}}">{{__("Seguir comprant")}}</a>
