@@ -16,7 +16,7 @@ class SeccioController extends Controller
     public function index()
     {
         $seccio = Seccio::all();
-        return view('seccions.selSeccio',['seccions'=>$seccio]);
+        return view('seccions.selSeccio', ['seccions' => $seccio]);
     }
 
     /**
@@ -57,7 +57,7 @@ class SeccioController extends Controller
         $seccio->descripcio_en = $request->input('descripcioEn');
         $seccio->mostra_sec = FALSE;
         $seccio->save();
-//dd($seccio);
+        //dd($seccio);
         Session::flash('message', 'seccio modificada !');
         return redirect()->route("seccions.select");
     }
@@ -67,7 +67,6 @@ class SeccioController extends Controller
      */
     public function show(Seccio $seccio)
     {
-        
     }
 
     /**
@@ -76,9 +75,9 @@ class SeccioController extends Controller
     public function edit(Seccio $seccio)
     {
         return View(
-			'seccions.edit',
-			['seccio' => $seccio]
-		);
+            'seccions.edit',
+            ['seccio' => $seccio]
+        );
     }
 
     /**
@@ -86,30 +85,34 @@ class SeccioController extends Controller
      */
     public function update(Request $request, Seccio $seccio)
     {
-                //
-                $this->validate(
-                    $request,
-                    [
-                        'nom' => 'required|max:100',
-                        'nomEs' => 'required|max:100',
-                        'nomEn' => 'required|max:100',
-                        'descripcio' => 'required|max:500',
-                        'descripcioEs' => 'required|max:500',
-                        'descripcioEn' => 'required|max:500',
-                    ],
-                    $messages = [
-                        'required'  => 'El camp :attribute és obligatori',
-                        'size'      => 'El camp :attribute no pot superar :max caràcters',
-                    ]
-                );
-        
-                $seccio->nom = $request->input('nom');
-                $seccio->descripcio = $request->input('descripcio');
-                $seccio->mostra_sec=$request->input('mostraSec') ? true : false;
-                $seccio->save();
+        //
+        $this->validate(
+            $request,
+            [
+                'nom' => 'required|max:100',
+                'nomEs' => 'required|max:100',
+                'nomEn' => 'required|max:100',
+                'descripcio' => 'required|max:500',
+                'descripcioEs' => 'required|max:500',
+                'descripcioEn' => 'required|max:500',
+            ],
+            $messages = [
+                'required'  => 'El camp :attribute és obligatori',
+                'size'      => 'El camp :attribute no pot superar :max caràcters',
+            ]
+        );
+
+        $seccio->nom = $request->input('nom');
+        $seccio->nom_es = $request->input('nomEs');
+        $seccio->nom_en = $request->input('nomEn');
+        $seccio->descripcio = $request->input('descripcio');
+        $seccio->descripcio_es = $request->input('descripcioEs');
+        $seccio->descripcio_en = $request->input('descripcioEn');
+        $seccio->mostra_sec = $request->input('mostraSec') ? true : false;
+        $seccio->save();
         //dd($seccio);
-                Session::flash('message', 'seccio modificada !');
-                return redirect()->route("seccions.select");
+        Session::flash('message', 'seccio modificada !');
+        return redirect()->route("seccions.select");
     }
 
     /**
