@@ -1,6 +1,6 @@
 <x-guest-layout>
     <div class="bg-verd1 justify-center">
-    <ul class="flex p-2 text-top-center justify-center">
+    <ul class="flex flex-wrap p-2 text-top-center justify-center">
         <li class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1"><a href="{{route('productes.select')}}">Modificar productes</a></li>
         <li class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1"><a href="{{route('botigues.select')}}">Modificar botigues</a></li>
     </ul>
