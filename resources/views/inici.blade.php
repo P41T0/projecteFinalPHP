@@ -17,7 +17,7 @@
                                 @if ($producte->mostra_prod)
                                     <div class=" bg-verd3 m-2 max-w-72 p-2 rounded-md">
                                     <p class="font-semibold text-lg">{{$producte->nom}}</p>
-                                    <img src="{{asset("/storage/$producte->foto")}}" class="m-auto max-w-56 max-h-56" alt="imatge d'un element">
+                                    <img src="https://www.p41t.com/storage/app/public/{{$producte->foto)}}" class="m-auto max-w-56 max-h-56" alt="imatge d'un element">
                                     <p>{{$producte->preu_unitari,}}€</p>
                                     <a class="hover:bg-verd4 p-2 m-4 rounded-sm text-center" href="{{route('detall.producte', $producte->id)}}">{{__("Comprar")}}</a>
                                 </div>
