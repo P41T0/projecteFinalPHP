@@ -6,6 +6,7 @@ use App\Models\Botiga;
 use App\Models\Producte;
 use Illuminate\Http\Request;
 use App\Models\Seccio;
+use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Support\Facades\Session;
 
@@ -60,6 +61,7 @@ class ProducteController extends Controller
 
            $request->file('imatge')->storeAs("/public/$nomImg");
            $producte->foto=$nomImg;
+           Storage::setVisibility($nomImg, 'public');
 
         }
         if ($request->input("preu")>0){
@@ -131,6 +133,7 @@ class ProducteController extends Controller
 
            $request->file('imatge')->storeAs("/public/$nomImg");
            $producte->foto=$nomImg;
+           Storage::setVisibility($nomImg, 'public');
 
         }
         if ($request->input("preu")>0){
