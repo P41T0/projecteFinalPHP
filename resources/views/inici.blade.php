@@ -25,7 +25,7 @@
                         @elseif(App::getLocale() == 'en')
                             <caption>{{ $seccio->descripcio_en }}</caption>
                         @endif
-                        <div class="flex flex-wrap text-center max-w-64">
+                        <div class="flex flex-wrap text-center max-w-64 justify-center">
                             @foreach ($seccio->productes as $producte)
                                 @if ($producte->mostra_prod)
                                     <div class=" bg-verd3 m-2 max-w-72 p-2 rounded-md">

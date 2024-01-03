@@ -14,9 +14,11 @@
         @elseif(App::getLocale() == 'en')
             <p>{{ $producte->descripcio_en }}</p>
         @endif
+        <div class="flex justify-center">
+            <img class="max-w-xl" src="https://www.p41t.com/storage/app/public/{{ $producte->foto }}"
+                alt="{{ $producte->nom }}">
+        </div>
 
-        <img class="max-w-xl" src="https://www.p41t.com/storage/app/public/{{ $producte->foto }}"
-            alt="{{ $producte->nom }}">
         <p>{{ __('Preu') }}: {{ $producte->preu_unitari }}€</p>
         @if ($producte->mostra_prod && $producte->seccio->mostra_sec)
             <a class=" hover:bg-verd4 p-2 m-2 rounded-sm"
