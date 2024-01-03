@@ -36,8 +36,12 @@ class SeccioController extends Controller
         $this->validate(
             $request,
             [
-                 'nom' => 'required|max:100',
-                 'descripcio' => 'required|max:500'
+                'nom' => 'required|max:100',
+                'nomEs' => 'required|max:100',
+                'nomEn' => 'required|max:100',
+                'descripcio' => 'required|max:500',
+                'descripcioEs' => 'required|max:500',
+                'descripcioEn' => 'required|max:500',
             ],
             $messages = [
                 'required'  => 'El camp :attribute és obligatori',
@@ -46,7 +50,11 @@ class SeccioController extends Controller
         );
         $seccio = new Seccio;
         $seccio->nom = $request->input('nom');
+        $seccio->nom_es = $request->input('nomEs');
+        $seccio->nom_en = $request->input('nomEn');
         $seccio->descripcio = $request->input('descripcio');
+        $seccio->descripcio_es = $request->input('descripcioEs');
+        $seccio->descripcio_en = $request->input('descripcioEn');
         $seccio->mostra_sec = FALSE;
         $seccio->save();
 //dd($seccio);
@@ -82,8 +90,12 @@ class SeccioController extends Controller
                 $this->validate(
                     $request,
                     [
-                         'nom' => 'required|max:100',
-                         'descripcio' => 'required|max:500'
+                        'nom' => 'required|max:100',
+                        'nomEs' => 'required|max:100',
+                        'nomEn' => 'required|max:100',
+                        'descripcio' => 'required|max:500',
+                        'descripcioEs' => 'required|max:500',
+                        'descripcioEn' => 'required|max:500',
                     ],
                     $messages = [
                         'required'  => 'El camp :attribute és obligatori',

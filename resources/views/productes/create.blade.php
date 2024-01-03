@@ -25,8 +25,28 @@
                         placeholder="Introdueix el nom del producte">
             </label>
             <label class="block py-2">
+                <span class="text-gray-700">Nom (en castellà):
+                    <input class=" w-full rounded" type="text" name="nomEs"
+                        placeholder="Introdueix el nom del producte">
+            </label>
+            <label class="block py-2">
+                <span class="text-gray-700">Nom (en anglès):
+                    <input class=" w-full rounded" type="text" name="nomEn"
+                        placeholder="Introdueix el nom del producte">
+            </label>
+            <label class="block py-2">
                 <span class="text-gray-700">Descripcio del producte:
                     <input class=" w-full rounded" type="text" name="descripcio"
+                        placeholder="Introdueix la descripcio del producte">
+            </label>
+            <label class="block py-2">
+                <span class="text-gray-700">Descripcio del producte (en castellà):
+                    <input class=" w-full rounded" type="text" name="descripcioEs"
+                        placeholder="Introdueix la descripcio del producte">
+            </label>
+            <label class="block py-2">
+                <span class="text-gray-700">Descripcio del producte(en anglès):
+                    <input class=" w-full rounded" type="text" name="descripcioEn"
                         placeholder="Introdueix la descripcio del producte">
             </label>
             

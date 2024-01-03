@@ -24,8 +24,24 @@
                     <input class=" w-full rounded" type="text" name="nom" value="{{ $producte->nom }}">
             </label>
             <label class="block py-2">
+                <span class="text-gray-700">Nom (en castellà):
+                    <input class=" w-full rounded" type="text" name="nomEs" value="{{ $producte->nom_es }}">
+            </label>
+            <label class="block py-2">
+                <span class="text-gray-700">Nom (en anglès):
+                    <input class=" w-full rounded" type="text" name="nomEn" value="{{ $producte->nom_en }}">
+            </label>
+            <label class="block py-2">
                 <span class="text-gray-700">Descripcio Producte:
                     <input class=" w-full rounded" type="text" name="descripcio" value="{{ $producte->descripcio }}">
+            </label>
+            <label class="block py-2">
+                <span class="text-gray-700">Descripcio Producte (en castellà):
+                    <input class=" w-full rounded" type="text" name="descripcioEs" value="{{ $producte->descripcio_es }}">
+            </label>
+            <label class="block py-2">
+                <span class="text-gray-700">Descripcio Producte (en anglès):
+                    <input class=" w-full rounded" type="text" name="descripcioEn" value="{{ $producte->descripcio_en }}">
             </label>
             <label class="block py-2">
                 <span class="text-gray-700">Imatge

@@ -18,7 +18,7 @@ class ProducteController extends Controller
     public function index()
     {
         $producte = Producte::all();
-        return view('productes.selProducte',['productes'=>$producte]);
+        return view('productes.selProducte', ['productes' => $producte]);
     }
 
     /**
@@ -26,7 +26,7 @@ class ProducteController extends Controller
      */
     public function create()
     {
-        return view("productes.create",['seccions' => Seccio::all()]);
+        return view("productes.create", ['seccions' => Seccio::all()]);
     }
 
     /**
@@ -35,48 +35,55 @@ class ProducteController extends Controller
     public function store(Request $request)
     {
         $this->validate(
-			$request,
-			[
-				 'nom' => 'required|max:100',
-                 'descripcio' => 'required|max:1000',
-                 'imatge' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-                 'preu' => 'required',
-                 'seccio' => 'required'
-			],
-			$messages = [
-				'required'  => 'El camp :attribute és obligatori',
-				'size'      => 'El camp :attribute no pot superar :max caràcters',
-			]
-		);
+            $request,
+            [
+                'nom' => 'required|max:100',
+                'nomEs' => 'required|max:100',
+                'nomEn' => 'required|max:100',
+                'descripcio' => 'required|max:1000',
+                'descripcioEs' => 'required|max:1000',
+                'descripcioEn' => 'required|max:1000',
+                'imatge' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+                'preu' => 'required',
+                'seccio' => 'required'
+            ],
+            $messages = [
+                'required'  => 'El camp :attribute és obligatori',
+                'size'      => 'El camp :attribute no pot superar :max caràcters',
+            ]
+        );
         $producte = new Producte;
         $producte->nom = $request->input('nom');
+        $producte->nom_es = $request->input('nomEs');
+        $producte->nom_en = $request->input('nomEn');
         $producte->descripcio = $request->input('descripcio');
+        $producte->descripcio_es = $request->input('descripcioEs');
+        $producte->descripcio_en = $request->input('descripcioEn');
         $producte->seccio_id = $request->input('seccio');
         if ($request->hasFile('imatge')) {
-            
+
             $imatge = $request->file('imatge');
 
             $nomImg = time() . '_' . $imatge->getClientOriginalName();
 
-           $request->file('imatge')->storeAs("/public/$nomImg");
-           $producte->foto=$nomImg;
-
+            $request->file('imatge')->storeAs("/public/$nomImg");
+            $producte->foto = $nomImg;
         }
-        if ($request->input("preu")>0){
+        if ($request->input("preu") > 0) {
             $producte->preu_unitari = $request->input('preu');
         }
-        $producte->mostra_prod=FALSE;
+        $producte->mostra_prod = FALSE;
         $producte->save();
         $botigues = Botiga::all();
-        foreach($botigues as $botiga){
-            $producte->botiga()->attach($botiga->id, ["quantitat"=>0]);
+        foreach ($botigues as $botiga) {
+            $producte->botiga()->attach($botiga->id, ["quantitat" => 0]);
         }
-        
+
         $producte->save();
-		
-//dd($producte);
-		Session::flash('message', 'producte modificat !');
-		return redirect()->route("productes.select");
+
+        //dd($producte);
+        Session::flash('message', 'producte modificat !');
+        return redirect()->route("productes.select");
     }
 
     /**
@@ -94,9 +101,9 @@ class ProducteController extends Controller
     {
         //
         return View(
-			'productes.edit',
-			['producte' => $producte, 'seccions' => Seccio::all()]
-		);
+            'productes.edit',
+            ['producte' => $producte, 'seccions' => Seccio::all()]
+        );
     }
 
     /**
@@ -106,41 +113,48 @@ class ProducteController extends Controller
     {
         //
         $this->validate(
-			$request,
-			[
-				 'nom' => 'required|max:100',
-                 'descripcio' => 'required|max:1000',
-                 'imatge' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-                 'preu' => 'required'
+            $request,
+            [
+                'nom' => 'required|max:100',
+                'nomEs' => 'required|max:100',
+                'nomEn' => 'required|max:100',
+                'descripcio' => 'required|max:1000',
+                'descripcioEs' => 'required|max:1000',
+                'descripcioEn' => 'required|max:1000',
+                'imatge' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+                'preu' => 'required'
                 // 'seccio' => 'required'
-			],
-			$messages = [
-				'required'  => 'El camp :attribute és obligatori',
-				'size'      => 'El camp :attribute no pot superar :max caràcters',
-			]
-		);
+            ],
+            $messages = [
+                'required'  => 'El camp :attribute és obligatori',
+                'size'      => 'El camp :attribute no pot superar :max caràcters',
+            ]
+        );
 
         $producte->nom = $request->input('nom');
+        $producte->nom_es = $request->input('nomEs');
+        $producte->nom_en = $request->input('nomEn');
         $producte->descripcio = $request->input('descripcio');
+        $producte->descripcio_es = $request->input('descripcioEs');
+        $producte->descripcio_en = $request->input('descripcioEn');
         $producte->seccio_id = $request->input('seccio');
         if ($request->hasFile('imatge')) {
-            
+
             $imatge = $request->file('imatge');
 
             $nomImg = time() . '_' . $imatge->getClientOriginalName();
 
-           $request->file('imatge')->storeAs("/public/$nomImg");
-           $producte->foto=$nomImg;
-
+            $request->file('imatge')->storeAs("/public/$nomImg");
+            $producte->foto = $nomImg;
         }
-        if ($request->input("preu")>0){
+        if ($request->input("preu") > 0) {
             $producte->preu_unitari = $request->input('preu');
         }
-        $producte->mostra_prod=$request->input('mostraProd') ? true : false;
-		$producte->save();
-//dd($producte);
-		Session::flash('message', 'producte modificat !');
-		return redirect()->route("productes.select");
+        $producte->mostra_prod = $request->input('mostraProd') ? true : false;
+        $producte->save();
+        //dd($producte);
+        Session::flash('message', 'producte modificat !');
+        return redirect()->route("productes.select");
     }
 
     /**

@@ -5,7 +5,13 @@
         <tr><th>{{__("Nom del producte")}}</th><th>{{__("Quantitat")}}</th><th>{{__("Preu unitari")}}</th></tr>
         
     @forelse ($comanda->productes as $prod)
-        <tr><td>{{$prod->nom}}</td><td class="text-right">{{$prod->pivot->quantitat}}</td><td class="text-right">{{$prod->preu_unitari}}€</td></tr>
+        <tr>@if (App::getLocale() == 'ca')
+            <td>{{ $prod->nom }}</td>
+        @elseif(App::getLocale() == 'es')
+            <td>{{ $prod->nom_es }}</td>
+        @elseif(App::getLocale() == 'en')
+            <td>{{ $prod->nom_en }}</td>
+        @endif<td class="text-right">{{$prod->pivot->quantitat}}</td><td class="text-right">{{$prod->preu_unitari}}€</td></tr>
     @empty
         <p>No hi ha productes comprats</p>
     @endforelse

@@ -23,8 +23,24 @@
                 <input class=" w-full rounded" type="text" name="nom" value="{{ $seccio->nom }}">
         </label>
         <label class="block py-2">
+            <span class="text-gray-700">Nom (en castellà):
+                <input class=" w-full rounded" type="text" name="nomEs" value="{{ $seccio->nom_es }}">
+        </label>
+        <label class="block py-2">
+            <span class="text-gray-700">Nom (en anglès):
+                <input class=" w-full rounded" type="text" name="nomEn" value="{{ $seccio->nom_en}}">
+        </label>
+        <label class="block py-2">
             <span class="text-gray-700">descripcio:
                 <input class=" w-full rounded" type="text" name="descripcio" value="{{ $seccio->descripcio}}">
+        </label>
+        <label class="block py-2">
+            <span class="text-gray-700">descripcio (en castellà):
+                <input class=" w-full rounded" type="text" name="descripcioEs" value="{{ $seccio->descripcio_es}}">
+        </label>
+        <label class="block py-2">
+            <span class="text-gray-700">descripcio (en anglès):
+                <input class=" w-full rounded" type="text" name="descripcioEn" value="{{ $seccio->descripcio_en}}">
         </label>
     </label>
     <label class="block py-2">

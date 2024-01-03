@@ -23,8 +23,24 @@
                 <input class=" w-full rounded" type="text" name="nom" placeholder="Introdueix el nom de la seccio">
         </label>
         <label class="block py-2">
-            <span class="text-gray-700">descripcio:
+            <span class="text-gray-700">Nom (en castellà):
+                <input class=" w-full rounded" type="text" name="nomEs" placeholder="Introdueix el nom de la seccio">
+        </label>
+        <label class="block py-2">
+            <span class="text-gray-700">Nom (en anglès):
+                <input class=" w-full rounded" type="text" name="nomEn" placeholder="Introdueix el nom de la seccio">
+        </label>
+        <label class="block py-2">
+            <span class="text-gray-700">Descripcio:
                 <input class=" w-full rounded" type="text" name="descripcio" placeholder="Introdueix la descripcio de la seccio">
+        </label>
+        <label class="block py-2">
+            <span class="text-gray-700">Descripcio (en castellà):
+                <input class=" w-full rounded" type="text" name="descripcioEs" placeholder="Introdueix la descripcio de la seccio">
+        </label>
+        <label class="block py-2">
+            <span class="text-gray-700">Descripcio (en anglès):
+                <input class=" w-full rounded" type="text" name="descripcioEn" placeholder="Introdueix la descripcio de la seccio">
         </label>
         <br /><br />
         <x-primary-button class="ml-4 py-2">
