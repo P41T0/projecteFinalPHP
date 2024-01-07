@@ -32,8 +32,9 @@
                     </a>
                 </li>
                 @if (Auth::User())
-                <a href="{{route('comprarNP')}}">
-                <p class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1">{{__('Llista de la compra')}}</p></a>
+                    <a href="{{ route('comprarNP') }}">
+                        <p class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1">{{ __('Llista de la compra') }}</p>
+                    </a>
                     @if (Auth::user()->admin == true)
                         <li>
                             <a href="{{ route('seccions.select') }}">
