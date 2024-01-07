@@ -135,10 +135,10 @@
             <p class="pl-2 pr-2">+34 612 34 56 78</p>
         </div>
         <ul class="list-inline flex justify-center">
-            <li class="pl-2 pr-2"><x-twitter-logo /></li>
-            <li class="pl-2 pr-2"><x-facebook-logo /></li>
-            <li class="pl-2 pr-2"><x-instagram-logo /></li>
-            <li class="pl-2 pr-2"><x-tiktok-logo /></li>
+            <li class="pl-2 pr-2"><a href="#"><x-twitter-logo /></a></li>
+            <li class="pl-2 pr-2"><a href="#"><x-facebook-logo /></a></li>
+            <li class="pl-2 pr-2"><a href="#"><x-instagram-logo /></a></li>
+            <li class="pl-2 pr-2"><a href="#"><x-tiktok-logo /></a></li>
         </ul>
     </footer>
 </body>
