@@ -5,7 +5,7 @@
         <li class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1"><a href="{{route('botigues.select')}}">Modificar botigues</a></li>
     </ul>
 </div>
-    <h1 class="text-xl font-bold text-center">Modificar producte</h1>
+    <h1 class="text-xl font-bold text-center">Modificar productes</h1>
 @foreach ($productes as $producte)
     <div class="bg-verd2 hover:bg-verd4 p-2 m-2 rounded-sm">
         <a href="{{route('productes.edit', $producte->id)}} ">

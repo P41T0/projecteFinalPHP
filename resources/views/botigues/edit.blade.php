@@ -36,7 +36,7 @@
             <x-primary-button class="ml-4 py-2">
                 &radic; Guardar
             </x-primary-button>
-            <a href="{{ route('inici') }}"
+            <a href="{{ route('botigues.select') }}"
                 class="inline-flex items-center px-4 py-2 bg-red-800 border border-transparent rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-red-700 active:bg-red-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                 onclick="return confirm('{{ __('Segur que vols sortir?') }}')">
                 &cross; Cancel·lar
