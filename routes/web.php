@@ -27,7 +27,7 @@ Route::get('/comprar', [ComandaController::class, 'afegir'])->middleware(['auth'
 Route::post('/actualiza-quantitat/{comanda}', [ComandaController::class, 'canviQuantitat'])->middleware(['auth'])->name('actualiza.quantitat');
 Route::get('/confcompra/{comanda}', [ComandaController::class, 'confirmar'])->middleware(['auth'])->name('confirma.compres');
 Route::get('/dashboard', function () {
-    return view('/');
+    return redirect()->route('inici');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
