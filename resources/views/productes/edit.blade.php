@@ -1,6 +1,6 @@
 <x-guest-layout>
     <div class="bg-verd2 max-w-4xl ml-auto mr-auto mt-12 mb-12 rounded-lg p-5">
-        <h2 class="text-3xl text-center font-extrabold">{{ __('editar') }}</h2>
+        <h2 class="text-3xl text-center font-extrabold">{{ __('Edita el producte') }}</h2>
 
 
         @if (Session::has('message'))
@@ -21,27 +21,27 @@
             {{ method_field('PUT') }}
             <label class="block py-2">
                 <span class="text-gray-700">Nom:
-                    <input class=" w-full rounded" type="text" name="nom" value="{{ $producte->nom }}">
+                    <input class=" w-full rounded-lg" type="text" name="nom" value="{{ $producte->nom }}">
             </label>
             <label class="block py-2">
                 <span class="text-gray-700">Nom (en castellà):
-                    <input class=" w-full rounded" type="text" name="nomEs" value="{{ $producte->nom_es }}">
+                    <input class=" w-full rounded-lg" type="text" name="nomEs" value="{{ $producte->nom_es }}">
             </label>
             <label class="block py-2">
                 <span class="text-gray-700">Nom (en anglès):
-                    <input class=" w-full rounded" type="text" name="nomEn" value="{{ $producte->nom_en }}">
+                    <input class=" w-full rounded-lg" type="text" name="nomEn" value="{{ $producte->nom_en }}">
             </label>
             <label class="block py-2">
                 <span class="text-gray-700">Descripcio Producte:
-                    <input class=" w-full rounded" type="text" name="descripcio" value="{{ $producte->descripcio }}">
+                    <input class=" w-full rounded-lg" type="text" name="descripcio" value="{{ $producte->descripcio }}">
             </label>
             <label class="block py-2">
                 <span class="text-gray-700">Descripcio Producte (en castellà):
-                    <input class=" w-full rounded" type="text" name="descripcioEs" value="{{ $producte->descripcio_es }}">
+                    <input class=" w-full rounded-lg" type="text" name="descripcioEs" value="{{ $producte->descripcio_es }}">
             </label>
             <label class="block py-2">
                 <span class="text-gray-700">Descripcio Producte (en anglès):
-                    <input class=" w-full rounded" type="text" name="descripcioEn" value="{{ $producte->descripcio_en }}">
+                    <input class=" w-full rounded-lg" type="text" name="descripcioEn" value="{{ $producte->descripcio_en }}">
             </label>
             <label class="block py-2">
                 <span class="text-gray-700">Imatge
@@ -50,7 +50,7 @@
             </label>
             <label class="block py-2">
                 <span class="text-gray-700">Preu
-                    <input type="number" name="preu" step="0.01" min="0" id="" value={{$producte->preu_unitari}}>
+                    <input class=" rounded-lg" type="number" name="preu" step="0.01" min="0" id="" value={{$producte->preu_unitari}}>
                     
             </label>
 

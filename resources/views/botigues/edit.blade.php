@@ -22,7 +22,7 @@
             @forelse ($botiga->productes as $prod)
             <label class="block py-2">
               <span class="text-gray-700">{{$prod->nom}}
-                    <input type="number" name="productes[{{$prod->id}}]" min="0" value="{{$prod->pivot->quantitat}}" id="">
+                    <input class="rounded-lg" type="number" name="productes[{{$prod->id}}]" min="0" value="{{$prod->pivot->quantitat}}" id="">
               </span>
             </label>
             @empty

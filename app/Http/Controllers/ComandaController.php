@@ -33,13 +33,15 @@ class ComandaController extends Controller
             $comanda->productes()->attach($producte->id, ['quantitat' => $novaQuantitat]);
         }
         $preuTotal = 0;
+        $numProds = 0;
         foreach ($comanda->productes as $prods) {
             $preuTotal += $prods->preu_unitari * $prods->pivot->quantitat;
+            $numProds++;
         }
         $usuari = Auth()->user()->id;
         $botiga = Botiga::all();
        // dd($botiga);
-        return view('compres.detall',['comanda'=>$comanda, 'preuTotal'=>$preuTotal, 'usuari'=>$usuari,'botigues'=>$botiga]);
+        return view('compres.detall',['numProductes'=>$numProds,'comanda'=>$comanda, 'preuTotal'=>$preuTotal, 'usuari'=>$usuari,'botigues'=>$botiga]);
     }
     public function confirmar(Comanda $comanda)
     {

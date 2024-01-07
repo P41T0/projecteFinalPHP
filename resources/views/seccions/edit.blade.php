@@ -1,6 +1,6 @@
 <x-guest-layout>
     <div class="bg-verd2 max-w-4xl ml-auto mr-auto mt-12 mb-12 rounded-lg p-5">
-        <h2 class="text-3xl text-center font-extrabold">{{ __('editar') }}</h2>
+        <h2 class="text-3xl text-center font-extrabold">{{ __('Edita la secció') }}</h2>
 
 
         @if (Session::has('message'))
@@ -20,27 +20,27 @@
         {{ method_field('PUT') }}
         <label class="block py-2">
             <span class="text-gray-700">Nom:
-                <input class=" w-full rounded" type="text" name="nom" value="{{ $seccio->nom }}">
+                <input class=" w-full rounded-lg" type="text" name="nom" value="{{ $seccio->nom }}">
         </label>
         <label class="block py-2">
             <span class="text-gray-700">Nom (en castellà):
-                <input class=" w-full rounded" type="text" name="nomEs" value="{{ $seccio->nom_es }}">
+                <input class=" w-full rounded-lg" type="text" name="nomEs" value="{{ $seccio->nom_es }}">
         </label>
         <label class="block py-2">
             <span class="text-gray-700">Nom (en anglès):
-                <input class=" w-full rounded" type="text" name="nomEn" value="{{ $seccio->nom_en}}">
+                <input class=" w-full rounded-lg" type="text" name="nomEn" value="{{ $seccio->nom_en}}">
         </label>
         <label class="block py-2">
             <span class="text-gray-700">descripcio:
-                <input class=" w-full rounded" type="text" name="descripcio" value="{{ $seccio->descripcio}}">
+                <input class=" w-full rounded-lg" type="text" name="descripcio" value="{{ $seccio->descripcio}}">
         </label>
         <label class="block py-2">
             <span class="text-gray-700">descripcio (en castellà):
-                <input class=" w-full rounded" type="text" name="descripcioEs" value="{{ $seccio->descripcio_es}}">
+                <input class=" w-full rounded-lg" type="text" name="descripcioEs" value="{{ $seccio->descripcio_es}}">
         </label>
         <label class="block py-2">
             <span class="text-gray-700">descripcio (en anglès):
-                <input class=" w-full rounded" type="text" name="descripcioEn" value="{{ $seccio->descripcio_en}}">
+                <input class=" w-full rounded-lg" type="text" name="descripcioEn" value="{{ $seccio->descripcio_en}}">
         </label>
     </label>
     <label class="block py-2">

@@ -1,6 +1,6 @@
 <x-guest-layout>
     <div class="bg-verd2 max-w-4xl ml-auto mr-auto mt-12 mb-12 rounded-lg p-5">
-        <h2 class="text-3xl text-center font-extrabold">{{ __('editar') }}</h2>
+        <h2 class="text-3xl text-center font-extrabold">{{ __('Crea un producte nou') }}</h2>
 
 
         @if (Session::has('message'))
@@ -21,32 +21,32 @@
             {{ method_field('PUT') }}
             <label class="block py-2">
                 <span class="text-gray-700">Nom:
-                    <input class=" w-full rounded" type="text" name="nom"
+                    <input class="w-full rounded-lg " type="text" name="nom"
                         placeholder="Introdueix el nom del producte">
             </label>
             <label class="block py-2">
                 <span class="text-gray-700">Nom (en castellà):
-                    <input class=" w-full rounded" type="text" name="nomEs"
+                    <input class=" w-full rounded-lg" type="text" name="nomEs"
                         placeholder="Introdueix el nom del producte">
             </label>
             <label class="block py-2">
                 <span class="text-gray-700">Nom (en anglès):
-                    <input class=" w-full rounded" type="text" name="nomEn"
+                    <input class=" w-full rounded-lg" type="text" name="nomEn"
                         placeholder="Introdueix el nom del producte">
             </label>
             <label class="block py-2">
                 <span class="text-gray-700">Descripcio del producte:
-                    <input class=" w-full rounded" type="text" name="descripcio"
+                    <input class=" w-full rounded-lg" type="text" name="descripcio"
                         placeholder="Introdueix la descripcio del producte">
             </label>
             <label class="block py-2">
                 <span class="text-gray-700">Descripcio del producte (en castellà):
-                    <input class=" w-full rounded" type="text" name="descripcioEs"
+                    <input class=" w-full rounded-lg" type="text" name="descripcioEs"
                         placeholder="Introdueix la descripcio del producte">
             </label>
             <label class="block py-2">
                 <span class="text-gray-700">Descripcio del producte(en anglès):
-                    <input class=" w-full rounded" type="text" name="descripcioEn"
+                    <input class=" w-full rounded-lg" type="text" name="descripcioEn"
                         placeholder="Introdueix la descripcio del producte">
             </label>
             
@@ -57,7 +57,7 @@
             </label>
             <label class="block py-2">
                 <span class="text-gray-700">Preu
-                    <input type="number" name="preu" step="0.01" min="0" id="">
+                    <input class="rounded-lg" type="number" name="preu" step="0.01" min="0" id="">
 
             </label>
 
