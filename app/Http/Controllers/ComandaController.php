@@ -79,6 +79,7 @@ class ComandaController extends Controller
 
     public function canviQuantitat(Request $request, Comanda $comanda)
     {
+        if($comanda->oberta==1){
         $productes = $request->input('productes');
         if($productes != NULL){
         foreach ($productes as $producteId => $quantitat) {
@@ -99,11 +100,13 @@ class ComandaController extends Controller
         $comanda->save();
     }
         if ($comanda->productes->isEmpty()) {
-            // Si no hay productos, redirige a la página inicial (o cualquier otra ruta deseada)
             return redirect()->route('inici');
         }
         return redirect()->route('comprarNP');
+    }else{
+        return redirect()->route('confirma.compres',$comanda->id);
     }
+}
     /**
      * Display a listing of the resource.
      */

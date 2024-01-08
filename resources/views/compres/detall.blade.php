@@ -37,9 +37,9 @@
                         <td class="text-right">
                             <input class="rounded-lg m-2 border-none text-right" type="number"
                                 name="productes[{{ $prod->id }}]"
-                                value="{{ old('productos.' . $prod->id, $prod->pivot->quantitat) }}" min="0"
+                                value="{{ old('productes.' . $prod->id, $prod->pivot->quantitat) }}" min="0"
                                 max="10" required>
-                            @error('productos.' . $prod->id)
+                            @error('productes.' . $prod->id)
                                 <span class="text-red-500">{{ $message }}</span>
                             @enderror
                         </td>
