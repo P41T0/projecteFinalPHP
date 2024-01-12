@@ -1,6 +1,6 @@
 <x-guest-layout>
     <div class="bg-verd3 rounded-md m-5 p-5">
-        <h3 class="text-center font-bold text-xl">{{ __('Productes comprats') }}</h3>
+        <h3 class="text-center font-bold text-xl">{{ __('Productes afegits a la llista de la compra') }}</h3>
         @if($numProductes<=0)
         <caption> {{__('No tens cap producte introduit en la llista de la compra en aquests moments.')}} <a class="hover:bg-verd4 p-2 rounded" href="{{Route("inici")}}">{{__('Prem aquí per a tornar a la pàgina inicial')}}</a></caption>
     </div>

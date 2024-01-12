@@ -17,4 +17,7 @@ class IniciController extends Controller
     public function showProducte(Producte $producte){
         return view('productes.detall', compact('producte'));
     }
+    public function contacte(){
+        return view('contacte');
+    }
 }

@@ -29,8 +29,7 @@ Route::get('/confcompra/{comanda}', [ComandaController::class, 'confirmar'])->mi
 Route::get('/dashboard', function () {
     return redirect()->route('inici');
 })->middleware(['auth', 'verified'])->name('dashboard');
-
-
+Route::get('/contacte',[IniciController::class,"contacte"])->middleware(['auth'])->name('contacte');
 
 //idioma
 Route::get('/lang/{idioma}', 'App\Http\Controllers\LocalizationController@index')->where('idioma', 'ca|en|es');

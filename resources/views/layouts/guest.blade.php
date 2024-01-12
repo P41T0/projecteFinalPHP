@@ -89,7 +89,7 @@
                     </li>
                 @endif
                 <li>
-                    <a href="#">
+                    <a href="{{route('contacte')}}">
                         <p class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1">{{ __('contacte') }}</p>
                     </a>
                 </li>
