@@ -8,8 +8,6 @@ use App\Models\Botiga;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-use function PHPUnit\Framework\isNan;
-
 class ComandaController extends Controller
 {
     public function afegir(Producte $producte)
@@ -85,9 +83,6 @@ class ComandaController extends Controller
         $productes = $request->input('productes');
         if($productes != NULL){
         foreach ($productes as $producteId => $quantitat) {
-            if(isNan($quantitat)){
-                $quantitat = 1;
-            }
             if ($quantitat <= 0) {
                 $comanda->productes()->detach($producteId);
             }else{
