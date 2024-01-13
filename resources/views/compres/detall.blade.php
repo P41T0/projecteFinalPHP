@@ -1,22 +1,28 @@
 <x-guest-layout>
     <div class="bg-verd3 rounded-md m-5 p-5">
         <h3 class="text-center font-bold text-xl">{{ __('Productes afegits a la llista de la compra') }}</h3>
-        @if($numProductes<=0)
-        <caption> {{__('No tens cap producte introduit en la llista de la compra en aquests moments.')}} <a class="hover:bg-verd4 p-2 rounded" href="{{Route("inici")}}">{{__('Prem aquí per a tornar a la pàgina inicial')}}</a></caption>
+        @if ($numProductes <= 0)
+            <caption> {{ __('No tens cap producte introduit en la llista de la compra en aquests moments.') }} <a
+                    class="bg-verd4 hover:bg-verd5 p-2 rounded"
+                    href="{{ Route('inici') }}">{{ __('Prem aquí per a tornar a la pàgina inicial') }}</a></caption>
     </div>
-        @else
-        <form action="{{ route('actualiza.quantitat', [$comanda->id]) }}" method="POST">
-            @csrf
+@else
+    <caption>
+        {{ __("Selecciona la quantitat del producte que vols comprar entre 1 i 10 i guarda els canvis. Si selecciones 0, el producte s'eliminarà de la comanda.") }}
 
-            <caption>
-                {{ __("Selecciona la quantitat del producte que vols comprar entre 1 i 10 i guarda els canvis. Si selecciones 0, el producte s'eliminarà de la comanda.") }}
+    </caption>
+    @if ($numProductes == 1)
+        <caption>{{ __('Tens ') }} {{ $numProductes }}{{ __(' producte afegit a aquesta comanda') }}</caption>
+    @else
+        <caption>{{ __('Tens ') }} {{ $numProductes }}{{ __(' productes afegits a aquesta comanda') }}</caption>
+    @endif
+    <p>{{ __('Preu total dels productes de la llista de la compra:') }} {{ $preuTotal }}€</p>
+    <form class="text-center justify-center content-center" action="{{ route('actualiza.quantitat', [$comanda->id]) }}"
+        method="POST">
+        @csrf
 
-            </caption>
-            @if($numProductes==1)
-            <caption>{{__('Tens ')}} {{$numProductes}}{{__(' producte afegit a aquesta comanda')}}</caption>
-            @else 
-            <caption>{{__('Tens ')}} {{$numProductes}}{{__(' productes afegits a aquesta comanda')}}</caption>
-            @endif
+
+        <div class="m-auto mt-5 mb-5 w-fit">
             <table class=" border-verd5 border-solid border-5" border-style="solid">
                 <tr>
                     <th>{{ __('Nom del producte') }}</th>
@@ -49,24 +55,30 @@
                     <p>{{ __('No hi ha cap producte comprat en la comanda actual') }}</p>
                 @endforelse
             </table>
-            <label class="block py-2">
-                <p>{{ __('Selecciona la botiga on recolliràs la comanda') }}</p>
-                <select class=" rounded-lg" name="botiga" id="" class="px-4 py-3 rounded-full">
-                    @foreach ($botigues as $botiga)
-                        <option value="{{ $botiga->id }}"
-                            {{ $botiga->id == $comanda->botiga_id ? 'selected' : '' }}>{{ $botiga->poblacio }}
-                        </option>
-                    @endforeach
-                </select>
-            </label>
-            <button class="hover:bg-verd4 p-2 rounded" type="submit">{{ __('Guardar canvis') }}</button>
-        </form>
-        <p>{{ __('Preu total dels productes de la llista de la compra:') }} {{ $preuTotal }}€</p>
-        <a
-            class="justify-center font-bold hover:bg-verd4 p-2 rounded"href="{{ route('inici') }}">{{ __('Seguir comprant') }}</a>
+        </div>
+        <div class="inline-block w-full py-2">
+            <p>{{ __('Selecciona la botiga on recolliràs la comanda') }}</p>
+            <select class=" rounded-lg" name="botiga" id="" class="px-4 py-3 rounded-full">
+                @foreach ($botigues as $botiga)
+                    <option value="{{ $botiga->id }}" {{ $botiga->id == $comanda->botiga_id ? 'selected' : '' }}>
+                        {{ $botiga->poblacio }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+        <button class="bg-verd4 hover:bg-verd5 p-2 m-2 rounded" type="submit">{{ __('Guardar canvis') }}</button>
+    </form>
+    <div class="w-full inline-flex justify-center text-center mt-2">
 
-        <a class="justify-center font-bold hover:bg-verd4 p-2 rounded"
-            onclick="return confirm('{{ __('Estàs segur que vols confirmar la compra?') }}')"href="{{ route('confirma.compres', $comanda->id) }}">{{ __('Confirma la comanda') }}</a>
+        <p class="m-2">
+            <a
+                class="font-bold bg-verd4 hover:bg-verd5 p-2 rounded"href="{{ route('inici') }}">{{ __('Seguir comprant') }}</a>
+        </p>
+        <p class="m-2">
+            <a class="font-bold bg-verd4 hover:bg-verd5 p-2 rounded"
+                onclick="return confirm('{{ __('Estàs segur que vols confirmar la compra?') }}')"href="{{ route('confirma.compres', $comanda->id) }}">{{ __('Confirma la comanda') }}</a>
+        </p>
+    </div>
     </div>
     @endif
 </x-guest-layout>

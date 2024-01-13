@@ -19,11 +19,11 @@
                         @endif
 
                         @if (App::getLocale() == 'ca')
-                            <caption>{{ $seccio->descripcio }}</caption>
+                            <p class="text-center m-2">{{ $seccio->descripcio }}</p>
                         @elseif(App::getLocale() == 'es')
-                            <caption>{{ $seccio->descripcio_es }}</caption>
+                            <p class="text-center m-2">{{ $seccio->descripcio_es }}</p>
                         @elseif(App::getLocale() == 'en')
-                            <caption>{{ $seccio->descripcio_en }}</caption>
+                            <p class="text-center m-2">{{ $seccio->descripcio_en }}</p>
                         @endif
                         <div class="flex flex-wrap text-center max-w-64 justify-center">
                             @foreach ($seccio->productes as $producte)
@@ -40,8 +40,9 @@
                                         <img src="https://www.p41t.com/storage/app/public/{{ $producte->foto }}"
                                             class="m-auto max-w-56 max-h-56" alt="imatge d'un element">
                                         <p>{{ $producte->preu_unitari }}€</p>
-                                        <a class="hover:bg-verd4 p-2 m-4 rounded-sm text-center"
-                                            href="{{ route('detall.producte', $producte->id) }}">{{ __('Comprar') }}</a>
+                                        <p class="m-2">
+                                        <a class="bg-verd4 hover:bg-verd5 p-2 m-4 rounded-sm text-center"
+                                            href="{{ route('detall.producte', $producte->id) }}">{{ __('Comprar') }}</a></p>
                                     </div>
                                 @endif
                             @endforeach

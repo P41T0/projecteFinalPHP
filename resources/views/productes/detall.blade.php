@@ -21,8 +21,8 @@
 
         <p>{{ __('Preu') }}: {{ $producte->preu_unitari }}€</p>
         @if ($producte->mostra_prod && $producte->seccio->mostra_sec)
-            <a class=" hover:bg-verd4 p-2 m-2 rounded-sm"
-                href="{{ route('comprar', $producte->id) }}">{{ __('Afegir a la llista de la compra') }}</a>
+            <p class="m-4"><a class=" bg-verd4 hover:bg-verd5 p-2 rounded-sm text-center"
+                href="{{ route('comprar', $producte->id) }}">{{ __('Afegir a la llista de la compra') }}</a></p>
         @else
             <p>{{ __('Aquest producte no es pot afegir a cap comanda actualment') }}</p>
         @endif

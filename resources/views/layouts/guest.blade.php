@@ -27,19 +27,24 @@
         <div class="bg-verd1">
             <ul class="flex flex-wrap p-2 text-top-center justify-center">
                 <li>
-                    <a href="{{ route('inici') }}">
-                        <p class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1">{{ __('Inici') }}</p>
-                    </a>
+                    <p class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1">
+                        <a href="{{ route('inici') }}">
+                            {{ __('Inici') }}
+                        </a>
+                    </p>
                 </li>
                 @if (Auth::User())
-                    <a href="{{ route('comprarNP') }}">
-                        <p class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1">{{ __('Llista de la compra') }}</p>
-                    </a>
+                    <p class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1">
+                        <a href="{{ route('comprarNP') }}">
+                            {{ __('Llista de la compra') }}
+                        </a>
+                    </p>
                     @if (Auth::user()->admin == true)
                         <li>
-                            <a href="{{ route('seccions.select') }}">
-                                <p class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1">{{ __('Modificar elements') }}</p>
-                            </a>
+                            <p class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1"><a href="{{ route('seccions.select') }}">
+                                    {{ __('Modificar elements') }}
+                                </a>
+                            </p>
                         </li>
                     @endif
                     <!-- Settings Dropdown -->
@@ -83,15 +88,19 @@
                     </li>
                 @else
                     <li>
-                        <a href="{{ route('login') }}">
-                            <p class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1">{{ __('Iniciar sessió') }}</p>
-                        </a>
+                        <p class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1">
+                            <a href="{{ route('login') }}">
+                                {{ __('Iniciar sessió') }}
+                            </a>
+                        </p>
                     </li>
                 @endif
                 <li>
-                    <a href="{{route('contacte')}}">
-                        <p class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1">{{ __('contacte') }}</p>
-                    </a>
+                    <p class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1">
+                        <a href="{{ route('contacte') }}">
+                            {{ __('contacte') }}
+                        </a>
+                    </p>
                 </li>
                 <li>
                     <div class="pl-10 hidden sm:flex sm:items-center sm:ml-6">
