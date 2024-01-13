@@ -61,11 +61,11 @@ class BotigaController extends Controller
         if($productes != NULL){
         foreach ($productes as $producteId => $quantitat) {
 
-            if($quantitat>0){
+            if($quantitat<0){
                 $quantitat=0;
             }
             if ($quantitat==NULL){
-                    $quantitat=1;
+                    $quantitat=0;
             }
             $botiga->productes()->updateExistingPivot($producteId, ['quantitat' => $quantitat]);
             
