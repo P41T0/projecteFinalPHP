@@ -30,7 +30,7 @@
         <ul>
             @forelse ($producte->botiga as $botiga)
                 @if ($botiga->pivot->quantitat > 0)
-                    <li>{{ $botiga->poblacio }} --> {{ $botiga->pivot->quantitat }}</li>
+                    <li>{{ $botiga->poblacio }} --> {{ $botiga->pivot->quantitat }}{{__(" unitats disponibles")}}</li>
                 @elseif($botiga->pivot->quantitat <= 0)
                     <li>{{ __('El producte no es troba disponible a') }} {{ $botiga->poblacio }}</li>
                 @endif
