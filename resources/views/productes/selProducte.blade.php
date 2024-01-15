@@ -9,7 +9,7 @@
 @foreach ($productes as $producte)
     <div class="bg-verd2 hover:bg-verd4 p-2 m-2 rounded-sm">
         <a href="{{route('productes.edit', $producte->id)}} ">
-        <p>{{$producte->nom}} {{$producte->mostra_prod ?" (s'està mostrant actualment)":" (no s'esta mostrant actualment)"}}</p>
+        <p>{{$producte->nom}} {{$producte->mostra_prod ?" (s'està mostrant actualment)":" (no s'està mostrant actualment)"}}</p>
         <p>{{$producte->descripcio}}</p>
         </a>
     </div>

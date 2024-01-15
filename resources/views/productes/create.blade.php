@@ -20,34 +20,34 @@
             {{ csrf_field() }}
             {{ method_field('PUT') }}
             <label class="block py-2">
-                <span class="text-gray-700">Nom:
+                <span class="text-gray-700">Nom del producte:
                     <input class="w-full rounded-lg " type="text" name="nom"
                         placeholder="Introdueix el nom del producte">
             </label>
             <label class="block py-2">
-                <span class="text-gray-700">Nom (en castellà):
+                <span class="text-gray-700">Nom del producte (en castellà):
                     <input class=" w-full rounded-lg" type="text" name="nomEs"
                         placeholder="Introdueix el nom del producte">
             </label>
             <label class="block py-2">
-                <span class="text-gray-700">Nom (en anglès):
+                <span class="text-gray-700">Nom del producte (en anglès):
                     <input class=" w-full rounded-lg" type="text" name="nomEn"
                         placeholder="Introdueix el nom del producte">
             </label>
             <label class="block py-2">
-                <span class="text-gray-700">Descripcio del producte:
+                <span class="text-gray-700">Descripció del producte:
                     <input class=" w-full rounded-lg" type="text" name="descripcio"
-                        placeholder="Introdueix la descripcio del producte">
+                        placeholder="Introdueix la descripció del producte">
             </label>
             <label class="block py-2">
-                <span class="text-gray-700">Descripcio del producte (en castellà):
+                <span class="text-gray-700">Descripció del producte (en castellà):
                     <input class=" w-full rounded-lg" type="text" name="descripcioEs"
-                        placeholder="Introdueix la descripcio del producte">
+                        placeholder="Introdueix la descripció del producte">
             </label>
             <label class="block py-2">
-                <span class="text-gray-700">Descripcio del producte(en anglès):
+                <span class="text-gray-700">Descripció del producte(en anglès):
                     <input class=" w-full rounded-lg" type="text" name="descripcioEn"
-                        placeholder="Introdueix la descripcio del producte">
+                        placeholder="Introdueix la descripció del producte">
             </label>
             
             <label class="block py-2">

@@ -9,7 +9,7 @@
 @foreach ($seccions as $seccio)
     <div class="bg-verd2 hover:bg-verd4 p-2 m-2 rounded-sm">
         <a href="{{route('seccions.edit', $seccio->id)}}">
-        <p>{{$seccio->nom}} {{$seccio->mostra_sec?" (s'està mostrant actualment)":" (no s'esta mostrant actualment)"}}</p>
+        <p>{{$seccio->nom}} {{$seccio->mostra_sec?" (s'està mostrant actualment)":" (no s'està mostrant actualment)"}}</p>
         <p>{{$seccio->descripcio}}</p>
         </a>
     </div>

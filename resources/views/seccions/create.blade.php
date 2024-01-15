@@ -19,28 +19,28 @@
         {{ csrf_field() }}
         {{ method_field('PUT') }}
         <label class="block py-2">
-            <span class="text-gray-700">Nom:
-                <input class=" w-full rounded-lg" type="text" name="nom" placeholder="Introdueix el nom de la seccio">
+            <span class="text-gray-700">Nom de la secció:
+                <input class=" w-full rounded-lg" type="text" name="nom" placeholder="Introdueix el nom de la secció">
         </label>
         <label class="block py-2">
-            <span class="text-gray-700">Nom (en castellà):
-                <input class=" w-full rounded-lg" type="text" name="nomEs" placeholder="Introdueix el nom de la seccio">
+            <span class="text-gray-700">Nom de la secció (en castellà):
+                <input class=" w-full rounded-lg" type="text" name="nomEs" placeholder="Introdueix el nom de la secció">
         </label>
         <label class="block py-2">
-            <span class="text-gray-700">Nom (en anglès):
-                <input class=" w-full rounded-lg" type="text" name="nomEn" placeholder="Introdueix el nom de la seccio">
+            <span class="text-gray-700">Nom de la secció (en anglès):
+                <input class=" w-full rounded-lg" type="text" name="nomEn" placeholder="Introdueix el nom de la secció">
         </label>
         <label class="block py-2">
-            <span class="text-gray-700">Descripcio:
-                <input class=" w-full rounded-lg" type="text" name="descripcio" placeholder="Introdueix la descripcio de la seccio">
+            <span class="text-gray-700">Descripció:
+                <input class=" w-full rounded-lg" type="text" name="descripcio" placeholder="Introdueix la descripció de la secció">
         </label>
         <label class="block py-2">
-            <span class="text-gray-700">Descripcio (en castellà):
-                <input class=" w-full rounded-lg" type="text" name="descripcioEs" placeholder="Introdueix la descripcio de la seccio">
+            <span class="text-gray-700">Descripció (en castellà):
+                <input class=" w-full rounded-lg" type="text" name="descripcioEs" placeholder="Introdueix la descripció de la secció">
         </label>
         <label class="block py-2">
-            <span class="text-gray-700">Descripcio (en anglès):
-                <input class=" w-full rounded-lg" type="text" name="descripcioEn" placeholder="Introdueix la descripcio de la seccio">
+            <span class="text-gray-700">Descripció (en anglès):
+                <input class=" w-full rounded-lg" type="text" name="descripcioEn" placeholder="Introdueix la descripció de la secció">
         </label>
         <br /><br />
         <x-primary-button class="ml-4 py-2">

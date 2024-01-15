@@ -38,7 +38,7 @@
             @break
 
             @case(2)
-                <p>{{ __('Comanda tancada, el cost total és de') }}{{ $preuTotal }}€
+                <p>{{ __('Comanda tancada, el cost total és de ') }}{{ $preuTotal }}€
                     {{ __('i la comanda es passarà a recollir a la botiga de ') }}{{ $botiga }}</p>
             @break
 

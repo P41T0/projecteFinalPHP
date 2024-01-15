@@ -97,7 +97,7 @@
                 <li>
                     <p class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1">
                         <a href="{{ route('contacte') }}">
-                            {{ __('contacte') }}
+                            {{ __('Contacte') }}
                         </a>
                     </p>
                 </li>

@@ -20,27 +20,27 @@
             {{ csrf_field() }}
             {{ method_field('PUT') }}
             <label class="block py-2">
-                <span class="text-gray-700">Nom:
+                <span class="text-gray-700">Nom del producte:
                     <input class=" w-full rounded-lg" type="text" name="nom" value="{{ $producte->nom }}">
             </label>
             <label class="block py-2">
-                <span class="text-gray-700">Nom (en castellà):
+                <span class="text-gray-700">Nom del producte (en castellà):
                     <input class=" w-full rounded-lg" type="text" name="nomEs" value="{{ $producte->nom_es }}">
             </label>
             <label class="block py-2">
-                <span class="text-gray-700">Nom (en anglès):
+                <span class="text-gray-700">Nom del producte (en anglès):
                     <input class=" w-full rounded-lg" type="text" name="nomEn" value="{{ $producte->nom_en }}">
             </label>
             <label class="block py-2">
-                <span class="text-gray-700">Descripcio Producte:
+                <span class="text-gray-700">Descripció del producte:
                     <input class=" w-full rounded-lg" type="text" name="descripcio" value="{{ $producte->descripcio }}">
             </label>
             <label class="block py-2">
-                <span class="text-gray-700">Descripcio Producte (en castellà):
+                <span class="text-gray-700">Descripció del producte (en castellà):
                     <input class=" w-full rounded-lg" type="text" name="descripcioEs" value="{{ $producte->descripcio_es }}">
             </label>
             <label class="block py-2">
-                <span class="text-gray-700">Descripcio Producte (en anglès):
+                <span class="text-gray-700">Descripció del producte (en anglès):
                     <input class=" w-full rounded-lg" type="text" name="descripcioEn" value="{{ $producte->descripcio_en }}">
             </label>
             <label class="block py-2">

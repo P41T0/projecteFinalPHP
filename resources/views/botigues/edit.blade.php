@@ -21,6 +21,7 @@
             {{ method_field('PUT') }}
             @forelse ($botiga->productes as $prod)
             <label class="block py-2">
+                <caption>Quantitat en estoc de </caption>
               <span class="text-gray-700">{{$prod->nom}}
                     <input class="rounded-lg" type="number" name="productes[{{$prod->id}}]" min="0" value="{{$prod->pivot->quantitat}}" id="">
               </span>
