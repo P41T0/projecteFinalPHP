@@ -15,7 +15,8 @@ class DatabaseSeeder extends Seeder
     {
          \App\Models\User::factory(10)->create();
 
-            DB::table('users')->insert(['name' => 'Pau', 'email' => 'pau.tort@uvic.cat', 'password' => bcrypt('123456'), 'admin' => TRUE]);
+            DB::table('users')->insert(['name' => 'Pau', 'email' => 'pau.tort@uvic.cat', 'password' => bcrypt('provapag.123456'), 'admin' => TRUE]);
+            DB::table('users')->insert(['name' => 'Usuari Admin', 'email' => 'usuariadministrador@p41t.com', 'password' => bcrypt('UsuariAdmin.1234'), 'admin' => TRUE]);
             DB::table('seccio')->insert(['nom'=>'Telefonia mòbil','nom_es'=>'Telefonia mòbil','nom_en'=>'Telefonia mòbil','descripcio'=>'telèfons mòbils, smartwatches, auriculars i altres accessoris','descripcio_es'=>'telèfons mòbils, smartwatches, auriculars i altres accessoris','descripcio_en'=>'telèfons mòbils, smartwatches, auriculars i altres accessoris','mostra_sec'=>TRUE,]);
             DB::table('seccio')->insert(['nom'=>'Ordinadors','nom_es'=>'Ordinadors','nom_en'=>'Ordinadors','descripcio'=>'Ordinadors portàtils i accessoris','descripcio_es'=>'Ordinadors portàtils i accessoris','descripcio_en'=>'Ordinadors portàtils i accessoris','mostra_sec'=>TRUE,]);
             DB::table('producte')->insert(['nom'=>'IPhone 15','nom_es'=>'IPhone 15','nom_en'=>'IPhone 15','descripcio'=>'telefon mòbil','descripcio_es'=>'telefon mòbil','descripcio_en'=>'telefon mòbil','foto'=>'iPhone15_black.webp', 'preu_unitari'=>'1499.99','mostra_prod'=>TRUE,'seccio_id'=>'1']);
