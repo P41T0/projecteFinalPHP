@@ -12,10 +12,11 @@
         "axios": "^1.9.0",
         "laravel-vite-plugin": "^1.2.0",
         "postcss": "^8.5.4",
-        "tailwindcss": "^4.1.8",
+        "tailwindcss": "^4.1.11",
         "vite": "^6.3.5"
     },
     "dependencies": {
+        "@tailwindcss/postcss": "^4.1.11",
         "caniuse-lite": "^1.0.30001720"
     }
 }

@@ -15,7 +15,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="min-h-full font-sans text-gray-900 antialiased m-auto max-w-screen-lg">
+<body class="min-h-full font-sans text-gray-900 antialiased m-auto max-w-(--breakpoint-lg)">
     <div class="flex flex-col sm:justify-left items-left pt-6 sm:pt-0 bg-gray-100">
         <div class="bg-verd4 flex-initial flex">
             <a href="/">
