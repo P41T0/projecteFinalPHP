@@ -3,23 +3,23 @@
 # Please see the documentation for all configuration options:
 # https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 
-version: 2
-updates:
-  - package-ecosystem: "composer" # See documentation for possible values
-    directory: "/" # Location of package manifests
-    schedule:
-      interval: "weekly"
-    rebase-strategy: "auto"
-    groups:
-      patch-updates:
-        update-types:
-          - "patch"
-  - package-ecosystem: "npm" # See documentation for possible values
-    directory: "/" # Location of package manifests
-    schedule:
-      interval: "weekly"
-    rebase-strategy: "auto"
-    groups:
-      patch-updates:
-        update-types:
-          - "patch"
+#version: 2
+#updates:
+#  - package-ecosystem: "composer" # See documentation for possible values
+#   directory: "/" # Location of package manifests
+#  schedule:
+#      interval: "weekly"
+#    rebase-strategy: "auto"
+#    groups:
+#      patch-updates:
+#        update-types:
+#          - "patch"
+#  - package-ecosystem: "npm" # See documentation for possible values
+#    directory: "/" # Location of package manifests
+#    schedule:
+#      interval: "weekly"
+#    rebase-strategy: "auto"
+#    groups:
+#      patch-updates:
+#        update-types:
+#          - "patch"
