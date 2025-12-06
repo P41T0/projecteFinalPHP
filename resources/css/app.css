@@ -13,6 +13,13 @@
     'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
+      --color-verd1: #84f5a4;
+  --color-verd2: #61FF7E;
+  --color-verd3: #5EEB5B;
+  --color-verd4: #62AB37;
+  --color-verd5: #4E702E;
+  --color-verd6: #393424;
+  
   --color-zinc-50: #fafafa;
   --color-zinc-100: #f5f5f5;
   --color-zinc-200: #e5e5e5;

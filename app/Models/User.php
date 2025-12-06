@@ -61,4 +61,11 @@ class User extends Authenticatable
             ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
     }
+
+        public function comandes(){
+        return $this->hasMany(Comanda::class, 'usuari_id');
+    }
+    public function isAdmin(){
+        return $this->admin;
+    }
 }

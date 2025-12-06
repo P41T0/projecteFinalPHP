@@ -1,4 +1,4 @@
-<x-guest-layout>
+<x-layouts.app>
     <div class="bg-verd1 justify-center">
     <ul class="flex flex-wrap p-2 text-top-center justify-center">
         <li class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1"><a href="{{route('productes.select')}}">Modificar productes</a></li>
@@ -15,4 +15,4 @@
     </div>
 @endforeach
 <a href="{{route('seccions.create')}}"><h1 class="bg-verd2 hover:bg-verd4 p-2 m-2 rounded-sm text-center">Crear una secció nova</h1></a>
-</x-guest-layout>
+</x-layouts.app>

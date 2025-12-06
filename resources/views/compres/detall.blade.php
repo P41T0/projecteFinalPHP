@@ -1,4 +1,4 @@
-<x-guest-layout>
+<x-layouts.app>
     <div class="bg-verd3 rounded-md m-5 p-5">
         <h3 class="text-center font-bold text-xl">{{ __('Productes afegits a la llista de la compra') }}</h3>
         @if ($numProductes <= 0)
@@ -81,4 +81,4 @@
     </div>
     </div>
     @endif
-</x-guest-layout>
+</x-layouts.app>

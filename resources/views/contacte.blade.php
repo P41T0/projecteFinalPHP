@@ -1,4 +1,4 @@
-<x-guest-layout>
+<x-layouts.app>
     <div class="bg-verd2 max-w-4xl ml-auto mr-auto mt-12 mb-12 rounded-lg p-5">
         <form action="{{ route('contacte') }}" method="get">
             <label class="block py-2">
@@ -26,4 +26,4 @@
 
         </form>
     </div>
-</x-guest-layout>
+</x-layouts.app>

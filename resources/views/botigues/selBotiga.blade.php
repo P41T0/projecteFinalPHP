@@ -1,4 +1,4 @@
-<x-guest-layout>
+<x-layouts.app>
     <div class="bg-verd1">
     <ul class="flex flex-wrap p-2 text-top-center justify-center">
         <li class="hover:bg-verd3 rounded-md ml-5 mr-5 p-1"><a href="{{route('seccions.select')}}">Modificar seccions</a></li>
@@ -14,4 +14,4 @@
         </a>
     </div>
 @endforeach
-</x-guest-layout>
+</x-layouts.app>

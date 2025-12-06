@@ -1,4 +1,4 @@
-<x-guest-layout>
+<x-layouts.app>
     <div class="bg-verd2 max-w-4xl ml-auto mr-auto mt-12 mb-12 rounded-lg p-5">
         <h2 class="text-3xl text-center font-extrabold">{{ __('Edita la secció') }}</h2>
 
@@ -61,4 +61,4 @@
         </a>
     </form>
     </div>
-</x-guest-layout>
+</x-layouts.app>
