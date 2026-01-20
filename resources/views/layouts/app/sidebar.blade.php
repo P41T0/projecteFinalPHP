@@ -29,8 +29,11 @@
                     {{ __('Documentation') }}
                 </flux:sidebar.item>
             </flux:sidebar.nav>
-
+        @if(auth()->check())
             <x-desktop-user-menu class="hidden lg:block" :name="auth()->user()->name" />
+        @else
+            <x-desktop-user-menu class="hidden lg:block" name="Guest" />
+        @endif
         </flux:sidebar>
 
 
@@ -39,7 +42,7 @@
             <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
 
             <flux:spacer />
-
+            @if(auth()->check())
             <flux:dropdown position="top" align="end">
                 <flux:profile
                     :initials="auth()->user()->initials()"
@@ -87,6 +90,11 @@
                     </form>
                 </flux:menu>
             </flux:dropdown>
+            @else
+            <flux:button icon="home" :href="route('login')" :current="request()->routeIs('login')" wire:navigate>
+                        {{ __('Dashboard') }}
+                    </flux:button>
+            @endif
         </flux:header>
 
         {{ $slot }}

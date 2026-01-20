@@ -1,3 +1,4 @@
+@if(auth()->check())
 <flux:dropdown position="bottom" align="start">
     <flux:sidebar.profile
         {{ $attributes->only('name') }}
@@ -37,3 +38,13 @@
         </flux:menu.radio.group>
     </flux:menu>
 </flux:dropdown>
+@else
+<a href="{{ route('login') }}" wire:navigate class="block">
+    <flux:sidebar.profile
+        {{ $attributes->only('name') }}
+        initials="G"
+        icon:trailing="chevrons-up-down"
+        data-test="sidebar-menu-button"
+    />
+</a>
+@endif
