@@ -8,15 +8,20 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Illuminate\Support\Str;
+use Laravel\Fortify\TwoFactorAuthenticatable;
 
 class User extends Authenticatable
 {
+    /** @use HasFactory<\Database\Factories\UserFactory> */
+    use HasFactory, Notifiable, TwoFactorAuthenticatable;
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
      *
+     * @var list<string>
      * @var list<string>
      */
     protected $fillable = [
@@ -29,9 +34,12 @@ class User extends Authenticatable
      * The attributes that should be hidden for serialization.
      *
      * @var list<string>
+     * @var list<string>
      */
     protected $hidden = [
         'password',
+        'two_factor_secret',
+        'two_factor_recovery_codes',
         'two_factor_secret',
         'two_factor_recovery_codes',
         'remember_token',
@@ -40,7 +48,9 @@ class User extends Authenticatable
 
     /**
      * Get the attributes that should be cast.
+     * Get the attributes that should be cast.
      *
+     * @return array<string, string>
      * @return array<string, string>
      */
     protected function casts(): array
@@ -66,9 +76,7 @@ class User extends Authenticatable
     public function comandes(){
         return $this->hasMany(Comanda::class, 'usuari_id');
     }
-    public function isAdmin()
-{
-return $this->admin;
-}
-
+    public function isAdmin(){
+        return $this->admin;
+    }
 }

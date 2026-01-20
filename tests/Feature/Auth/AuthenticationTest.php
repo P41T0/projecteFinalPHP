@@ -1,7 +1,5 @@
 <?php
 
-namespace Tests\Feature\Auth;
-
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Fortify\Features;
@@ -18,9 +16,8 @@ class AuthenticationTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_users_can_authenticate_using_the_login_screen(): void
-    {
-        $user = User::factory()->create();
+test('users can authenticate using the login screen', function () {
+    $user = User::factory()->withoutTwoFactor()->create();
 
         $response = $this->post(route('login.store'), [
             'email' => $user->email,
@@ -34,9 +31,8 @@ class AuthenticationTest extends TestCase
         $this->assertAuthenticated();
     }
 
-    public function test_users_can_not_authenticate_with_invalid_password(): void
-    {
-        $user = User::factory()->create();
+test('users can not authenticate with invalid password', function () {
+    $user = User::factory()->create();
 
         $response = $this->post(route('login.store'), [
             'email' => $user->email,

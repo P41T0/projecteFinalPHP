@@ -37,8 +37,7 @@
                                             <p class="font-semibold text-lg">{{ $producte->nom_en }}</p>
                                         @endif
 
-                                        <img src="https://www.p41t.com/storage/app/public/{{ $producte->foto }}"
-                                            class="m-auto max-w-56 max-h-56" alt="imatge d'un element">
+                                       
                                         <p>{{ $producte->preu_unitari }}€</p>
                                         <p class="m-2">
                                         <a class="bg-green-300 hover:bg-green-400 p-2 m-4 rounded-sm text-center"
