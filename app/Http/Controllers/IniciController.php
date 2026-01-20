@@ -1,23 +1,27 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Seccio;
-use App\Models\Producte;
 
-use Illuminate\Http\Request;
+use App\Models\Producte;
+use App\Models\Seccio;
 
 class IniciController extends Controller
 {
     //
-    public function index() {
+    public function index()
+    {
         $seccions = Seccio::all();
 
-        return view('inici', compact("seccions"));
+        return view('inici', compact('seccions'));
     }
-    public function showProducte(Producte $producte){
+
+    public function showProducte(Producte $producte)
+    {
         return view('productes.detall', compact('producte'));
     }
-    public function contacte(){
+
+    public function contacte()
+    {
         return view('contacte');
     }
 }

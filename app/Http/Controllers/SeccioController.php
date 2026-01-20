@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Seccio;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Session;
-
 
 class SeccioController extends Controller
 {
@@ -16,6 +14,7 @@ class SeccioController extends Controller
     public function index()
     {
         $seccio = Seccio::all();
+
         return view('seccions.selSeccio', ['seccions' => $seccio]);
     }
 
@@ -24,9 +23,8 @@ class SeccioController extends Controller
      */
     public function create()
     {
-        return view("seccions.create");
+        return view('seccions.create');
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -44,8 +42,8 @@ class SeccioController extends Controller
                 'descripcioEn' => 'required|max:500',
             ],
             $messages = [
-                'required'  => 'El camp :attribute és obligatori',
-                'size'      => 'El camp :attribute no pot superar :max caràcters',
+                'required' => 'El camp :attribute és obligatori',
+                'size' => 'El camp :attribute no pot superar :max caràcters',
             ]
         );
         $seccio = new Seccio;
@@ -55,19 +53,18 @@ class SeccioController extends Controller
         $seccio->descripcio = $request->input('descripcio');
         $seccio->descripcio_es = $request->input('descripcioEs');
         $seccio->descripcio_en = $request->input('descripcioEn');
-        $seccio->mostra_sec = FALSE;
+        $seccio->mostra_sec = false;
         $seccio->save();
-        //dd($seccio);
+        // dd($seccio);
         Session::flash('message', 'seccio modificada !');
-        return redirect()->route("seccions.select");
+
+        return redirect()->route('seccions.select');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Seccio $seccio)
-    {
-    }
+    public function show(Seccio $seccio) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -97,8 +94,8 @@ class SeccioController extends Controller
                 'descripcioEn' => 'required|max:500',
             ],
             $messages = [
-                'required'  => 'El camp :attribute és obligatori',
-                'size'      => 'El camp :attribute no pot superar :max caràcters',
+                'required' => 'El camp :attribute és obligatori',
+                'size' => 'El camp :attribute no pot superar :max caràcters',
             ]
         );
 
@@ -110,9 +107,10 @@ class SeccioController extends Controller
         $seccio->descripcio_en = $request->input('descripcioEn');
         $seccio->mostra_sec = $request->input('mostraSec') ? true : false;
         $seccio->save();
-        //dd($seccio);
+        // dd($seccio);
         Session::flash('message', 'seccio modificada !');
-        return redirect()->route("seccions.select");
+
+        return redirect()->route('seccions.select');
     }
 
     /**

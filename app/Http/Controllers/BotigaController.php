@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Botiga;
-use Illuminate\Http\Request;
 use App\Models\Producte;
+use Illuminate\Http\Request;
 
 class BotigaController extends Controller
 {
@@ -14,7 +14,8 @@ class BotigaController extends Controller
     public function index()
     {
         $botiga = Botiga::All();
-        return view('botigues.selBotiga',['botigues'=>$botiga]);
+
+        return view('botigues.selBotiga', ['botigues' => $botiga]);
     }
 
     /**
@@ -47,9 +48,9 @@ class BotigaController extends Controller
     public function edit(Botiga $botiga)
     {
         return View(
-			'botigues.edit',
-            
-			['botiga' => $botiga, 'productes' => Producte::all()]);
+            'botigues.edit',
+
+            ['botiga' => $botiga, 'productes' => Producte::all()]);
     }
 
     /**
@@ -58,20 +59,22 @@ class BotigaController extends Controller
     public function update(Request $request, Botiga $botiga)
     {
         $productes = $request->input('productes');
-        if($productes != NULL){
-        foreach ($productes as $producteId => $quantitat) {
+        if ($productes != null) {
+            foreach ($productes as $producteId => $quantitat) {
 
-            if($quantitat<0){
-                $quantitat=0;
+                if ($quantitat < 0) {
+                    $quantitat = 0;
+                }
+                if ($quantitat == null) {
+                    $quantitat = 0;
+                }
+                $botiga->productes()->updateExistingPivot($producteId, ['quantitat' => $quantitat]);
+
             }
-            if ($quantitat==NULL){
-                    $quantitat=0;
-            }
-            $botiga->productes()->updateExistingPivot($producteId, ['quantitat' => $quantitat]);
-            
-    }}
-    return redirect()->route("botigues.select");
-}
+        }
+
+        return redirect()->route('botigues.select');
+    }
 
     /**
      * Remove the specified resource from storage.

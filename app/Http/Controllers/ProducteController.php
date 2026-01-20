@@ -4,11 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Botiga;
 use App\Models\Producte;
-use Illuminate\Http\Request;
 use App\Models\Seccio;
-
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-
 
 class ProducteController extends Controller
 {
@@ -18,6 +16,7 @@ class ProducteController extends Controller
     public function index()
     {
         $producte = Producte::all();
+
         return view('productes.selProducte', ['productes' => $producte]);
     }
 
@@ -26,7 +25,7 @@ class ProducteController extends Controller
      */
     public function create()
     {
-        return view("productes.create", ['seccions' => Seccio::all()]);
+        return view('productes.create', ['seccions' => Seccio::all()]);
     }
 
     /**
@@ -45,11 +44,11 @@ class ProducteController extends Controller
                 'descripcioEn' => 'required|max:1000',
                 'imatge' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
                 'preu' => 'required',
-                'seccio' => 'required'
+                'seccio' => 'required',
             ],
             $messages = [
-                'required'  => 'El camp :attribute és obligatori',
-                'size'      => 'El camp :attribute no pot superar :max caràcters',
+                'required' => 'El camp :attribute és obligatori',
+                'size' => 'El camp :attribute no pot superar :max caràcters',
             ]
         );
         $producte = new Producte;
@@ -64,26 +63,27 @@ class ProducteController extends Controller
 
             $imatge = $request->file('imatge');
 
-            $nomImg = time() . '_' . $imatge->getClientOriginalName();
+            $nomImg = time().'_'.$imatge->getClientOriginalName();
 
             $request->file('imatge')->storeAs("/public/$nomImg");
             $producte->foto = $nomImg;
         }
-        if ($request->input("preu") > 0) {
+        if ($request->input('preu') > 0) {
             $producte->preu_unitari = $request->input('preu');
         }
-        $producte->mostra_prod = FALSE;
+        $producte->mostra_prod = false;
         $producte->save();
         $botigues = Botiga::all();
         foreach ($botigues as $botiga) {
-            $producte->botiga()->attach($botiga->id, ["quantitat" => 0]);
+            $producte->botiga()->attach($botiga->id, ['quantitat' => 0]);
         }
 
         $producte->save();
 
-        //dd($producte);
+        // dd($producte);
         Session::flash('message', 'producte modificat !');
-        return redirect()->route("productes.select");
+
+        return redirect()->route('productes.select');
     }
 
     /**
@@ -122,12 +122,12 @@ class ProducteController extends Controller
                 'descripcioEs' => 'required|max:1000',
                 'descripcioEn' => 'required|max:1000',
                 'imatge' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-                'preu' => 'required'
+                'preu' => 'required',
                 // 'seccio' => 'required'
             ],
             $messages = [
-                'required'  => 'El camp :attribute és obligatori',
-                'size'      => 'El camp :attribute no pot superar :max caràcters',
+                'required' => 'El camp :attribute és obligatori',
+                'size' => 'El camp :attribute no pot superar :max caràcters',
             ]
         );
 
@@ -142,19 +142,20 @@ class ProducteController extends Controller
 
             $imatge = $request->file('imatge');
 
-            $nomImg = time() . '_' . $imatge->getClientOriginalName();
+            $nomImg = time().'_'.$imatge->getClientOriginalName();
 
             $request->file('imatge')->storeAs("/public/$nomImg");
             $producte->foto = $nomImg;
         }
-        if ($request->input("preu") > 0) {
+        if ($request->input('preu') > 0) {
             $producte->preu_unitari = $request->input('preu');
         }
         $producte->mostra_prod = $request->input('mostraProd') ? true : false;
         $producte->save();
-        //dd($producte);
+        // dd($producte);
         Session::flash('message', 'producte modificat !');
-        return redirect()->route("productes.select");
+
+        return redirect()->route('productes.select');
     }
 
     /**

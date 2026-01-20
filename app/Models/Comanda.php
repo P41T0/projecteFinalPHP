@@ -2,19 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Comanda extends Model
 {
-    protected $table='Comanda';
+    protected $table = 'Comanda';
+
     public function usuari()
     {
-           return $this->belongsTo(User::class);
-    }
-    public function productes(){
-        return $this->belongsToMany(Producte::class,"linia_comanda")->withPivot('quantitat');
+        return $this->belongsTo(User::class);
     }
 
-
+    public function productes()
+    {
+        return $this->belongsToMany(Producte::class, 'linia_comanda')->withPivot('quantitat');
+    }
 }

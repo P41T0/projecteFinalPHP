@@ -1,9 +1,7 @@
 <?php
-use App\Http\Controllers\IniciController;
+
 use App\Http\Controllers\ComandaController;
-use App\Http\Controllers\ProducteController;
-
-
+use App\Http\Controllers\IniciController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
@@ -16,7 +14,6 @@ Route::get('/comprar/{producte}', [ComandaController::class, 'afegir'])->middlew
 Route::get('/comprar', [ComandaController::class, 'afegir'])->middleware(['auth'])->name('comprarNP');
 Route::post('/actualiza-quantitat/{comanda}', [ComandaController::class, 'canviQuantitat'])->middleware(['auth'])->name('actualiza.quantitat');
 Route::get('/confcompra/{comanda}', [ComandaController::class, 'confirmar'])->middleware(['auth'])->name('confirma.compres');
-
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
@@ -41,9 +38,9 @@ Route::middleware(['auth'])->group(function () {
         ->name('two-factor.show');
 });
 
-Route::get('/contacte',[IniciController::class,"contacte"])->middleware(['auth'])->name('contacte');
+Route::get('/contacte', [IniciController::class, 'contacte'])->middleware(['auth'])->name('contacte');
 
-//idioma
+// idioma
 Route::get('/lang/{idioma}', 'App\Http\Controllers\LocalizationController@index')->where('idioma', 'ca|en|es');
 
 // CRUD Botigues
@@ -56,7 +53,7 @@ Route::get('/dashboard/modificaBotigues', [App\Http\Controllers\BotigaController
 Route::put('/dashboard/botigues/{botiga}', [App\Http\Controllers\BotigaController::class, 'update'])
     ->middleware(['auth', 'admin'])
     ->name('botigues.update');
-//CRUD Productes
+// CRUD Productes
 Route::put('/dashboard/productes/{producte}', [App\Http\Controllers\ProducteController::class, 'update'])
     ->middleware(['auth', 'admin'])
     ->name('productes.update');
@@ -74,9 +71,7 @@ Route::get('/dashboard/productes/{producte}/edit', [App\Http\Controllers\Product
     ->middleware(['auth', 'admin'])
     ->name('productes.edit');
 
-
-
-//CRUD seccions  
+// CRUD seccions
 Route::get('/dashboard/seccions/{seccio}/edit', [App\Http\Controllers\SeccioController::class, 'edit'])
     ->middleware(['auth', 'admin'])
     ->name('seccions.edit');
