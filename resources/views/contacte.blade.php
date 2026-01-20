@@ -1,5 +1,5 @@
-<x-guest-layout>
-    <div class="bg-verd2 max-w-4xl ml-auto mr-auto mt-12 mb-12 rounded-lg p-5">
+<x-layouts::app>
+    <div class="bg-green-200 max-w-4xl ml-auto mr-auto mt-12 mb-12 rounded-lg p-5">
         <form action="{{ route('contacte') }}" method="get">
             <label class="block py-2">
                 <span class="font-bold text-gray-700">{{ __('Correu electrònic de contacte') }}
@@ -20,10 +20,10 @@
                         placeholder="{{ __('Tinc un problema amb...') }}" required maxlength="1000"></textarea>
             </label>
             <div class="full-w justify-center text-center">
-                <button class="bg-verd4 hover:bg-verd5 p-2 rounded-lg "
+                <button class="bg-green-400 hover:bg-green-500 p-2 rounded-lg "
                     type="submit">{{ __('Enviar comentari') }}</button>
             </div>
 
         </form>
     </div>
-</x-guest-layout>
+</x-layouts::app>

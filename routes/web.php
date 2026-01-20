@@ -34,12 +34,6 @@ Route::get('/contacte',[IniciController::class,"contacte"])->middleware(['auth']
 //idioma
 Route::get('/lang/{idioma}', 'App\Http\Controllers\LocalizationController@index')->where('idioma', 'ca|en|es');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
 // CRUD Botigues
 Route::get('/dashboard/botigues/{botiga}/edit', [App\Http\Controllers\BotigaController::class, 'edit'])
     ->middleware(['auth', 'admin'])
@@ -87,4 +81,4 @@ Route::get('/dashboard/creaSeccio', [App\Http\Controllers\SeccioController::clas
     ->middleware(['auth', 'admin'])
     ->name('seccions.create');
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/settings.php';

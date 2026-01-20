@@ -1,5 +1,5 @@
-<x-guest-layout>
-    <div class="bg-verd2 max-w-4xl ml-auto mr-auto mt-12 mb-12 rounded-lg p-5 justify-center text-center">
+<x-layouts::app>
+    <div class="bg-green-200 max-w-4xl ml-auto mr-auto mt-12 mb-12 rounded-lg p-5 justify-center text-center">
         @if (App::getLocale() == 'ca')
             <h2 class="text-3xl text-center font-extrabold">{{ $producte->nom }}</h2>
         @elseif(App::getLocale() == 'es')
@@ -21,7 +21,7 @@
 
         <p>{{ __('Preu') }}: {{ $producte->preu_unitari }}€</p>
         @if ($producte->mostra_prod && $producte->seccio->mostra_sec)
-            <p class="m-4"><a class=" bg-verd4 hover:bg-verd5 p-2 rounded-sm text-center"
+            <p class="m-4"><a class=" bg-green-400 hover:bg-green-500 p-2 rounded-sm text-center"
                 href="{{ route('comprar', $producte->id) }}">{{ __('Afegir a la llista de la compra') }}</a></p>
         @else
             <p>{{ __('Aquest producte no es pot afegir a cap comanda actualment') }}</p>
@@ -39,4 +39,4 @@
             @endforelse
         </ul>
     </div>
-</x-guest-layout>
+</x-layouts::app>

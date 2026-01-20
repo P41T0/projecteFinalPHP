@@ -1,5 +1,5 @@
-<x-guest-layout>
-    <div class="bg-verd2 rounded-md m-5 p-5">
+<x-layouts::app>
+    <div class="bg-green-200 rounded-md m-5 p-5">
         <h3 class="text-center font-bold text-xl">{{ __('Compra confirmada') }}</h3>
         <div class="m-auto w-fit mt-5 mb-5">
         <table class="">
@@ -53,7 +53,7 @@
         <div class="w-full inline-flex justify-center text-center mt-2"></div>
         <p class="text-center">
             <a
-                class="font-bold bg-verd4 hover:bg-verd5 p-2 rounded" href="{{ route('inici') }}">{{ __("Tornar a l'inici") }}</a>
+                class="font-bold bg-green-400 hover:bg-green-500 p-2 rounded" href="{{ route('inici') }}">{{ __("Tornar a l'inici") }}</a>
         </p>
     </div>
-</x-guest-layout>
+</x-layouts::app>

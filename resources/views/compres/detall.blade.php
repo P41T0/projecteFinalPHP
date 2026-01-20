@@ -1,9 +1,9 @@
-<x-guest-layout>
-    <div class="bg-verd3 rounded-md m-5 p-5">
+<x-layouts::app>
+    <div class="bg-green-300 rounded-md m-5 p-5">
         <h3 class="text-center font-bold text-xl">{{ __('Productes afegits a la llista de la compra') }}</h3>
         @if ($numProductes <= 0)
             <p> {{ __('No tens cap producte introduit en la llista de la compra en aquests moments.') }} <a
-                    class="bg-verd4 hover:bg-verd5 p-2 rounded m-2"
+                    class="bg-green-400 hover:bg-green-500 p-2 rounded m-2"
                     href="{{ Route('inici') }}">{{ __('Prem aquí per a tornar a la pàgina inicial') }}</a></p>
     </div>
 @else
@@ -66,19 +66,19 @@
                 @endforeach
             </select>
         </div>
-        <button class="bg-verd4 hover:bg-verd5 p-2 m-2 rounded" type="submit">{{ __('Guardar canvis') }}</button>
+        <button class="bg-green-400 hover:bg-green-500 p-2 m-2 rounded" type="submit">{{ __('Guardar canvis') }}</button>
     </form>
     <div class="w-full inline-flex justify-center text-center mt-2">
 
         <p class="m-2">
             <a
-                class="font-bold bg-verd4 hover:bg-verd5 p-2 rounded"href="{{ route('inici') }}">{{ __('Seguir comprant') }}</a>
+                class="font-bold bg-green-400 hover:bg-green-500 p-2 rounded"href="{{ route('inici') }}">{{ __('Seguir comprant') }}</a>
         </p>
         <p class="m-2">
-            <a class="font-bold bg-verd4 hover:bg-verd5 p-2 rounded"
+            <a class="font-bold bg-green-400 hover:bg-green-500 p-2 rounded"
                 onclick="return confirm('{{ __('Estàs segur que vols confirmar la compra?') }}')"href="{{ route('confirma.compres', $comanda->id) }}">{{ __('Confirma la comanda') }}</a>
         </p>
     </div>
     </div>
     @endif
-</x-guest-layout>
+</x-layouts::app>

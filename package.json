@@ -1,23 +1,23 @@
 {
+    "$schema": "https://www.schemastore.org/package.json",
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "vite",
-        "build": "vite build"
-    },
-    "packageManager": "pnpm@10.13.1",
-    "devDependencies": {
-        "@tailwindcss/forms": "^0.5.10",
-        "alpinejs": "^3.14.9",
-        "autoprefixer": "^10.4.21",
-        "axios": "^1.11.0",
-        "laravel-vite-plugin": "^2.0.0",
-        "postcss": "^8.5.6",
-        "tailwindcss": "^4.1.11",
-        "vite": "^7.0.6"
+        "build": "vite build",
+        "dev": "vite"
     },
     "dependencies": {
-        "@tailwindcss/postcss": "^4.1.11",
-        "caniuse-lite": "^1.0.30001731"
+        "@tailwindcss/vite": "^4.1.11",
+        "autoprefixer": "^10.4.20",
+        "axios": "^1.7.4",
+        "concurrently": "^9.0.1",
+        "laravel-vite-plugin": "^2.0",
+        "tailwindcss": "^4.0.7",
+        "vite": "^7.0.4"
+    },
+    "optionalDependencies": {
+        "@rollup/rollup-linux-x64-gnu": "4.9.5",
+        "@tailwindcss/oxide-linux-x64-gnu": "^4.0.1",
+        "lightningcss-linux-x64-gnu": "^1.29.1"
     }
 }
