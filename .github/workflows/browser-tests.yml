@@ -13,7 +13,26 @@ on:
       - main
 
 jobs:
+  check-browser-tests-access:
+    runs-on: ubuntu-latest
+    outputs:
+      available: ${{ steps.check.outputs.available }}
+    steps:
+      - name: Check browser tests credentials
+        id: check
+        env:
+          BROWSER_TESTS_TOKEN: ${{ secrets.BROWSER_TESTS_TOKEN }}
+        run: |
+          if [ -n "$BROWSER_TESTS_TOKEN" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Browser tests skipped. Configure BROWSER_TESTS_TOKEN with read access to laravel-labs/starter-kit-browser-tests."
+          fi
+
   ci:
+    needs: check-browser-tests-access
+    if: needs.check-browser-tests-access.outputs.available == 'true'
     runs-on: ubuntu-latest
 
     steps:
@@ -49,6 +68,11 @@ jobs:
 
       - name: Add Flux Credentials Loaded From ENV
         run: composer config http-basic.composer.fluxui.dev "${{ secrets.FLUX_USERNAME }}" "${{ secrets.FLUX_LICENSE_KEY }}"
+
+      - name: Add browser tests repository credentials
+        env:
+          BROWSER_TESTS_TOKEN: ${{ secrets.BROWSER_TESTS_TOKEN }}
+        run: composer config --global github-oauth.github.com "$BROWSER_TESTS_TOKEN"
 
       - name: Install Dependencies
         run: composer update --with-all-dependencies --no-interaction --prefer-dist --optimize-autoloader
