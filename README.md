@@ -17,6 +17,32 @@ If you are looking for the alternate configurations of this starter kit, they ca
 
 Documentation for all Laravel starter kits can be found on the [Laravel website](https://laravel.com/docs/starter-kits).
 
+## Running with Docker
+
+Docker Compose runs the Laravel application with Apache and a persistent MySQL database.
+
+1. Copy `.env.example` to `.env` if you do not already have a local `.env`.
+2. Generate an application key:
+
+   ```powershell
+   docker compose run --rm app php artisan key:generate --show
+   ```
+
+   Put the displayed value in `.env` as `APP_KEY=...`.
+3. Build and start the containers:
+
+   ```powershell
+   docker compose up --build -d
+   ```
+
+The application is available at <http://localhost:8080>. Database migrations run when the application container starts. Use `docker compose down` to stop the services; the MySQL data remains in the `db_data` volume.
+
+Run the test suite in its own PHP container with:
+
+```powershell
+docker compose --profile test run --build --rm test
+```
+
 ## Contributing
 
 Thank you for considering contributing to our starter kit! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
