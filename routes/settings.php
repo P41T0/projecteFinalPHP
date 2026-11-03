@@ -13,6 +13,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::livewire('settings/password', 'pages::settings.password')->name('user-password.edit');
     Route::livewire('settings/appearance', 'pages::settings.appearance')->name('appearance.edit');
 
+    if (Features::canManagePasskeys()) {
+        Route::livewire('settings/security', 'pages::settings.security')
+            ->middleware('password.confirm')
+            ->name('security.edit');
+    }
+
     Route::livewire('settings/two-factor', 'pages::settings.two-factor')
         ->middleware(
             when(

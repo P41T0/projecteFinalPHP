@@ -14,7 +14,7 @@ This application uses Laravel 13, Livewire 4, Tailwind CSS 4, Fortify, and the [
 
 The Livewire page routes are declared with `Route::livewire` in `routes/settings.php`. Authentication views are selected in `App\Providers\FortifyServiceProvider`.
 
-The obsolete Volt provider was removed because the application uses Livewire 4 page components and does not depend on `livewire/volt`. Legacy view files are retained and are not used by current routes.
+The obsolete Volt provider was removed because the application uses Livewire 4 page components and does not depend on `livewire/volt`.
 
 ## Official Documentation
 
@@ -25,6 +25,12 @@ The obsolete Volt provider was removed because the application uses Livewire 4 p
 ## Deprecation warnings
 
 Laravel follows its standard default and discards deprecation logs when `LOG_DEPRECATIONS_CHANNEL=null`. To see them locally, set `LOG_DEPRECATIONS_CHANNEL=single` in `.env`; in container deployments, `stderr` is also suitable. The test environment sends Laravel deprecation logs to `stderr`.
+
+## Passkeys and frontend tooling
+
+Passkey sign-in is optional; password sign-in and two-factor authentication remain available. Users can register and remove passkeys from **Settings → Security**. WebAuthn requires HTTPS, except on `localhost`; set `APP_URL` to the exact origin users visit, and keep `APP_KEY` stable because it is used to derive passkey user handles.
+
+The frontend uses Vite Plus. Run `npm run dev` or `npm run build` with Node `^22.18.0`, `^24.11.0`, or `>=26.0.0`; Docker builds use Node 24.
 
 ## Running with Docker
 

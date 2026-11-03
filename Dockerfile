@@ -23,7 +23,7 @@ RUN rm -f bootstrap/cache/*.php \
     && composer dump-autoload --no-dev --optimize --classmap-authoritative --no-scripts \
     && php artisan package:discover --ansi
 
-FROM node:22-alpine AS frontend-build
+FROM node:24-alpine AS frontend-build
 
 WORKDIR /app
 
