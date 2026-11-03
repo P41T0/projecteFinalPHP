@@ -1,15 +1,15 @@
 <x-layouts::app>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight dark:text-zinc-100">
             {{ __('Inici') }}
         </h2>
     </x-slot>
 
     <div class="w-fit mx-auto sm:px-6 lg:px-8">
-        <div class="p-6 text-gray-900">
+        <div class="p-6 text-gray-900 dark:text-zinc-100">
             @forelse ($seccions as $seccio)
                 @if ($seccio->mostra_sec)
-                    <div class=" bg-green-500 m-2 p-2 rounded-md">
+                    <div class="m-2 rounded-md border border-green-600 bg-green-500 p-2 dark:border-green-800 dark:bg-zinc-900">
                         @if (App::getLocale() == 'ca')
                             <h2 class="text-center font-bold text-2xl">{{ $seccio->nom }}</h2>
                         @elseif(App::getLocale() == 'es')
@@ -28,7 +28,7 @@
                         <div class="flex flex-wrap text-center max-w-64 justify-center">
                             @foreach ($seccio->productes as $producte)
                                 @if ($producte->mostra_prod)
-                                    <div class=" bg-green-200 m-2 max-w-72 p-2 rounded-md">
+                                    <div class="m-2 max-w-72 rounded-md border border-green-300 bg-green-100 p-2 dark:border-zinc-700 dark:bg-zinc-800">
                                         @if (App::getLocale() == 'ca')
                                             <p class="font-semibold text-lg">{{ $producte->nom }}</p>
                                         @elseif(App::getLocale() == 'es')
@@ -40,7 +40,7 @@
                                        
                                         <p>{{ $producte->preu_unitari }}€</p>
                                         <p class="m-2">
-                                        <a class="bg-green-300 hover:bg-green-400 p-2 m-4 rounded-sm text-center"
+                                        <a class="m-4 rounded-sm bg-green-300 p-2 text-center hover:bg-green-400 dark:bg-green-900 dark:text-green-100 dark:hover:bg-green-800"
                                             href="{{ route('detall.producte', $producte->id) }}">{{ __('Comprar') }}</a></p>
                                     </div>
                                 @endif
