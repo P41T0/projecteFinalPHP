@@ -14,7 +14,7 @@ This application uses Laravel 13, Livewire 4, Tailwind CSS 4, Fortify, and the [
 
 The Livewire page routes are declared with `Route::livewire` in `routes/settings.php`. Authentication views are selected in `App\Providers\FortifyServiceProvider`.
 
-The obsolete Volt provider was removed because the application uses Livewire 4 page components and does not depend on `livewire/volt`. Legacy view files are retained and are not used by current routes.
+The obsolete Volt provider was removed because the application uses Livewire 4 page components and does not depend on `livewire/volt`.
 
 ## Official Documentation
 
