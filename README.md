@@ -1,21 +1,30 @@
-# Laravel + Livewire Starter Kit
+# Botiga electrònica
 
 ## Introduction
 
-Our Laravel + [Livewire](https://livewire.laravel.com) starter kit provides a robust, modern starting point for building Laravel applications with a Livewire frontend.
+This application uses Laravel 13, Livewire 4, Tailwind CSS 4, Fortify, and the [Flux UI](https://fluxui.dev) component library.
 
-Livewire is a powerful way of building dynamic, reactive, frontend UIs using just PHP. It's a great fit for teams that primarily use Blade templates and are looking for a simpler alternative to JavaScript-driven SPA frameworks like React and Vue.
+## Project structure
 
-This Livewire starter kit utilizes Livewire 3, Laravel Volt (optionally), TypeScript, Tailwind, and the [Flux UI](https://fluxui.dev) component library.
+- `app/Http/Controllers`, `app/Models`, and `app/Actions` contain the application's PHP code.
+- `resources/views/pages` contains full-page Livewire components and authentication views.
+- `resources/views/components` contains reusable Blade components and layouts.
+- `resources/views` also contains the storefront's Blade pages.
+- `resources/css` and `resources/js` contain the Vite entry points.
 
-If you are looking for the alternate configurations of this starter kit, they can be found in the following branches:
+The Livewire page routes are declared with `Route::livewire` in `routes/settings.php`. Authentication views are selected in `App\Providers\FortifyServiceProvider`.
 
-- [components](https://github.com/laravel/livewire-starter-kit/tree/components) - if Volt is not selected
-- [workos](https://github.com/laravel/livewire-starter-kit/tree/workos) - if WorkOS is selected for authentication
+The obsolete Volt provider was removed because the application uses Livewire 4 page components and does not depend on `livewire/volt`. Legacy view files are retained and are not used by current routes.
 
 ## Official Documentation
 
-Documentation for all Laravel starter kits can be found on the [Laravel website](https://laravel.com/docs/starter-kits).
+- [Laravel 13](https://laravel.com/docs/13.x)
+- [Livewire 4](https://livewire.laravel.com/docs/4.x)
+- [Tailwind CSS 4](https://tailwindcss.com/docs)
+
+## Deprecation warnings
+
+Laravel follows its standard default and discards deprecation logs when `LOG_DEPRECATIONS_CHANNEL=null`. To see them locally, set `LOG_DEPRECATIONS_CHANNEL=single` in `.env`; in container deployments, `stderr` is also suitable. The test environment sends Laravel deprecation logs to `stderr`.
 
 ## Running with Docker
 
@@ -35,7 +44,7 @@ Docker Compose runs the Laravel application with Apache and a persistent MySQL d
    docker compose up --build -d
    ```
 
-The application is available at <http://localhost:8080>. Database migrations run when the application container starts. Use `docker compose down` to stop the services; the MySQL data remains in the `db_data` volume.
+The application is available at <http://localhost:8080>. Database migrations and seeders run when the application container starts. Use `docker compose down` to stop the services; the MySQL data remains in the `db_data` volume.
 
 Run the test suite in its own PHP container with:
 

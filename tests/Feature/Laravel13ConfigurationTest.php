@@ -6,6 +6,10 @@ test('cache does not deserialize arbitrary classes', function () {
     expect(config('cache.serializable_classes'))->toBeFalse();
 });
 
+test('laravel deprecation warnings are visible during tests', function () {
+    expect(config('logging.deprecations.channel'))->toBe('stderr');
+});
+
 test('public filesystem url is built from the application url', function () {
     expect(config('filesystems.disks.public.url'))
         ->toBe(rtrim((string) (config('app.url') ?: 'http://localhost'), '/').'/storage');
