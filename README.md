@@ -26,6 +26,12 @@ The obsolete Volt provider was removed because the application uses Livewire 4 p
 
 Laravel follows its standard default and discards deprecation logs when `LOG_DEPRECATIONS_CHANNEL=null`. To see them locally, set `LOG_DEPRECATIONS_CHANNEL=single` in `.env`; in container deployments, `stderr` is also suitable. The test environment sends Laravel deprecation logs to `stderr`.
 
+## Passkeys and frontend tooling
+
+Passkey sign-in is optional; password sign-in and two-factor authentication remain available. Users can register and remove passkeys from **Settings → Security**. WebAuthn requires HTTPS, except on `localhost`; set `APP_URL` to the exact origin users visit, and keep `APP_KEY` stable because it is used to derive passkey user handles.
+
+The frontend uses Vite Plus. Run `npm run dev` or `npm run build` with Node `^22.18.0`, `^24.11.0`, or `>=26.0.0`; Docker builds use Node 24.
+
 ## Running with Docker
 
 Docker Compose runs the Laravel application with Apache and a persistent MySQL database.
