@@ -28,6 +28,10 @@
                 </flux:sidebar.group>
             </flux:sidebar.nav>
 
+            <div class="mt-3 px-3">
+                <x-language-switcher />
+            </div>
+
             <flux:spacer />
         @if(auth()->check())
             <x-desktop-user-menu class="hidden lg:block" :name="auth()->user()->name" />
@@ -42,6 +46,9 @@
             <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
 
             <flux:spacer />
+
+            <x-language-switcher />
+
             @if(auth()->check())
             <flux:dropdown position="top" align="end">
                 <flux:profile

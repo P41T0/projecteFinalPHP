@@ -17,6 +17,10 @@
                 @endif
                 <flux:navlist.item icon="paint-brush" :href="route('appearance.edit')" :current="request()->routeIs('appearance.edit')" wire:navigate>{{ __('Appearance') }}</flux:navlist.item>
             </flux:navlist>
+
+            <div class="mt-3 border-t border-zinc-200 pt-3 dark:border-zinc-700">
+                <x-language-switcher />
+            </div>
         </aside>
 
         <section class="min-w-0 rounded-2xl border border-green-200 bg-white p-5 shadow-sm sm:p-8 dark:border-zinc-800 dark:bg-zinc-900">

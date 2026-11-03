@@ -27,6 +27,10 @@
                 </flux:navlist.group>
             </flux:navlist>
 
+            <div class="mt-3 px-3">
+                <x-language-switcher />
+            </div>
+
             <flux:spacer />
 
             <!-- Desktop User Menu -->
@@ -81,6 +85,8 @@
             <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
 
             <flux:spacer />
+
+            <x-language-switcher />
 
             <flux:dropdown position="top" align="end">
                 <flux:profile

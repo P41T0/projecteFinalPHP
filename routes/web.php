@@ -24,7 +24,9 @@ Route::get('/dashboard', [IniciController::class, 'index'])
 Route::get('/contacte', [IniciController::class, 'contacte'])->middleware(['auth'])->name('contacte');
 
 // idioma
-Route::get('/lang/{idioma}', [LocalizationController::class, 'index'])->where('idioma', 'ca|en|es');
+Route::get('/lang/{idioma}', [LocalizationController::class, 'index'])
+    ->where('idioma', 'ca|en|es')
+    ->name('localization');
 
 // CRUD Botigues
 Route::get('/dashboard/botigues/{botiga}/edit', [BotigaController::class, 'edit'])

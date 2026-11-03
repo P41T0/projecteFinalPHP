@@ -27,6 +27,8 @@
 
             <flux:spacer />
 
+            <x-language-switcher />
+
             <x-desktop-user-menu />
         </flux:header>
 
@@ -54,6 +56,10 @@
                     @endauth
                 </flux:sidebar.group>
             </flux:sidebar.nav>
+
+            <div class="p-3">
+                <x-language-switcher />
+            </div>
 
             <flux:spacer />
         </flux:sidebar>

@@ -29,6 +29,8 @@
 
             <flux:spacer />
 
+            <x-language-switcher />
+
             @if(Auth::check())
             <!-- Desktop User Menu -->
             <flux:dropdown position="top" align="end">
@@ -107,6 +109,10 @@
                     @endauth
                 </flux:navlist.group>
             </flux:navlist>
+
+            <div class="p-3">
+                <x-language-switcher />
+            </div>
 
             <flux:spacer />
         </flux:sidebar>
