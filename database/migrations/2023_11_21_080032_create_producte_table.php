@@ -12,7 +12,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('producte', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('nom');
             $table->string('nom_es');
             $table->string('nom_en');
@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('descripcio_es');
             $table->string('descripcio_en');
             $table->float('preu_unitari');
-            $table->unsignedBigInteger('seccio_id');
+            $table->uuid('seccio_id');
             $table->foreign('seccio_id')->references('id')->on('seccio');
             $table->string('foto')->nullable();
             $table->boolean('mostra_prod');

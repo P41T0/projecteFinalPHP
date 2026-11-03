@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('linia_comanda', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('producte_id');
+            $table->uuid('id')->primary();
+            $table->uuid('producte_id');
             $table->foreign('producte_id')->references('id')->on('producte');
-            $table->unsignedBigInteger('comanda_id');
+            $table->uuid('comanda_id');
             $table->foreign('comanda_id')->references('id')->on('comanda');
             $table->integer('quantitat');
             $table->timestamp('created_at')->useCurrent();

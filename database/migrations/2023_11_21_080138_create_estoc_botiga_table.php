@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('estoc_botiga', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('producte_id');
+            $table->uuid('id')->primary();
+            $table->uuid('producte_id');
             $table->foreign('producte_id')->references('id')->on('producte');
-            $table->unsignedBigInteger('botiga_id');
+            $table->uuid('botiga_id');
             $table->foreign('botiga_id')->references('id')->on('botiga');
             $table->integer('quantitat');
             $table->timestamp('created_at')->useCurrent();

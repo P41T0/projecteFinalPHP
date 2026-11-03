@@ -31,17 +31,16 @@ class SeccioController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate(
-            $request,
+        $request->validate(
             [
-                'nom' => 'required|max:100',
-                'nomEs' => 'required|max:100',
-                'nomEn' => 'required|max:100',
-                'descripcio' => 'required|max:500',
-                'descripcioEs' => 'required|max:500',
-                'descripcioEn' => 'required|max:500',
+                'nom' => 'required|string|max:100',
+                'nomEs' => 'required|string|max:100',
+                'nomEn' => 'required|string|max:100',
+                'descripcio' => 'required|string|max:255',
+                'descripcioEs' => 'required|string|max:255',
+                'descripcioEn' => 'required|string|max:255',
             ],
-            $messages = [
+            [
                 'required' => 'El camp :attribute és obligatori',
                 'size' => 'El camp :attribute no pot superar :max caràcters',
             ]
@@ -83,17 +82,16 @@ class SeccioController extends Controller
     public function update(Request $request, Seccio $seccio)
     {
         //
-        $this->validate(
-            $request,
+        $request->validate(
             [
-                'nom' => 'required|max:100',
-                'nomEs' => 'required|max:100',
-                'nomEn' => 'required|max:100',
-                'descripcio' => 'required|max:500',
-                'descripcioEs' => 'required|max:500',
-                'descripcioEn' => 'required|max:500',
+                'nom' => 'required|string|max:100',
+                'nomEs' => 'required|string|max:100',
+                'nomEn' => 'required|string|max:100',
+                'descripcio' => 'required|string|max:255',
+                'descripcioEs' => 'required|string|max:255',
+                'descripcioEn' => 'required|string|max:255',
             ],
-            $messages = [
+            [
                 'required' => 'El camp :attribute és obligatori',
                 'size' => 'El camp :attribute no pot superar :max caràcters',
             ]
