@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Seccio extends Model
 {
-    protected $table = 'Seccio';
+    protected $table = 'seccio';
 
     public function productes()
     {

@@ -54,4 +54,4 @@
         </div>
     </div>
     </div>
-</x-layouts::auth>
+</x-layouts::app>

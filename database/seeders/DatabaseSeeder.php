@@ -12,6 +12,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        foreach (['users', 'seccio', 'producte', 'botiga', 'comanda', 'estoc_botiga', 'linia_comanda'] as $table) {
+            if (DB::table($table)->exists()) {
+                $this->command?->info("Skipping demo seeding because the {$table} table already contains data.");
+
+                return;
+            }
+        }
+
+        DB::transaction(fn () => $this->seedData());
+    }
+
+    private function seedData(): void
+    {
         \App\Models\User::factory(10)->create();
 
         DB::table('users')->insert(['name' => 'Pau', 'email' => 'pau.tort@uvic.cat', 'password' => bcrypt('provapag.123456'), 'admin' => true]);

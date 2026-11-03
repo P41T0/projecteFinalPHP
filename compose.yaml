@@ -27,7 +27,7 @@ services:
     command:
       - sh
       - -c
-      - php artisan migrate --force && apache2-foreground
+      - chown -R www-data:www-data storage bootstrap/cache && su -s /bin/sh www-data -c 'php artisan migrate --force && php artisan db:seed --force' && apache2-foreground
     restart: unless-stopped
 
   db:

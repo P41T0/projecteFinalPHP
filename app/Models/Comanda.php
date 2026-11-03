@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comanda extends Model
 {
-    protected $table = 'Comanda';
+    protected $table = 'comanda';
 
     public function usuari()
     {
