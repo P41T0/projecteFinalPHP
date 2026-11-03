@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ComandaController;
 use App\Http\Controllers\IniciController;
+use App\Http\Controllers\LocalizationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [IniciController::class, 'index'])->name('inici');
@@ -20,7 +21,7 @@ Route::view('dashboard', 'dashboard')
 Route::get('/contacte', [IniciController::class, 'contacte'])->middleware(['auth'])->name('contacte');
 
 // idioma
-Route::get('/lang/{idioma}', 'App\Http\Controllers\LocalizationController@index')->where('idioma', 'ca|en|es');
+Route::get('/lang/{idioma}', [LocalizationController::class, 'index'])->where('idioma', 'ca|en|es');
 
 // CRUD Botigues
 Route::get('/dashboard/botigues/{botiga}/edit', [App\Http\Controllers\BotigaController::class, 'edit'])

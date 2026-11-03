@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
 class Producte extends Model
 {
-    protected $table = 'Producte';
+    use HasUuids;
+
+    protected $table = 'producte';
 
     public function Seccio()
     {
@@ -15,11 +18,15 @@ class Producte extends Model
 
     public function Botiga()
     {
-        return $this->belongsToMany(Botiga::class, 'estoc_botiga')->withPivot('quantitat');
+        return $this->belongsToMany(Botiga::class, 'estoc_botiga')
+            ->using(EstocBotiga::class)
+            ->withPivot('quantitat');
     }
 
     public function Comanda()
     {
-        return $this->belongsToMany(Comanda::class, 'linia_comanda')->withPivot('quantitat');
+        return $this->belongsToMany(Comanda::class, 'linia_comanda')
+            ->using(LiniaComanda::class)
+            ->withPivot('quantitat');
     }
 }

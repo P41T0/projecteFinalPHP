@@ -33,20 +33,19 @@ class ProducteController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate(
-            $request,
+        $request->validate(
             [
-                'nom' => 'required|max:100',
-                'nomEs' => 'required|max:100',
-                'nomEn' => 'required|max:100',
-                'descripcio' => 'required|max:1000',
-                'descripcioEs' => 'required|max:1000',
-                'descripcioEn' => 'required|max:1000',
-                'imatge' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-                'preu' => 'required',
-                'seccio' => 'required',
+                'nom' => 'required|string|max:100',
+                'nomEs' => 'required|string|max:100',
+                'nomEn' => 'required|string|max:100',
+                'descripcio' => 'required|string|max:255',
+                'descripcioEs' => 'required|string|max:255',
+                'descripcioEn' => 'required|string|max:255',
+                'imatge' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+                'preu' => 'required|numeric|gte:0',
+                'seccio' => 'required|uuid|exists:seccio,id',
             ],
-            $messages = [
+            [
                 'required' => 'El camp :attribute és obligatori',
                 'size' => 'El camp :attribute no pot superar :max caràcters',
             ]
@@ -68,9 +67,7 @@ class ProducteController extends Controller
             $request->file('imatge')->storeAs("/public/$nomImg");
             $producte->foto = $nomImg;
         }
-        if ($request->input('preu') > 0) {
-            $producte->preu_unitari = $request->input('preu');
-        }
+        $producte->preu_unitari = $request->input('preu');
         $producte->mostra_prod = false;
         $producte->save();
         $botigues = Botiga::all();
@@ -112,20 +109,20 @@ class ProducteController extends Controller
     public function update(Request $request, Producte $producte)
     {
         //
-        $this->validate(
-            $request,
+        $request->validate(
             [
-                'nom' => 'required|max:100',
-                'nomEs' => 'required|max:100',
-                'nomEn' => 'required|max:100',
-                'descripcio' => 'required|max:1000',
-                'descripcioEs' => 'required|max:1000',
-                'descripcioEn' => 'required|max:1000',
+                'nom' => 'required|string|max:100',
+                'nomEs' => 'required|string|max:100',
+                'nomEn' => 'required|string|max:100',
+                'descripcio' => 'required|string|max:255',
+                'descripcioEs' => 'required|string|max:255',
+                'descripcioEn' => 'required|string|max:255',
                 'imatge' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-                'preu' => 'required',
+                'preu' => 'required|numeric|gte:0',
+                'seccio' => 'required|uuid|exists:seccio,id',
                 // 'seccio' => 'required'
             ],
-            $messages = [
+            [
                 'required' => 'El camp :attribute és obligatori',
                 'size' => 'El camp :attribute no pot superar :max caràcters',
             ]
@@ -147,9 +144,7 @@ class ProducteController extends Controller
             $request->file('imatge')->storeAs("/public/$nomImg");
             $producte->foto = $nomImg;
         }
-        if ($request->input('preu') > 0) {
-            $producte->preu_unitari = $request->input('preu');
-        }
+        $producte->preu_unitari = $request->input('preu');
         $producte->mostra_prod = $request->input('mostraProd') ? true : false;
         $producte->save();
         // dd($producte);

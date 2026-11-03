@@ -12,7 +12,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('seccio', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('nom');
             $table->string('nom_es');
             $table->string('nom_en');

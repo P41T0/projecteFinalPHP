@@ -6,6 +6,8 @@ use App\Models\Botiga;
 use App\Models\Comanda;
 use App\Models\Producte;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class ComandaController extends Controller
 {
@@ -19,7 +21,7 @@ class ComandaController extends Controller
             $comanda = new Comanda;
 
             $comanda->usuari_id = Auth()->user()->id;
-            $comanda->botiga_id = 2;
+            $comanda->botiga_id = Botiga::query()->orderBy('poblacio')->firstOrFail()->id;
             $comanda->save();
         }
         $liniaComanda = $comanda->productes()->where('producte_id', $producte->id)->first();
@@ -46,30 +48,28 @@ class ComandaController extends Controller
 
     public function confirmar(Comanda $comanda)
     {
+        abort_unless($comanda->usuari_id === Auth::id(), 403);
+
         $missatge = '';
         $preuTotal = 0;
         $botigues = Botiga::find($comanda->botiga_id);
         $botiga = $botigues->poblacio;
         $usuari = Auth()->user()->id;
-        if ($comanda->usuari_id == $usuari) {
-            if ($comanda->oberta != 1) {
-                foreach ($comanda->productes as $prods) {
-                    $preuTotal += $prods->preu_unitari * $prods->pivot->quantitat;
-                }
-                $missatge = 0;
-            } elseif ($comanda->productes->isEmpty()) {
-                $missatge = 1;
-            } else {
-                $comanda->oberta = 0;
-                $comanda->save();
-
-                foreach ($comanda->productes as $prods) {
-                    $preuTotal += $prods->preu_unitari * $prods->pivot->quantitat;
-                }
-                $missatge = 2;
+        if ($comanda->oberta != 1) {
+            foreach ($comanda->productes as $prods) {
+                $preuTotal += $prods->preu_unitari * $prods->pivot->quantitat;
             }
+            $missatge = 0;
+        } elseif ($comanda->productes->isEmpty()) {
+            $missatge = 1;
         } else {
-            $missatge = 3;
+            $comanda->oberta = 0;
+            $comanda->save();
+
+            foreach ($comanda->productes as $prods) {
+                $preuTotal += $prods->preu_unitari * $prods->pivot->quantitat;
+            }
+            $missatge = 2;
         }
 
         return view('compres.confirma', compact('comanda', 'missatge', 'preuTotal', 'botiga'));
@@ -77,27 +77,37 @@ class ComandaController extends Controller
 
     public function canviQuantitat(Request $request, Comanda $comanda)
     {
+        abort_unless($comanda->usuari_id === Auth::id(), 403);
+
         if ($comanda->oberta == 1) {
-            $productes = $request->input('productes');
-            if ($productes != null && is_array($productes)) {
-                foreach ($productes as $producteId => $quantitat) {
-                    if ($quantitat <= 0) {
-                        $comanda->productes()->detach($producteId);
-                    } else {
-                        if ($producteId != null) {
-                            if ($quantitat == null) {
-                                $quantitat = 1;
-                            }
-                            if ($quantitat > 10) {
-                                $quantitat = 10;
-                            }
-                            $comanda->productes()->updateExistingPivot($producteId, ['quantitat' => $quantitat]);
-                        }
-                    }
-                }
-                $comanda->botiga_id = $request->input('botiga');
-                $comanda->save();
+            $validated = $request->validate([
+                'productes' => ['required', 'array', 'min:1'],
+                'productes.*' => ['required', 'integer', 'min:0', 'max:10'],
+                'botiga' => ['required', 'uuid', 'exists:botiga,id'],
+            ]);
+
+            $producteIds = array_keys($validated['productes']);
+            $attachedIds = $comanda->productes()
+                ->whereIn('producte.id', $producteIds)
+                ->pluck('producte.id')
+                ->all();
+
+            if (count($attachedIds) !== count($producteIds)) {
+                throw ValidationException::withMessages([
+                    'productes' => 'Un o més productes no pertanyen a aquesta comanda.',
+                ]);
             }
+
+            foreach ($validated['productes'] as $producteId => $quantitat) {
+                if ($quantitat === 0) {
+                    $comanda->productes()->detach($producteId);
+                } else {
+                    $comanda->productes()->updateExistingPivot($producteId, ['quantitat' => $quantitat]);
+                }
+            }
+            $comanda->botiga_id = $validated['botiga'];
+            $comanda->save();
+
             if ($comanda->productes->isEmpty()) {
                 return redirect()->route('inici');
             }

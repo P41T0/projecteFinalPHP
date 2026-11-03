@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Botiga;
 use App\Models\Producte;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class BotigaController extends Controller
 {
@@ -58,19 +59,25 @@ class BotigaController extends Controller
      */
     public function update(Request $request, Botiga $botiga)
     {
-        $productes = $request->input('productes');
-        if ($productes != null) {
-            foreach ($productes as $producteId => $quantitat) {
+        $validated = $request->validate([
+            'productes' => ['required', 'array', 'min:1'],
+            'productes.*' => ['required', 'integer', 'min:0'],
+        ]);
 
-                if ($quantitat < 0) {
-                    $quantitat = 0;
-                }
-                if ($quantitat == null) {
-                    $quantitat = 0;
-                }
-                $botiga->productes()->updateExistingPivot($producteId, ['quantitat' => $quantitat]);
+        $producteIds = array_keys($validated['productes']);
+        $attachedIds = $botiga->productes()
+            ->whereIn('producte.id', $producteIds)
+            ->pluck('producte.id')
+            ->all();
 
-            }
+        if (count($attachedIds) !== count($producteIds)) {
+            throw ValidationException::withMessages([
+                'productes' => 'Un o més productes no pertanyen a aquesta botiga.',
+            ]);
+        }
+
+        foreach ($validated['productes'] as $producteId => $quantitat) {
+            $botiga->productes()->updateExistingPivot($producteId, ['quantitat' => $quantitat]);
         }
 
         return redirect()->route('botigues.select');

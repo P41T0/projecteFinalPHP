@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('botiga', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('poblacio');
             $table->string('adreca');
             $table->string('correu');
