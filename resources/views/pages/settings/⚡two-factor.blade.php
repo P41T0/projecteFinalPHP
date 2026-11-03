@@ -178,8 +178,6 @@ new class extends Component {
 } ?>
 
 <section class="w-full">
-    @include('partials.settings-heading')
-
     <flux:heading class="sr-only">{{ __('Two-Factor Authentication Settings') }}</flux:heading>
 
     <x-pages::settings.layout
@@ -272,7 +270,7 @@ new class extends Component {
                             name="code"
                             wire:model="code"
                             length="6"
-                            label="OTP Code"
+                            :label="__('OTP Code')"
                             label:sr-only
                             class="mx-auto"
                         />

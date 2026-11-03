@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         @include('partials.head')
     </head>
-    <body class="min-h-screen bg-white dark:bg-zinc-800">
-        <flux:header container class="border-b border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
+    <body class="min-h-screen bg-green-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100">
+        <flux:header container class="border-b border-green-200 bg-white/95 shadow-sm backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/95">
             <flux:sidebar.toggle class="lg:hidden mr-2" icon="bars-2" inset="left" />
 
             <x-app-logo href="{{ route('dashboard') }}" wire:navigate />
@@ -13,33 +13,21 @@
                 <flux:navbar.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                     {{ __('Dashboard') }}
                 </flux:navbar.item>
+                @auth
+                    <flux:navbar.item icon="envelope" :href="route('contacte')" :current="request()->routeIs('contacte')" wire:navigate>
+                        {{ __('Contacte') }}
+                    </flux:navbar.item>
+                    @if (auth()->user()->isAdmin())
+                        <flux:navbar.item icon="wrench-screwdriver" :href="route('botigues.select')" :current="request()->routeIs('botigues.*', 'productes.*', 'seccions.*', 'modifElems')" wire:navigate>
+                            {{ __('Administració') }}
+                        </flux:navbar.item>
+                    @endif
+                @endauth
             </flux:navbar>
 
             <flux:spacer />
 
-            <flux:navbar class="me-1.5 space-x-0.5 rtl:space-x-reverse py-0!">
-                <flux:tooltip :content="__('Search')" position="bottom">
-                    <flux:navbar.item class="!h-10 [&>div>svg]:size-5" icon="magnifying-glass" href="#" :label="__('Search')" />
-                </flux:tooltip>
-                <flux:tooltip :content="__('Repository')" position="bottom">
-                    <flux:navbar.item
-                        class="h-10 max-lg:hidden [&>div>svg]:size-5"
-                        icon="folder-git-2"
-                        href="https://github.com/laravel/livewire-starter-kit"
-                        target="_blank"
-                        :label="__('Repository')"
-                    />
-                </flux:tooltip>
-                <flux:tooltip :content="__('Documentation')" position="bottom">
-                    <flux:navbar.item
-                        class="h-10 max-lg:hidden [&>div>svg]:size-5"
-                        icon="book-open-text"
-                        href="https://laravel.com/docs/starter-kits#livewire"
-                        target="_blank"
-                        label="Documentation"
-                    />
-                </flux:tooltip>
-            </flux:navbar>
+            <x-language-switcher />
 
             <x-desktop-user-menu />
         </flux:header>
@@ -56,19 +44,24 @@
                     <flux:sidebar.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                         {{ __('Dashboard')  }}
                     </flux:sidebar.item>
+                    @auth
+                        <flux:sidebar.item icon="envelope" :href="route('contacte')" :current="request()->routeIs('contacte')" wire:navigate>
+                            {{ __('Contacte') }}
+                        </flux:sidebar.item>
+                        @if (auth()->user()->isAdmin())
+                            <flux:sidebar.item icon="wrench-screwdriver" :href="route('botigues.select')" :current="request()->routeIs('botigues.*', 'productes.*', 'seccions.*', 'modifElems')" wire:navigate>
+                                {{ __('Administració') }}
+                            </flux:sidebar.item>
+                        @endif
+                    @endauth
                 </flux:sidebar.group>
             </flux:sidebar.nav>
 
-            <flux:spacer />
+            <div class="p-3">
+                <x-language-switcher />
+            </div>
 
-            <flux:sidebar.nav>
-                <flux:sidebar.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit" target="_blank">
-                    {{ __('Repository') }}
-                </flux:sidebar.item>
-                <flux:sidebar.item icon="book-open-text" href="https://laravel.com/docs/starter-kits#livewire" target="_blank">
-                    {{ __('Documentation') }}
-                </flux:sidebar.item>
-            </flux:sidebar.nav>
+            <flux:spacer />
         </flux:sidebar>
 
         {{ $slot }}

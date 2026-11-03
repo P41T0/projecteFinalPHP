@@ -1,5 +1,5 @@
 <x-layouts::app>
-    <div class="bg-green-200 max-w-4xl ml-auto mr-auto mt-12 mb-12 rounded-lg p-5">
+    <div class="mx-auto my-12 max-w-4xl rounded-2xl border border-green-200 bg-white p-6 shadow-sm sm:p-8 dark:border-zinc-800 dark:bg-zinc-900">
         <h2 class="text-3xl text-center font-extrabold">{{ __('Productes disponibles en la botiga de ') }}{{$botiga->poblacio}}</h2>
 
 
@@ -22,7 +22,7 @@
             @forelse ($botiga->productes as $prod)
             <label class="block py-2">
                 <caption>Quantitat en estoc de </caption>
-              <span class="text-gray-700">{{$prod->nom}}
+              <span class="text-gray-700 dark:text-zinc-200">{{$prod->nom}}
                     <input class="rounded-lg" type="number" name="productes[{{$prod->id}}]" min="0" value="{{$prod->pivot->quantitat}}" id="">
               </span>
             </label>

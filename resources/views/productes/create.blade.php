@@ -1,5 +1,5 @@
 <x-layouts::app>
-    <div class="bg-green-200 max-w-4xl ml-auto mr-auto mt-12 mb-12 rounded-lg p-5">
+    <div class="mx-auto my-12 max-w-4xl rounded-2xl border border-green-200 bg-white p-6 shadow-sm sm:p-8 dark:border-zinc-800 dark:bg-zinc-900">
         <h2 class="text-3xl text-center font-extrabold">{{ __('Crea un producte nou') }}</h2>
 
 
@@ -20,49 +20,49 @@
             {{ csrf_field() }}
             {{ method_field('PUT') }}
             <label class="block py-2">
-                <span class="text-gray-700">Nom del producte:
+                <span class="text-gray-700 dark:text-zinc-200">Nom del producte:
                     <input class="w-full rounded-lg " type="text" name="nom"
                         placeholder="Introdueix el nom del producte">
             </label>
             <label class="block py-2">
-                <span class="text-gray-700">Nom del producte (en castellà):
+                <span class="text-gray-700 dark:text-zinc-200">Nom del producte (en castellà):
                     <input class=" w-full rounded-lg" type="text" name="nomEs"
                         placeholder="Introdueix el nom del producte">
             </label>
             <label class="block py-2">
-                <span class="text-gray-700">Nom del producte (en anglès):
+                <span class="text-gray-700 dark:text-zinc-200">Nom del producte (en anglès):
                     <input class=" w-full rounded-lg" type="text" name="nomEn"
                         placeholder="Introdueix el nom del producte">
             </label>
             <label class="block py-2">
-                <span class="text-gray-700">Descripció del producte:
+                <span class="text-gray-700 dark:text-zinc-200">Descripció del producte:
                     <input class=" w-full rounded-lg" type="text" name="descripcio"
                         placeholder="Introdueix la descripció del producte">
             </label>
             <label class="block py-2">
-                <span class="text-gray-700">Descripció del producte (en castellà):
+                <span class="text-gray-700 dark:text-zinc-200">Descripció del producte (en castellà):
                     <input class=" w-full rounded-lg" type="text" name="descripcioEs"
                         placeholder="Introdueix la descripció del producte">
             </label>
             <label class="block py-2">
-                <span class="text-gray-700">Descripció del producte(en anglès):
+                <span class="text-gray-700 dark:text-zinc-200">Descripció del producte(en anglès):
                     <input class=" w-full rounded-lg" type="text" name="descripcioEn"
                         placeholder="Introdueix la descripció del producte">
             </label>
             
             <label class="block py-2">
-                <span class="text-gray-700">Imatge
+                <span class="text-gray-700 dark:text-zinc-200">Imatge
 
                     <input type="file" accept="image/x-png,image/gif,image/jpeg" name="imatge" id="">
             </label>
             <label class="block py-2">
-                <span class="text-gray-700">Preu
+                <span class="text-gray-700 dark:text-zinc-200">Preu
                     <input class="rounded-lg" type="number" name="preu" step="0.01" min="0" id="">
 
             </label>
 
             <label class="block py-2">
-                <span class="text-gray-700">Seccio:
+                <span class="text-gray-700 dark:text-zinc-200">Seccio:
                     <select class="px-4 py-3 w-full rounded-full" name="seccio">
                         @foreach ($seccions as $seccio)
                             <option value="{{ $seccio->id }}">

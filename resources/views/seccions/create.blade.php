@@ -1,5 +1,5 @@
 <x-layouts::app>
-    <div class="bg-green-200 max-w-4xl ml-auto mr-auto mt-12 mb-12 rounded-lg p-5">
+    <div class="mx-auto my-12 max-w-4xl rounded-2xl border border-green-200 bg-white p-6 shadow-sm sm:p-8 dark:border-zinc-800 dark:bg-zinc-900">
         <h2 class="text-3xl text-center font-extrabold">{{ __('Crea una secció nova') }}</h2>
 
 
@@ -19,27 +19,27 @@
         {{ csrf_field() }}
         {{ method_field('PUT') }}
         <label class="block py-2">
-            <span class="text-gray-700">Nom de la secció:
+            <span class="text-gray-700 dark:text-zinc-200">Nom de la secció:
                 <input class=" w-full rounded-lg" type="text" name="nom" placeholder="Introdueix el nom de la secció">
         </label>
         <label class="block py-2">
-            <span class="text-gray-700">Nom de la secció (en castellà):
+            <span class="text-gray-700 dark:text-zinc-200">Nom de la secció (en castellà):
                 <input class=" w-full rounded-lg" type="text" name="nomEs" placeholder="Introdueix el nom de la secció">
         </label>
         <label class="block py-2">
-            <span class="text-gray-700">Nom de la secció (en anglès):
+            <span class="text-gray-700 dark:text-zinc-200">Nom de la secció (en anglès):
                 <input class=" w-full rounded-lg" type="text" name="nomEn" placeholder="Introdueix el nom de la secció">
         </label>
         <label class="block py-2">
-            <span class="text-gray-700">Descripció:
+            <span class="text-gray-700 dark:text-zinc-200">Descripció:
                 <input class=" w-full rounded-lg" type="text" name="descripcio" placeholder="Introdueix la descripció de la secció">
         </label>
         <label class="block py-2">
-            <span class="text-gray-700">Descripció (en castellà):
+            <span class="text-gray-700 dark:text-zinc-200">Descripció (en castellà):
                 <input class=" w-full rounded-lg" type="text" name="descripcioEs" placeholder="Introdueix la descripció de la secció">
         </label>
         <label class="block py-2">
-            <span class="text-gray-700">Descripció (en anglès):
+            <span class="text-gray-700 dark:text-zinc-200">Descripció (en anglès):
                 <input class=" w-full rounded-lg" type="text" name="descripcioEn" placeholder="Introdueix la descripció de la secció">
         </label>
         <br /><br />

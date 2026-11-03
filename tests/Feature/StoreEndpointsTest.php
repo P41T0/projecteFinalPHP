@@ -132,12 +132,18 @@ test('admin pages render populated models and are restricted to administrators',
     ];
 
     foreach ($adminRoutes as $url) {
-        $this->get($url)->assertRedirect(route('login'));
+        $this->get($url)
+            ->assertNotFound()
+            ->assertSee('404')
+            ->assertSee(__('Pàgina no trobada'));
     }
+    $this->put(route('seccions.store'))->assertNotFound();
 
     $this->actingAs(User::factory()->create())
         ->get(route('productes.select'))
-        ->assertForbidden();
+        ->assertNotFound()
+        ->assertSee(__('Pàgina no trobada'));
+    $this->put(route('seccions.store'))->assertNotFound();
 
     $this->actingAs(endpointAdmin());
 

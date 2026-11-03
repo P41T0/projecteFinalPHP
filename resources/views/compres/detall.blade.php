@@ -1,9 +1,9 @@
 <x-layouts::app>
-    <div class="bg-green-300 rounded-md m-5 p-5">
+    <div class="m-5 rounded-2xl border border-green-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
         <h3 class="text-center font-bold text-xl">{{ __('Productes afegits a la llista de la compra') }}</h3>
         @if ($numProductes <= 0)
             <p> {{ __('No tens cap producte introduit en la llista de la compra en aquests moments.') }} <a
-                    class="bg-green-400 hover:bg-green-500 p-2 rounded m-2"
+                    class="m-2 rounded bg-green-700 p-2 text-white hover:bg-green-800 dark:bg-green-400 dark:text-green-950 dark:hover:bg-green-300"
                     href="{{ Route('inici') }}">{{ __('Prem aquí per a tornar a la pàgina inicial') }}</a></p>
     </div>
 @else
@@ -66,16 +66,16 @@
                 @endforeach
             </select>
         </div>
-        <button class="bg-green-400 hover:bg-green-500 p-2 m-2 rounded" type="submit">{{ __('Guardar canvis') }}</button>
+        <button class="m-2 rounded bg-green-700 p-2 text-white hover:bg-green-800 dark:bg-green-400 dark:text-green-950 dark:hover:bg-green-300" type="submit">{{ __('Guardar canvis') }}</button>
     </form>
     <div class="w-full inline-flex justify-center text-center mt-2">
 
         <p class="m-2">
             <a
-                class="font-bold bg-green-400 hover:bg-green-500 p-2 rounded"href="{{ route('inici') }}">{{ __('Seguir comprant') }}</a>
+                class="rounded bg-green-700 p-2 font-bold text-white hover:bg-green-800 dark:bg-green-400 dark:text-green-950 dark:hover:bg-green-300" href="{{ route('inici') }}">{{ __('Seguir comprant') }}</a>
         </p>
         <p class="m-2">
-            <a class="font-bold bg-green-400 hover:bg-green-500 p-2 rounded"
+            <a class="rounded bg-green-700 p-2 font-bold text-white hover:bg-green-800 dark:bg-green-400 dark:text-green-950 dark:hover:bg-green-300"
                 onclick="return confirm('{{ __('Estàs segur que vols confirmar la compra?') }}')"href="{{ route('confirma.compres', $comanda->id) }}">{{ __('Confirma la comanda') }}</a>
         </p>
     </div>

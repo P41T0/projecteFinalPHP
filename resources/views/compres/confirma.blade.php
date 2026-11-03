@@ -1,5 +1,5 @@
 <x-layouts::app>
-    <div class="bg-green-200 rounded-md m-5 p-5">
+    <div class="m-5 rounded-2xl border border-green-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
         <h3 class="text-center font-bold text-xl">{{ __('Compra confirmada') }}</h3>
         <div class="m-auto w-fit mt-5 mb-5">
         <table class="">
@@ -53,7 +53,7 @@
         <div class="w-full inline-flex justify-center text-center mt-2"></div>
         <p class="text-center">
             <a
-                class="font-bold bg-green-400 hover:bg-green-500 p-2 rounded" href="{{ route('inici') }}">{{ __("Tornar a l'inici") }}</a>
+                class="rounded bg-green-700 p-2 font-bold text-white hover:bg-green-800 dark:bg-green-400 dark:text-green-950 dark:hover:bg-green-300" href="{{ route('inici') }}">{{ __("Tornar a l'inici") }}</a>
         </p>
     </div>
 </x-layouts::app>
