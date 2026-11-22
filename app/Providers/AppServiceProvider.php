@@ -30,8 +30,10 @@ class AppServiceProvider extends ServiceProvider
 
     protected function configureDefaults(): void
     {
+        // Use immutable date values throughout the application.
         Date::use(CarbonImmutable::class);
 
+        // Prevent destructive database commands outside production-only migrations.
         DB::prohibitDestructiveCommands(
             app()->isProduction(),
         );

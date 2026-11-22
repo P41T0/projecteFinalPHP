@@ -54,7 +54,6 @@ class SeccioController extends Controller
         $seccio->descripcio_en = $request->input('descripcioEn');
         $seccio->mostra_sec = false;
         $seccio->save();
-        // dd($seccio);
         Session::flash('message', 'seccio modificada !');
 
         return redirect()->route('seccions.select');
@@ -81,7 +80,6 @@ class SeccioController extends Controller
      */
     public function update(Request $request, Seccio $seccio)
     {
-        //
         $request->validate(
             [
                 'nom' => 'required|string|max:100',
@@ -105,7 +103,6 @@ class SeccioController extends Controller
         $seccio->descripcio_en = $request->input('descripcioEn');
         $seccio->mostra_sec = $request->input('mostraSec') ? true : false;
         $seccio->save();
-        // dd($seccio);
         Session::flash('message', 'seccio modificada !');
 
         return redirect()->route('seccions.select');
@@ -116,6 +113,5 @@ class SeccioController extends Controller
      */
     public function destroy(Seccio $seccio)
     {
-        //
     }
 }

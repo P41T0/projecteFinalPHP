@@ -23,12 +23,12 @@ Route::get('/dashboard', [IniciController::class, 'index'])
 
 Route::get('/contacte', [IniciController::class, 'contacte'])->middleware(['auth'])->name('contacte');
 
-// idioma
+// Locale switching
 Route::get('/lang/{idioma}', [LocalizationController::class, 'index'])
     ->where('idioma', 'ca|en|es')
     ->name('localization');
 
-// CRUD Botigues
+// Store CRUD routes
 Route::get('/dashboard/botigues/{botiga}/edit', [BotigaController::class, 'edit'])
     ->middleware('admin')
     ->name('botigues.edit');
@@ -38,7 +38,7 @@ Route::get('/dashboard/modificaBotigues', [BotigaController::class, 'index'])
 Route::put('/dashboard/botigues/{botiga}', [BotigaController::class, 'update'])
     ->middleware('admin')
     ->name('botigues.update');
-// CRUD Productes
+// Product CRUD routes
 Route::put('/dashboard/productes/{producte}', [ProducteController::class, 'update'])
     ->middleware('admin')
     ->name('productes.update');
@@ -56,7 +56,7 @@ Route::get('/dashboard/productes/{producte}/edit', [ProducteController::class, '
     ->middleware('admin')
     ->name('productes.edit');
 
-// CRUD seccions
+// Section CRUD routes
 Route::get('/dashboard/seccions/{seccio}/edit', [SeccioController::class, 'edit'])
     ->middleware('admin')
     ->name('seccions.edit');

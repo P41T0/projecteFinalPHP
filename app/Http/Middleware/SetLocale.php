@@ -13,6 +13,7 @@ class SetLocale
     {
         $locale = $request->session()->get('idioma', config('app.locale'));
 
+        // Fall back to the configured locale if the session contains an unsupported value.
         if (! in_array($locale, ['ca', 'en', 'es'], true)) {
             $locale = config('app.locale');
         }

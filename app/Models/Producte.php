@@ -18,6 +18,7 @@ class Producte extends Model
 
     public function Botiga()
     {
+        // Expose per-store stock through the estoc_botiga pivot.
         return $this->belongsToMany(Botiga::class, 'estoc_botiga')
             ->using(EstocBotiga::class)
             ->withPivot('quantitat');

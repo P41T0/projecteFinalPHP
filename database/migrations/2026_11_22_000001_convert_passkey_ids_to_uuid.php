@@ -10,10 +10,12 @@ return new class extends Migration
 {
     public function up(): void
     {
+        // Passkeys must use UUID strings consistently with the application's other models.
         Schema::table('passkeys', function (Blueprint $table) {
             $table->string('id', 36)->change();
         });
 
+        // Replace only legacy numeric IDs while preserving credentials and their user references.
         DB::transaction(function () {
             foreach (DB::table('passkeys')->select('id')->cursor() as $passkey) {
                 $id = (string) $passkey->id;
@@ -27,6 +29,7 @@ return new class extends Migration
 
     public function down(): void
     {
+        // UUIDs cannot be restored to their original numeric IDs; reject unsafe rollbacks.
         foreach (DB::table('passkeys')->select('id')->cursor() as $passkey) {
             $id = ltrim((string) $passkey->id, '0');
             $id = $id === '' ? '0' : $id;

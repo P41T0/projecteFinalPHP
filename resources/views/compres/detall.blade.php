@@ -1,4 +1,5 @@
 <x-layouts::app>
+    {{-- This view calculates the cart summary and lets the user edit pivot quantities and the pickup store. --}}
     <div class="m-5 rounded-2xl border border-green-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
         <h3 class="text-center font-bold text-xl">{{ __('Productes afegits a la llista de la compra') }}</h3>
         @if ($numProductes <= 0)

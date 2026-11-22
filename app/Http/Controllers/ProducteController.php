@@ -70,6 +70,7 @@ class ProducteController extends Controller
         $producte->preu_unitari = $request->input('preu');
         $producte->mostra_prod = false;
         $producte->save();
+        // Initialize stock to zero in every store before the product becomes visible.
         $botigues = Botiga::all();
         foreach ($botigues as $botiga) {
             $producte->botiga()->attach($botiga->id, ['quantitat' => 0]);
@@ -77,7 +78,6 @@ class ProducteController extends Controller
 
         $producte->save();
 
-        // dd($producte);
         Session::flash('message', 'producte modificat !');
 
         return redirect()->route('productes.select');
@@ -96,7 +96,6 @@ class ProducteController extends Controller
      */
     public function edit(Producte $producte)
     {
-        //
         return View(
             'productes.edit',
             ['producte' => $producte, 'seccions' => Seccio::all()]
@@ -108,7 +107,6 @@ class ProducteController extends Controller
      */
     public function update(Request $request, Producte $producte)
     {
-        //
         $request->validate(
             [
                 'nom' => 'required|string|max:100',
@@ -120,7 +118,6 @@ class ProducteController extends Controller
                 'imatge' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
                 'preu' => 'required|numeric|gte:0',
                 'seccio' => 'required|uuid|exists:seccio,id',
-                // 'seccio' => 'required'
             ],
             [
                 'required' => 'El camp :attribute és obligatori',
@@ -147,7 +144,6 @@ class ProducteController extends Controller
         $producte->preu_unitari = $request->input('preu');
         $producte->mostra_prod = $request->input('mostraProd') ? true : false;
         $producte->save();
-        // dd($producte);
         Session::flash('message', 'producte modificat !');
 
         return redirect()->route('productes.select');
@@ -158,6 +154,5 @@ class ProducteController extends Controller
      */
     public function destroy(Producte $producte)
     {
-        //
     }
 }

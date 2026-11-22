@@ -7,10 +7,10 @@ use App\Models\Seccio;
 
 class IniciController extends Controller
 {
-    //
     public function index()
     {
         $seccions = Seccio::all();
+        // Load visible products in the same query for each visible section.
         $seccions->where('mostra_sec', true)->load([
             'productes' => fn ($query) => $query->where('mostra_prod', true),
         ]);

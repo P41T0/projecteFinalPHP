@@ -18,6 +18,7 @@ class Comanda extends Model
 
     public function productes()
     {
+        // The linia_comanda pivot stores the quantity of each product in the order.
         return $this->belongsToMany(Producte::class, 'linia_comanda')
             ->using(LiniaComanda::class)
             ->withPivot('quantitat');
