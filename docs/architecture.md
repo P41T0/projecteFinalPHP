@@ -14,7 +14,7 @@ The home page (`inici`) loads sections and eagerly loads visible products for vi
 
 Administration routes in `routes/web.php` use the `admin` middleware. `EnsureUserIsAdmin` calls `User::isAdmin()` and returns 404 for both guests and non-administrators. Administrators can create and edit products and sections and edit inventory quantities for existing stores. Empty controller methods do not imply that store creation or deletion is implemented.
 
-New products and sections are hidden by default. When a product is created, it is associated with each existing store with zero inventory. Uploaded images are stored on Laravel's public disk; a local installation may need `php artisan storage:link` to serve them.
+New products and sections are hidden by default. When a product is created, it is associated with each existing store with zero inventory. Product image uploads are limited to JPEG, PNG, GIF, or WebP, with a maximum size of 2 MiB and dimensions of 4096 × 4096 pixels. The server checks the detected type and dimensions and decodes the image with PHP GD, then stores the original file on Laravel's public disk under a generated name and extension. GIF animation is preserved, but these checks do not re-encode or sanitize image contents. A local installation may need `php artisan storage:link` to serve images.
 
 ## Orders
 
@@ -37,7 +37,11 @@ The cart form submits quantities and a store to `actualiza.quantitat`. The contr
 | `linia_comanda` / `LiniaComanda` | Product-order pivot with `quantitat`. |
 | `passkeys` / `Passkey` | WebAuthn credentials associated with users; the custom model is registered in `AppServiceProvider`. |
 
-Application models and pivots use `HasUuids`; new keys are UUIDv7. Composite indexes cover `producte(seccio_id, mostra_prod)` and `comanda(usuari_id, oberta)`. Laravel's internal tables do not necessarily use the same key format. Migrations define the actual schema, including the conversion of legacy passkey IDs; read the README before deploying it.
+Application models and pivots use `HasUuids`; new keys are UUIDv7. Composite indexes cover `producte(seccio_id, mostra_prod)` and `comanda(usuari_id, oberta)`. Laravel's internal tables do not necessarily use the same key format.
+
+The identifier migrations convert legacy numeric passkey IDs and non-UUIDv7 IDs in the application tables above. The latter migration updates user references in orders and passkeys, section references in products, product and store references in inventory and orders, and order references in order lines. IDs already using UUIDv7 are left unchanged. Database sessions for users whose IDs change are deleted; links, queued payloads, and references outside these tables are not rewritten.
+
+For a migrated user with passkeys, the migration reads the WebAuthn user handle from a stored credential and saves it as base64 in `users.passkey_user_handle`. The `User` model hides this column during serialization and uses the decoded handle for passkey authentication; users without a preserved handle use the package default. A missing or invalid credential handle stops the migration. Identifier updates run in a transaction; SQLite defers foreign-key checks and MySQL temporarily disables them. Read the [README](../README.md#upgrading-application-identifiers) before deploying this irreversible migration.
 
 ## Authentication and locale
 

@@ -15,7 +15,11 @@ use Laravel\Passkeys\PasskeyAuthenticatable;
 class User extends Authenticatable implements PasskeyUser
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, HasUuids, Notifiable, PasskeyAuthenticatable, TwoFactorAuthenticatable;
+    use HasFactory, HasUuids, Notifiable, TwoFactorAuthenticatable;
+
+    use PasskeyAuthenticatable {
+        getPasskeyUserHandle as private defaultPasskeyUserHandle;
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -42,6 +46,7 @@ class User extends Authenticatable implements PasskeyUser
         'two_factor_secret',
         'two_factor_recovery_codes',
         'remember_token',
+        'passkey_user_handle',
         'admin',
     ];
 
@@ -70,6 +75,21 @@ class User extends Authenticatable implements PasskeyUser
             ->take(2)
             ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
+    }
+
+    public function getPasskeyUserHandle(): string
+    {
+        if ($this->passkey_user_handle !== null) {
+            $handle = base64_decode($this->passkey_user_handle, strict: true);
+
+            if ($handle === false) {
+                throw new \UnexpectedValueException('Invalid preserved passkey user handle.');
+            }
+
+            return $handle;
+        }
+
+        return $this->defaultPasskeyUserHandle();
     }
 
     public function comandes()

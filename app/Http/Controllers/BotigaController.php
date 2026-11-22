@@ -21,23 +21,17 @@ class BotigaController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-    }
+    public function store(Request $request) {}
 
     /**
      * Display the specified resource.
      */
-    public function show(Botiga $botiga)
-    {
-    }
+    public function show(Botiga $botiga) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -83,7 +77,5 @@ class BotigaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Botiga $botiga)
-    {
-    }
+    public function destroy(Botiga $botiga) {}
 }

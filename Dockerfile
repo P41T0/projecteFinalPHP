@@ -1,8 +1,9 @@
 FROM php:8.6-apache AS php-base
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends libonig-dev libxml2-dev libzip-dev unzip \
-    && docker-php-ext-install bcmath mbstring pdo_mysql zip \
+    && apt-get install -y --no-install-recommends libjpeg62-turbo-dev libonig-dev libpng-dev libwebp-dev libxml2-dev libzip-dev unzip \
+    && docker-php-ext-configure gd --with-jpeg --with-webp \
+    && docker-php-ext-install bcmath gd mbstring pdo_mysql zip \
     && rm -rf /var/lib/apt/lists/*
 
 RUN a2enmod rewrite

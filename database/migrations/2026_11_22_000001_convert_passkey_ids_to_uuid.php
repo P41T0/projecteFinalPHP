@@ -29,18 +29,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        // UUIDs cannot be restored to their original numeric IDs; reject unsafe rollbacks.
-        foreach (DB::table('passkeys')->select('id')->cursor() as $passkey) {
-            $id = ltrim((string) $passkey->id, '0');
-            $id = $id === '' ? '0' : $id;
-
-            if (! ctype_digit($id) || strlen($id) > 20 || (strlen($id) === 20 && strcmp($id, '18446744073709551615') > 0)) {
-                throw new LogicException('Cannot roll back passkey IDs while non-numeric or out-of-range IDs exist.');
-            }
-        }
-
-        Schema::table('passkeys', function (Blueprint $table) {
-            $table->id()->change();
-        });
+        // Converted identifiers cannot be restored to their original values.
     }
 };
