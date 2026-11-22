@@ -31,7 +31,9 @@ Laravel follows its standard default and discards deprecation logs when `LOG_DEP
 
 Passkey sign-in is optional; password sign-in and two-factor authentication remain available. Users can register and remove passkeys from **Settings → Security**. WebAuthn requires HTTPS, except on `localhost`; set `APP_URL` to the exact origin users visit, and keep `APP_KEY` stable because it is used to derive passkey user handles.
 
-New application and passkey IDs use UUIDv7. Existing application UUIDs remain unchanged; the migration converts numeric passkey IDs while preserving their credentials and users. Laravel's internal queue, session and migration IDs retain their framework formats. Back up the database and run the migrations with the application in maintenance mode before deploying this change. The passkey ID migration cannot be rolled back while UUID passkeys exist.
+Application and passkey IDs use UUIDv7. The migrations convert older identifiers and update application relationships while preserving passkey credentials and their existing WebAuthn user handles. Laravel's internal queue, session and migration IDs retain their framework formats.
+
+Before deploying, back up the database, stop all application instances and queue workers, and run migrations in maintenance mode. Converting existing identifiers supports MySQL and SQLite; the migration temporarily disables foreign-key checks on MySQL and must not run concurrently with application writes. Existing links containing changed IDs and queued jobs containing old IDs must be replaced or processed before migration. Affected database sessions are removed; users must sign in again. Keep `APP_KEY` and any `PASSKEYS_USER_HANDLE_SECRET` unchanged. The identifier conversion is irreversible: restore the backup to recover old IDs. Rollback refuses to remove preserved passkey user handles while any remain.
 
 The frontend uses Vite Plus and pnpm 12.21.0. Install dependencies with `pnpm install --frozen-lockfile`, then run `pnpm run dev` or `pnpm run build` with Node `^22.18.0`, `^24.11.0`, or `>=26.0.0`; Docker builds use Node 26. New dependencies must have been published at least 24 hours earlier.
 

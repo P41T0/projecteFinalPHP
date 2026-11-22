@@ -36,7 +36,7 @@ pnpm run build
 | Locale or error pages | `tests/Feature/LocalizationTest.php`, `tests/Feature/ErrorPagesTest.php`. |
 | Login, registration, recovery, or two-factor authentication | `tests/Feature/Auth/` and `tests/Feature/Settings/TwoFactorAuthenticationTest.php`. |
 | Profile, appearance, password, or passkeys | `tests/Feature/Settings/`. |
-| UUIDs or passkey migration | `tests/Feature/UuidIdsTest.php`, `tests/Feature/PasskeyIdMigrationTest.php`; also review MySQL compatibility. |
+| UUIDs or passkey migration | `tests/Feature/UuidIdsTest.php`, `tests/Feature/PasskeyIdMigrationTest.php`; run these on both SQLite and a disposable MySQL database. |
 
 For tests in a disposable container, run `docker compose --profile test run --build --rm test`. CI in `.github/workflows/tests.yml` runs Pest on PHP 8.5 and 8.6 and checks migrations, seeding, rollback, and tests with a disposable MySQL service. The browser workflow only runs when its token is available and uses an external suite; do not assume browser tests are available locally.
 

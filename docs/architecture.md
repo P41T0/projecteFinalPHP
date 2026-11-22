@@ -37,7 +37,7 @@ The cart form submits quantities and a store to `actualiza.quantitat`. The contr
 | `linia_comanda` / `LiniaComanda` | Product-order pivot with `quantitat`. |
 | `passkeys` / `Passkey` | WebAuthn credentials associated with users; the custom model is registered in `AppServiceProvider`. |
 
-Application models and pivots use `HasUuids`; new keys are UUIDv7. Composite indexes cover `producte(seccio_id, mostra_prod)` and `comanda(usuari_id, oberta)`. Laravel's internal tables do not necessarily use the same key format. Migrations define the actual schema, including the conversion of legacy passkey IDs; read the README before deploying it.
+Application models and pivots use `HasUuids`; keys are UUIDv7. Migrations convert older application identifiers and their relationships, preserving the original WebAuthn user handle for migrated users. Composite indexes cover `producte(seccio_id, mostra_prod)` and `comanda(usuari_id, oberta)`. Laravel's internal tables do not necessarily use the same key format. Read the README before deploying the irreversible identifier migration.
 
 ## Authentication and locale
 
