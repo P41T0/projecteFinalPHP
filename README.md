@@ -4,7 +4,7 @@
 
 This application uses Laravel 13, Livewire 4, Tailwind CSS 4, Fortify, and the [Flux UI](https://fluxui.dev) component library.
 
-PHP requires the GD extension with JPEG, PNG, GIF, and WebP support for product image uploads.
+PHP 8.5 or later requires the GD extension (`ext-gd` `^8.5`) with JPEG, PNG, GIF, and WebP support for product image uploads. The Docker image includes GD with these formats.
 
 ## Project structure
 
@@ -28,6 +28,12 @@ The obsolete Volt provider was removed because the application uses Livewire 4 p
 ## Deprecation warnings
 
 Laravel follows its standard default and discards deprecation logs when `LOG_DEPRECATIONS_CHANNEL=null`. To see them locally, set `LOG_DEPRECATIONS_CHANNEL=single` in `.env`; in container deployments, `stderr` is also suitable. The test environment sends Laravel deprecation logs to `stderr`.
+
+## Product images
+
+Administrators can optionally upload an image when creating or editing a product. The server accepts JPEG, PNG, GIF, and WebP up to 2 MiB and 4096 × 4096 pixels, checks the detected type and dimensions, and attempts to decode the image with GD. Files are stored on Laravel's public disk under generated names and content-derived extensions.
+
+The original file is retained without re-encoding or sanitizing its contents, including metadata and GIF animation. Existing uploads are not revalidated, and replacing an image does not remove the previous file. A local installation may need `php artisan storage:link` to expose the public disk. The product detail view currently uses a hard-coded image host rather than the configured public disk URL, so this link alone does not ensure images display in other environments.
 
 ## Passkeys and frontend tooling
 
@@ -71,6 +77,8 @@ Docker Compose runs the Laravel application with Apache and a persistent MySQL d
 
 The application is available at <http://localhost:8080>. Database migrations and seeders run when the application container starts. Use `docker compose down` to stop the services; the MySQL data remains in the `db_data` volume.
 
+The Compose configuration does not persist the application's uploaded files: `storage/app/public` is inside the app container and can be lost when it is replaced. Configure persistent storage and back up existing uploads before recreating the container if they need to be retained; the `db_data` volume only persists MySQL data.
+
 The storefront and open-order lookup use composite database indexes. Existing installations must run the new migrations (`php artisan migrate --force`); Docker Compose runs them automatically on startup.
 
 Run the test suite in its own PHP container with:
@@ -78,6 +86,14 @@ Run the test suite in its own PHP container with:
 ```powershell
 docker compose --profile test run --build --rm test
 ```
+
+To check PHP formatting without modifying files, run:
+
+```powershell
+docker compose --profile test run --build --rm test composer test:lint
+```
+
+The lint workflow runs this Pint check on pushes to and pull requests targeting `develop` or `main`; formatting violations fail the job. See the [validation guide](docs/validation.md) for additional checks.
 
 The CI workflow also runs migrations, seeding, rollback, and the test suite against MySQL 26.10. These checks use a disposable database, not the existing `db_data` volume.
 

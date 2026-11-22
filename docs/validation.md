@@ -41,6 +41,7 @@ The lint workflow runs the same non-mutating check on pushes and pull requests t
 | Change | Starting point |
 | --- | --- |
 | Catalog, administration, inventory, or cart | `tests/Feature/StoreEndpointsTest.php`: validation, permissions, ownership, data, and queries. |
+| Product image uploads | `tests/Feature/StoreEndpointsTest.php`: rejected disguised and malformed files, size and dimension limits, supported formats, and generated storage names. |
 | Locale or error pages | `tests/Feature/LocalizationTest.php`, `tests/Feature/ErrorPagesTest.php`. |
 | Login, registration, recovery, or two-factor authentication | `tests/Feature/Auth/` and `tests/Feature/Settings/TwoFactorAuthenticationTest.php`. |
 | Profile, appearance, password, or passkeys | `tests/Feature/Settings/`. |
