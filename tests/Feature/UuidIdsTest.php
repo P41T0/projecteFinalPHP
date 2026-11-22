@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-test('seeded application records use uuid ids and foreign keys', function () {
+test('seeded application records use uuid version 7 ids and foreign keys', function () {
     Artisan::call('db:seed');
 
     $uuidColumns = [
@@ -26,7 +26,7 @@ test('seeded application records use uuid ids and foreign keys', function () {
     foreach ($uuidColumns as $table => $columns) {
         foreach (DB::table($table)->get($columns) as $record) {
             foreach ($columns as $column) {
-                expect(Str::isUuid($record->{$column}))->toBeTrue();
+                expect(Str::isUuid($record->{$column}, 7))->toBeTrue();
             }
         }
     }
@@ -34,7 +34,7 @@ test('seeded application records use uuid ids and foreign keys', function () {
     $producte = Producte::query()->with(['Seccio', 'Botiga'])->firstOrFail();
     $comanda = Comanda::query()->with(['usuari', 'productes'])->firstOrFail();
 
-    expect(Str::isUuid($producte->getKey()))->toBeTrue()
+    expect(Str::isUuid($producte->getKey(), 7))->toBeTrue()
         ->and($producte->Seccio)->toBeInstanceOf(Seccio::class)
         ->and($producte->Botiga)->not->toBeEmpty()
         ->and($comanda->usuari)->toBeInstanceOf(User::class)
@@ -52,7 +52,7 @@ test('seeded application records use uuid ids and foreign keys', function () {
         ->where('botiga_id', $botiga->id)
         ->value('id');
 
-    expect(Str::isUuid($estocId))->toBeTrue();
+    expect(Str::isUuid($estocId, 7))->toBeTrue();
 
     $newProducte = new Producte;
     $newProducte->nom = 'Test';
@@ -72,7 +72,7 @@ test('seeded application records use uuid ids and foreign keys', function () {
         ->where('producte_id', $newProducte->id)
         ->value('id');
 
-    expect(Str::isUuid($orderLineId))->toBeTrue();
+    expect(Str::isUuid($orderLineId, 7))->toBeTrue();
 });
 
 test('demo seeding is repeatable without replacing existing records', function () {
@@ -104,6 +104,17 @@ test('demo seeding leaves a populated database unchanged', function () {
     $this->assertDatabaseHas('users', ['id' => $user->id, 'admin' => false]);
     $this->assertDatabaseCount('seccio', 0);
     $this->assertDatabaseCount('producte', 0);
+});
+
+test('existing uuid version 4 user ids remain usable', function () {
+    $id = (string) Str::uuid();
+    $user = User::factory()->create(['id' => $id]);
+
+    expect(Str::isUuid($id, 4))->toBeTrue()
+        ->and(User::query()->findOrFail($id)->id)->toBe($id)
+        ->and(Str::isUuid(User::factory()->create()->id, 7))->toBeTrue();
+
+    $this->actingAs($user)->get(route('dashboard'))->assertOk();
 });
 
 test('inventory rejects references to missing products and stores', function () {
