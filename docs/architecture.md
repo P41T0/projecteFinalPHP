@@ -14,7 +14,7 @@ The home page (`inici`) loads sections and eagerly loads visible products for vi
 
 Administration routes in `routes/web.php` use the `admin` middleware. `EnsureUserIsAdmin` calls `User::isAdmin()` and returns 404 for both guests and non-administrators. Administrators can create and edit products and sections and edit inventory quantities for existing stores. Empty controller methods do not imply that store creation or deletion is implemented.
 
-New products and sections are hidden by default. When a product is created, it is associated with each existing store with zero inventory. Uploaded images are stored on Laravel's public disk; a local installation may need `php artisan storage:link` to serve them.
+New products and sections are hidden by default. When a product is created, it is associated with each existing store with zero inventory. Product image uploads are limited to JPEG, PNG, GIF, or WebP, with a maximum size of 2 MiB and dimensions of 4096 × 4096 pixels. The server checks the detected type and dimensions and decodes the image with PHP GD, then stores the original file on Laravel's public disk under a generated name and extension. GIF animation is preserved, but these checks do not re-encode or sanitize image contents. A local installation may need `php artisan storage:link` to serve images.
 
 ## Orders
 

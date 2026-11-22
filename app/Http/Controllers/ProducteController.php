@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Botiga;
 use App\Models\Producte;
 use App\Models\Seccio;
+use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Session;
+use RuntimeException;
 
 class ProducteController extends Controller
 {
@@ -41,7 +44,7 @@ class ProducteController extends Controller
                 'descripcio' => 'required|string|max:255',
                 'descripcioEs' => 'required|string|max:255',
                 'descripcioEn' => 'required|string|max:255',
-                'imatge' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+                'imatge' => $this->imageRules(),
                 'preu' => 'required|numeric|gte:0',
                 'seccio' => 'required|uuid|exists:seccio,id',
             ],
@@ -59,13 +62,7 @@ class ProducteController extends Controller
         $producte->descripcio_en = $request->input('descripcioEn');
         $producte->seccio_id = $request->input('seccio');
         if ($request->hasFile('imatge')) {
-
-            $imatge = $request->file('imatge');
-
-            $nomImg = time().'_'.$imatge->getClientOriginalName();
-
-            $request->file('imatge')->storeAs("/public/$nomImg");
-            $producte->foto = $nomImg;
+            $producte->foto = $this->storeImage($request->file('imatge'));
         }
         $producte->preu_unitari = $request->input('preu');
         $producte->mostra_prod = false;
@@ -115,7 +112,7 @@ class ProducteController extends Controller
                 'descripcio' => 'required|string|max:255',
                 'descripcioEs' => 'required|string|max:255',
                 'descripcioEn' => 'required|string|max:255',
-                'imatge' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+                'imatge' => $this->imageRules(),
                 'preu' => 'required|numeric|gte:0',
                 'seccio' => 'required|uuid|exists:seccio,id',
             ],
@@ -133,13 +130,7 @@ class ProducteController extends Controller
         $producte->descripcio_en = $request->input('descripcioEn');
         $producte->seccio_id = $request->input('seccio');
         if ($request->hasFile('imatge')) {
-
-            $imatge = $request->file('imatge');
-
-            $nomImg = time().'_'.$imatge->getClientOriginalName();
-
-            $request->file('imatge')->storeAs("/public/$nomImg");
-            $producte->foto = $nomImg;
+            $producte->foto = $this->storeImage($request->file('imatge'));
         }
         $producte->preu_unitari = $request->input('preu');
         $producte->mostra_prod = $request->input('mostraProd') ? true : false;
@@ -149,10 +140,43 @@ class ProducteController extends Controller
         return redirect()->route('productes.select');
     }
 
+    private function imageRules(): array
+    {
+        return [
+            'bail',
+            'nullable',
+            'image',
+            'mimes:jpeg,png,jpg,gif,webp',
+            'max:2048',
+            'dimensions:min_width=1,min_height=1,max_width=4096,max_height=4096',
+            function (string $attribute, UploadedFile $file, Closure $fail): void {
+                $contents = file_get_contents($file->getRealPath());
+
+                if ($contents === false) {
+                    throw new RuntimeException('Unable to read the product image.');
+                }
+
+                $image = @imagecreatefromstring($contents);
+                if ($image === false) {
+                    $fail('validation.image')->translate();
+                }
+            },
+        ];
+    }
+
+    private function storeImage(UploadedFile $image): string
+    {
+        $path = $image->store('', 'public');
+
+        if ($path === false) {
+            throw new RuntimeException('Unable to store the product image.');
+        }
+
+        return $path;
+    }
+
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Producte $producte)
-    {
-    }
+    public function destroy(Producte $producte) {}
 }

@@ -4,6 +4,8 @@
 
 This application uses Laravel 13, Livewire 4, Tailwind CSS 4, Fortify, and the [Flux UI](https://fluxui.dev) component library.
 
+PHP requires the GD extension with JPEG, PNG, GIF, and WebP support for product image uploads.
+
 ## Project structure
 
 - See the [agent guide](AGENTS.md), [architecture and application flows](docs/architecture.md), and [development and validation](docs/validation.md).

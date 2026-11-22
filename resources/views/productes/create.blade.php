@@ -53,7 +53,7 @@
             <label class="block py-2">
                 <span class="text-gray-700 dark:text-zinc-200">Imatge
 
-                    <input type="file" accept="image/x-png,image/gif,image/jpeg" name="imatge" id="">
+                    <input type="file" accept="image/png,image/gif,image/jpeg,image/webp" name="imatge" id="">
             </label>
             <label class="block py-2">
                 <span class="text-gray-700 dark:text-zinc-200">Preu

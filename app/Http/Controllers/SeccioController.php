@@ -111,7 +111,5 @@ class SeccioController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Seccio $seccio)
-    {
-    }
+    public function destroy(Seccio $seccio) {}
 }

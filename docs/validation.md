@@ -28,6 +28,14 @@ pnpm run build
 
 `composer lint` applies Pint and may modify files; `composer test:lint` only checks formatting. Feature tests use Pest and `RefreshDatabase` through `tests/Pest.php`. By default, `phpunit.xml` configures in-memory SQLite, array session and cache stores, array mail, and a synchronous queue. Do not assume an SQLite test validates every MySQL behavior.
 
+Run the full Pint check in Docker with:
+
+```powershell
+docker compose --profile test run --build --rm test composer test:lint
+```
+
+The lint workflow runs the same non-mutating check on pushes and pull requests targeting `develop` or `main`; formatting violations fail the job.
+
 ### Test starting points
 
 | Change | Starting point |

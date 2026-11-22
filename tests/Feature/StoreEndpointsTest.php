@@ -7,6 +7,7 @@ use App\Models\Seccio;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 function endpointSection(array $overrides = []): Seccio
 {
@@ -283,6 +284,102 @@ test('product endpoints validate prices, images, and section ids before writing'
         'nom' => 'Actualitzat',
     ]))->assertRedirect(route('productes.select'));
     $this->assertDatabaseHas('producte', ['id' => $product->id, 'nom' => 'Actualitzat']);
+});
+
+test('product image uploads reject disguised files and invalid image headers on create and update', function () {
+    Storage::fake('public');
+    $section = endpointSection();
+    $product = endpointProduct($section, ['foto' => 'existing.png']);
+    $this->actingAs(endpointAdmin());
+
+    foreach ([
+        ['image.png', '<script>alert(1)</script>', 'image/png'],
+        ['image.gif', "GIF89a\x01\x00\x01\x00\x00\x00\x00", 'image/gif'],
+        ['image.svg', '<svg xmlns="http://www.w3.org/2000/svg"></svg>', 'image/svg+xml'],
+    ] as [$name, $content, $claimedType]) {
+        $temporary = UploadedFile::fake()->createWithContent($name, $content);
+
+        foreach ([route('productes.store'), route('productes.update', $product)] as $url) {
+            $upload = new UploadedFile($temporary->getRealPath(), $name, $claimedType, null, true);
+            $this->putJson($url, endpointProductPayload($section->id, ['imatge' => $upload]))
+                ->assertUnprocessable()
+                ->assertJsonValidationErrors('imatge');
+        }
+    }
+
+    $largeImage = UploadedFile::fake()->image('large.png')->size(2049);
+    $this->putJson(route('productes.store'), endpointProductPayload($section->id, ['imatge' => $largeImage]))
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors('imatge');
+
+    foreach ([[4097, 1], [1, 4097]] as [$width, $height]) {
+        $oversizedImage = UploadedFile::fake()->image('oversized.png', $width, $height);
+        $this->putJson(route('productes.update', $product), endpointProductPayload($section->id, ['imatge' => $oversizedImage]))
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('imatge');
+    }
+
+    $this->assertDatabaseCount('producte', 1);
+    expect($product->fresh()->foto)->toBe('existing.png')
+        ->and(Storage::disk('public')->allFiles())->toBeEmpty();
+});
+
+test('product images use unique generated names and content-derived extensions', function () {
+    Storage::fake('public');
+    $section = endpointSection();
+    $this->actingAs(endpointAdmin());
+    $temporary = UploadedFile::fake()->image('source.png');
+
+    $upload = new UploadedFile($temporary->getRealPath(), 'photo.php.jpg', 'image/jpeg', null, true);
+    $this->put(route('productes.store'), endpointProductPayload($section->id, ['imatge' => $upload]))
+        ->assertRedirect(route('productes.select'));
+    $product = Producte::query()->where('nom', 'Carregador')->firstOrFail();
+    $firstPath = $product->foto;
+    Storage::disk('public')->assertExists($firstPath);
+    expect($firstPath)->toMatch('/^[a-zA-Z0-9]{40}\.png$/')
+        ->and(Storage::disk('public')->get($firstPath))->toBe(file_get_contents($temporary->getRealPath()));
+
+    $upload = new UploadedFile($temporary->getRealPath(), 'photo.php.jpg', 'image/jpeg', null, true);
+    $this->put(route('productes.update', $product), endpointProductPayload($section->id, ['imatge' => $upload]))
+        ->assertRedirect(route('productes.select'));
+    $secondPath = $product->fresh()->foto;
+    Storage::disk('public')->assertExists($secondPath);
+    expect($secondPath)->toMatch('/^[a-zA-Z0-9]{40}\.png$/')
+        ->not->toBe($firstPath);
+});
+
+test('product uploads accept supported image formats and the maximum image dimensions', function () {
+    Storage::fake('public');
+    $section = endpointSection();
+    $product = endpointProduct($section);
+    $this->actingAs(endpointAdmin());
+
+    foreach (['jpeg', 'png', 'gif', 'webp'] as $extension) {
+        foreach ([[4096, 1], [1, 4096]] as [$width, $height]) {
+            $upload = UploadedFile::fake()->image("image.{$extension}", $width, $height);
+            $this->put(route('productes.update', $product), endpointProductPayload($section->id, ['imatge' => $upload]))
+                ->assertRedirect(route('productes.select'))
+                ->assertSessionHasNoErrors();
+            Storage::disk('public')->assertExists($product->fresh()->foto);
+        }
+    }
+
+    $chunk = fn (string $type, string $data): string => pack('N', strlen($data))
+        .$type.$data.pack('N', crc32($type.$data));
+    $rows = str_repeat("\0".str_repeat("\0", 512), 4096);
+    $compressed = gzcompress($rows);
+    unset($rows);
+    $maximum = UploadedFile::fake()->createWithContent(
+        'maximum.png',
+        "\x89PNG\r\n\x1a\n"
+            .$chunk('IHDR', pack('NNCCCCC', 4096, 4096, 1, 0, 0, 0, 0))
+            .$chunk('IDAT', $compressed)
+            .$chunk('IEND', '')
+    );
+    $this->put(route('productes.update', $product), endpointProductPayload($section->id, ['imatge' => $maximum]))
+        ->assertRedirect(route('productes.select'))
+        ->assertSessionHasNoErrors();
+    Storage::disk('public')->assertExists($product->fresh()->foto);
 });
 
 test('inventory endpoint only accepts nonnegative quantities for products in that store', function () {
