@@ -30,6 +30,8 @@ Laravel follows its standard default and discards deprecation logs when `LOG_DEP
 
 Passkey sign-in is optional; password sign-in and two-factor authentication remain available. Users can register and remove passkeys from **Settings → Security**. WebAuthn requires HTTPS, except on `localhost`; set `APP_URL` to the exact origin users visit, and keep `APP_KEY` stable because it is used to derive passkey user handles.
 
+New application and passkey IDs use UUIDv7. Existing application UUIDs remain unchanged; the migration converts numeric passkey IDs while preserving their credentials and users. Laravel's internal queue, session and migration IDs retain their framework formats. Back up the database and run the migrations with the application in maintenance mode before deploying this change. The passkey ID migration cannot be rolled back while UUID passkeys exist.
+
 The frontend uses Vite Plus and pnpm 12.21.0. Install dependencies with `pnpm install --frozen-lockfile`, then run `pnpm run dev` or `pnpm run build` with Node `^22.18.0`, `^24.11.0`, or `>=26.0.0`; Docker builds use Node 26. New dependencies must have been published at least 24 hours earlier.
 
 ## Running with Docker

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -26,16 +27,16 @@ class DatabaseSeeder extends Seeder
 
     private function seedData(): void
     {
-        $users = \App\Models\User::factory(10)->create();
-        $phoneSectionId = (string) Str::uuid();
-        $computerSectionId = (string) Str::uuid();
-        $productIds = [(string) Str::uuid(), (string) Str::uuid(), (string) Str::uuid(), (string) Str::uuid()];
-        $storeIds = [(string) Str::uuid(), (string) Str::uuid(), (string) Str::uuid()];
-        $orderIds = [(string) Str::uuid(), (string) Str::uuid()];
+        $users = User::factory(10)->create();
+        $phoneSectionId = (string) Str::uuid7();
+        $computerSectionId = (string) Str::uuid7();
+        $productIds = [(string) Str::uuid7(), (string) Str::uuid7(), (string) Str::uuid7(), (string) Str::uuid7()];
+        $storeIds = [(string) Str::uuid7(), (string) Str::uuid7(), (string) Str::uuid7()];
+        $orderIds = [(string) Str::uuid7(), (string) Str::uuid7()];
 
         DB::table('users')->insert([
-            ['id' => (string) Str::uuid(), 'name' => 'Pau', 'email' => 'pau.tort@uvic.cat', 'password' => bcrypt('provapag.123456'), 'admin' => true],
-            ['id' => (string) Str::uuid(), 'name' => 'Usuari Admin', 'email' => 'usuariadministrador@p41t.com', 'password' => bcrypt('UsuariAdmin.1234'), 'admin' => true],
+            ['id' => (string) Str::uuid7(), 'name' => 'Pau', 'email' => 'pau.tort@uvic.cat', 'password' => bcrypt('provapag.123456'), 'admin' => true],
+            ['id' => (string) Str::uuid7(), 'name' => 'Usuari Admin', 'email' => 'usuariadministrador@p41t.com', 'password' => bcrypt('UsuariAdmin.1234'), 'admin' => true],
         ]);
         DB::table('seccio')->insert([
             ['id' => $phoneSectionId, 'nom' => 'Telefonia mòbil', 'nom_es' => 'Telefonia mòbil', 'nom_en' => 'Telefonia mòbil', 'descripcio' => 'telèfons mòbils, smartwatches, auriculars i altres accessoris', 'descripcio_es' => 'telèfons mòbils, smartwatches, auriculars i altres accessoris', 'descripcio_en' => 'telèfons mòbils, smartwatches, auriculars i altres accessoris', 'mostra_sec' => true],
@@ -57,24 +58,24 @@ class DatabaseSeeder extends Seeder
             ['id' => $orderIds[1], 'botiga_id' => $storeIds[1], 'usuari_id' => $users[2]->id],
         ]);
         DB::table('estoc_botiga')->insert([
-            ['id' => (string) Str::uuid(), 'botiga_id' => $storeIds[0], 'producte_id' => $productIds[0], 'quantitat' => 3],
-            ['id' => (string) Str::uuid(), 'botiga_id' => $storeIds[1], 'producte_id' => $productIds[0], 'quantitat' => 8],
-            ['id' => (string) Str::uuid(), 'botiga_id' => $storeIds[2], 'producte_id' => $productIds[0], 'quantitat' => 0],
-            ['id' => (string) Str::uuid(), 'botiga_id' => $storeIds[0], 'producte_id' => $productIds[2], 'quantitat' => 5],
-            ['id' => (string) Str::uuid(), 'botiga_id' => $storeIds[1], 'producte_id' => $productIds[2], 'quantitat' => 0],
-            ['id' => (string) Str::uuid(), 'botiga_id' => $storeIds[2], 'producte_id' => $productIds[2], 'quantitat' => 0],
-            ['id' => (string) Str::uuid(), 'botiga_id' => $storeIds[0], 'producte_id' => $productIds[1], 'quantitat' => 0],
-            ['id' => (string) Str::uuid(), 'botiga_id' => $storeIds[1], 'producte_id' => $productIds[1], 'quantitat' => 0],
-            ['id' => (string) Str::uuid(), 'botiga_id' => $storeIds[2], 'producte_id' => $productIds[1], 'quantitat' => 4],
-            ['id' => (string) Str::uuid(), 'botiga_id' => $storeIds[0], 'producte_id' => $productIds[3], 'quantitat' => 0],
-            ['id' => (string) Str::uuid(), 'botiga_id' => $storeIds[1], 'producte_id' => $productIds[3], 'quantitat' => 6],
-            ['id' => (string) Str::uuid(), 'botiga_id' => $storeIds[2], 'producte_id' => $productIds[3], 'quantitat' => 0],
+            ['id' => (string) Str::uuid7(), 'botiga_id' => $storeIds[0], 'producte_id' => $productIds[0], 'quantitat' => 3],
+            ['id' => (string) Str::uuid7(), 'botiga_id' => $storeIds[1], 'producte_id' => $productIds[0], 'quantitat' => 8],
+            ['id' => (string) Str::uuid7(), 'botiga_id' => $storeIds[2], 'producte_id' => $productIds[0], 'quantitat' => 0],
+            ['id' => (string) Str::uuid7(), 'botiga_id' => $storeIds[0], 'producte_id' => $productIds[2], 'quantitat' => 5],
+            ['id' => (string) Str::uuid7(), 'botiga_id' => $storeIds[1], 'producte_id' => $productIds[2], 'quantitat' => 0],
+            ['id' => (string) Str::uuid7(), 'botiga_id' => $storeIds[2], 'producte_id' => $productIds[2], 'quantitat' => 0],
+            ['id' => (string) Str::uuid7(), 'botiga_id' => $storeIds[0], 'producte_id' => $productIds[1], 'quantitat' => 0],
+            ['id' => (string) Str::uuid7(), 'botiga_id' => $storeIds[1], 'producte_id' => $productIds[1], 'quantitat' => 0],
+            ['id' => (string) Str::uuid7(), 'botiga_id' => $storeIds[2], 'producte_id' => $productIds[1], 'quantitat' => 4],
+            ['id' => (string) Str::uuid7(), 'botiga_id' => $storeIds[0], 'producte_id' => $productIds[3], 'quantitat' => 0],
+            ['id' => (string) Str::uuid7(), 'botiga_id' => $storeIds[1], 'producte_id' => $productIds[3], 'quantitat' => 6],
+            ['id' => (string) Str::uuid7(), 'botiga_id' => $storeIds[2], 'producte_id' => $productIds[3], 'quantitat' => 0],
         ]);
         DB::table('linia_comanda')->insert([
-            ['id' => (string) Str::uuid(), 'comanda_id' => $orderIds[0], 'producte_id' => $productIds[0], 'quantitat' => 4],
-            ['id' => (string) Str::uuid(), 'comanda_id' => $orderIds[0], 'producte_id' => $productIds[2], 'quantitat' => 6],
-            ['id' => (string) Str::uuid(), 'comanda_id' => $orderIds[1], 'producte_id' => $productIds[0], 'quantitat' => 2],
-            ['id' => (string) Str::uuid(), 'comanda_id' => $orderIds[1], 'producte_id' => $productIds[3], 'quantitat' => 8],
+            ['id' => (string) Str::uuid7(), 'comanda_id' => $orderIds[0], 'producte_id' => $productIds[0], 'quantitat' => 4],
+            ['id' => (string) Str::uuid7(), 'comanda_id' => $orderIds[0], 'producte_id' => $productIds[2], 'quantitat' => 6],
+            ['id' => (string) Str::uuid7(), 'comanda_id' => $orderIds[1], 'producte_id' => $productIds[0], 'quantitat' => 2],
+            ['id' => (string) Str::uuid7(), 'comanda_id' => $orderIds[1], 'producte_id' => $productIds[3], 'quantitat' => 8],
         ]);
     }
 }

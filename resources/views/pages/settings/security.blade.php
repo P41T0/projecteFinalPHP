@@ -10,7 +10,7 @@ new #[Title('Security settings')] class extends Component {
     public array $passkeys = [];
 
     #[Locked]
-    public ?int $deletingPasskeyId = null;
+    public ?string $deletingPasskeyId = null;
 
     #[Locked]
     public string $deletingPasskeyName = '';
@@ -36,7 +36,7 @@ new #[Title('Security settings')] class extends Component {
             ->toArray();
     }
 
-    public function confirmDelete(int $passkeyId): void
+    public function confirmDelete(string $passkeyId): void
     {
         $passkey = auth()->user()->passkeys()->findOrFail($passkeyId);
 
@@ -87,7 +87,7 @@ new #[Title('Security settings')] class extends Component {
                             variant="ghost"
                             size="sm"
                             icon="trash"
-                            wire:click="confirmDelete({{ $passkey['id'] }})"
+                            wire:click="confirmDelete('{{ $passkey['id'] }}')"
                         >
                             {{ __('Remove') }}
                         </flux:button>

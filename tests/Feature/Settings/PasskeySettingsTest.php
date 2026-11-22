@@ -1,20 +1,17 @@
 <?php
 
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Laravel\Fortify\Features;
 use Livewire\Livewire;
 
-function createPasskeyFor(User $user, string $name = 'Test device'): int
+function createPasskeyFor(User $user, string $name = 'Test device'): string
 {
-    return DB::table('passkeys')->insertGetId([
-        'user_id' => $user->id,
+    return $user->passkeys()->create([
         'name' => $name,
         'credential_id' => fake()->unique()->sha256(),
-        'credential' => json_encode([]),
-        'created_at' => now(),
-        'updated_at' => now(),
-    ]);
+        'credential' => [],
+    ])->id;
 }
 
 beforeEach(function () {
@@ -45,7 +42,7 @@ test('passkey security settings list only the authenticated user passkeys', func
     $user = User::factory()->create();
     $otherUser = User::factory()->create();
 
-    createPasskeyFor($user, 'My laptop');
+    $passkeyId = createPasskeyFor($user, 'My laptop');
     createPasskeyFor($otherUser, 'Someone else device');
 
     $this->actingAs($user)
@@ -53,6 +50,7 @@ test('passkey security settings list only the authenticated user passkeys', func
         ->get(route('security.edit'))
         ->assertOk()
         ->assertSee('My laptop')
+        ->assertSee("confirmDelete('{$passkeyId}')", false)
         ->assertDontSee('Someone else device');
 });
 
@@ -62,6 +60,8 @@ test('a user can delete only their own passkeys', function () {
 
     $passkeyId = createPasskeyFor($user);
     $otherPasskeyId = createPasskeyFor($otherUser);
+
+    expect(Str::isUuid($passkeyId, 7))->toBeTrue();
 
     Livewire::actingAs($user)
         ->test('pages::settings.security')
