@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Botiga;
-use App\Models\Producte;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
@@ -51,7 +50,7 @@ class BotigaController extends Controller
         return View(
             'botigues.edit',
 
-            ['botiga' => $botiga, 'productes' => Producte::all()]);
+            ['botiga' => $botiga]);
     }
 
     /**

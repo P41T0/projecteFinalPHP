@@ -14,10 +14,8 @@ class ComandaController extends Controller
     public function afegir(Producte $producte)
     {
         //
-        $comandesObertes = Auth()->user()->comandes->where('oberta');
-        if ($comandesObertes->count() > 0) {
-            $comanda = $comandesObertes->first();
-        } else {
+        $comanda = Auth()->user()->comandes()->where('oberta', true)->first();
+        if (! $comanda) {
             $comanda = new Comanda;
 
             $comanda->usuari_id = Auth()->user()->id;

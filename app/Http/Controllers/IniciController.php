@@ -11,6 +11,9 @@ class IniciController extends Controller
     public function index()
     {
         $seccions = Seccio::all();
+        $seccions->where('mostra_sec', true)->load([
+            'productes' => fn ($query) => $query->where('mostra_prod', true),
+        ]);
 
         return view('inici', compact('seccions'));
     }

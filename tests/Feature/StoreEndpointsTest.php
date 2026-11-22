@@ -6,6 +6,7 @@ use App\Models\Producte;
 use App\Models\Seccio;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 
 function endpointSection(array $overrides = []): Seccio
 {
@@ -113,6 +114,84 @@ test('public pages render populated sections, products, and stock', function () 
     $this->actingAs(User::factory()->create())
         ->get(route('contacte'))
         ->assertOk();
+});
+
+test('the storefront loads visible products with a single query for multiple sections', function () {
+    $first = endpointSection(['nom_en' => 'First section']);
+    $second = endpointSection(['nom_en' => 'Second section']);
+    $hidden = endpointSection(['nom_en' => 'Hidden section', 'mostra_sec' => false]);
+    endpointProduct($first, ['nom_en' => 'First product']);
+    endpointProduct($second, ['nom_en' => 'Second product']);
+    endpointProduct($first, ['nom_en' => 'Hidden product', 'mostra_prod' => false]);
+    endpointProduct($hidden, ['nom_en' => 'Product in hidden section']);
+
+    DB::enableQueryLog();
+    DB::flushQueryLog();
+    $response = $this->get(route('inici'));
+    $queries = DB::getQueryLog();
+    DB::disableQueryLog();
+
+    $response->assertOk()
+        ->assertSee('First product')
+        ->assertSee('Second product')
+        ->assertDontSee('Hidden product')
+        ->assertDontSee('Hidden section')
+        ->assertDontSee('Product in hidden section');
+
+    $productQueries = collect($queries)->filter(
+        fn (array $query) => preg_match('/\bfrom\s+[`"]?producte[`"]?/i', $query['query'])
+    );
+    expect($productQueries)->toHaveCount(1);
+    expect($productQueries->first()['query'])->toMatch('/\bmostra_prod\b/i');
+});
+
+test('the cart looks up an open order without loading closed orders', function () {
+    $section = endpointSection();
+    $product = endpointProduct($section);
+    $store = endpointStore();
+    $user = User::factory()->create();
+
+    foreach ([false, false, true] as $open) {
+        $order = new Comanda;
+        $order->usuari_id = $user->id;
+        $order->botiga_id = $store->id;
+        $order->oberta = $open;
+        $order->save();
+    }
+
+    DB::enableQueryLog();
+    DB::flushQueryLog();
+    $response = $this->actingAs($user)->get(route('comprar', $product));
+    $queries = DB::getQueryLog();
+    DB::disableQueryLog();
+
+    $response->assertOk();
+    $this->assertDatabaseHas('linia_comanda', ['comanda_id' => $order->id, 'producte_id' => $product->id]);
+    $orderQueries = collect($queries)->filter(
+        fn (array $query) => preg_match('/\bfrom\s+[`"]?comanda[`"]?/i', $query['query'])
+    );
+    expect($orderQueries)->toHaveCount(1);
+    expect($orderQueries->first()['query'])->toMatch('/\boberta\b/i')->toMatch('/\blimit\s+1\b/i');
+});
+
+test('editing a store only loads its associated products', function () {
+    $section = endpointSection();
+    $product = endpointProduct($section);
+    $store = endpointStore();
+    $store->productes()->attach($product->id, ['quantitat' => 3]);
+    $admin = endpointAdmin();
+
+    DB::enableQueryLog();
+    DB::flushQueryLog();
+    $response = $this->actingAs($admin)->get(route('botigues.edit', $store));
+    $queries = DB::getQueryLog();
+    DB::disableQueryLog();
+
+    $response->assertOk()->assertSee($product->nom);
+    $productQueries = collect($queries)->filter(
+        fn (array $query) => preg_match('/\bfrom\s+[`"]?producte[`"]?/i', $query['query'])
+    );
+    expect($productQueries)->toHaveCount(1);
 });
 
 test('admin pages render populated models and are restricted to administrators', function () {
