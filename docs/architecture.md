@@ -14,7 +14,9 @@ The home page (`inici`) loads sections and eagerly loads visible products for vi
 
 Administration routes in `routes/web.php` use the `admin` middleware. `EnsureUserIsAdmin` calls `User::isAdmin()` and returns 404 for both guests and non-administrators. Administrators can create and edit products and sections and edit inventory quantities for existing stores. Empty controller methods do not imply that store creation or deletion is implemented.
 
-New products and sections are hidden by default. When a product is created, it is associated with each existing store with zero inventory. Product image uploads are limited to JPEG, PNG, GIF, or WebP, with a maximum size of 2 MiB and dimensions of 4096 × 4096 pixels. The server checks the detected type and dimensions and decodes the image with PHP GD, then stores the original file on Laravel's public disk under a generated name and extension. GIF animation is preserved, but these checks do not re-encode or sanitize image contents. A local installation may need `php artisan storage:link` to serve images.
+New products and sections are hidden by default. When a product is created, it is associated with each existing store with zero inventory. Product image uploads are limited to JPEG, PNG, GIF, or WebP, with a maximum size of 2 MiB and dimensions of 4096 × 4096 pixels. The server checks the detected type and dimensions and attempts to decode the image with PHP GD, then stores the original file on Laravel's public disk under a generated name and content-derived extension. GIF animation is preserved, but these checks do not re-encode or sanitize image contents. Existing uploads are not revalidated and replacing an image does not delete the previous file.
+
+A local installation may need `php artisan storage:link` to expose the public disk. However, the product detail view currently constructs image URLs using a hard-coded external host rather than the configured disk URL. Docker Compose does not mount persistent storage for uploads; see the [README](../README.md#running-with-docker) before replacing an app container.
 
 ## Orders
 
