@@ -30,11 +30,13 @@ Laravel follows its standard default and discards deprecation logs when `LOG_DEP
 
 Passkey sign-in is optional; password sign-in and two-factor authentication remain available. Users can register and remove passkeys from **Settings → Security**. WebAuthn requires HTTPS, except on `localhost`; set `APP_URL` to the exact origin users visit, and keep `APP_KEY` stable because it is used to derive passkey user handles.
 
-The frontend uses Vite Plus. Run `npm run dev` or `npm run build` with Node `^22.18.0`, `^24.11.0`, or `>=26.0.0`; Docker builds use Node 24.
+The frontend uses Vite Plus and pnpm 12.21.0. Install dependencies with `pnpm install --frozen-lockfile`, then run `pnpm run dev` or `pnpm run build` with Node `^22.18.0`, `^24.11.0`, or `>=26.0.0`; Docker builds use Node 26. New dependencies must have been published at least 24 hours earlier.
 
 ## Running with Docker
 
 Docker Compose runs the Laravel application with Apache and a persistent MySQL database.
+
+**Existing MySQL 8.4 installations:** back up the database before upgrading. MySQL 26.10 cannot be assumed to upgrade an existing 8.4 data directory directly. Follow the [MySQL upgrade documentation](https://dev.mysql.com/doc/refman/en/upgrade-paths.html), or restore a logical backup into a new MySQL 26.10 volume before starting this configuration. Do not remove the existing `db_data` volume without verifying the backup.
 
 1. Copy `.env.example` to `.env` if you do not already have a local `.env`.
 2. Generate an application key:
@@ -57,6 +59,8 @@ Run the test suite in its own PHP container with:
 ```powershell
 docker compose --profile test run --build --rm test
 ```
+
+The CI workflow also runs migrations, seeding, rollback, and the test suite against MySQL 26.10. These checks use a disposable database, not the existing `db_data` volume.
 
 ## Contributing
 

@@ -78,3 +78,12 @@ test('a user can delete only their own passkeys', function () {
 
     $this->assertDatabaseMissing('passkeys', ['id' => $passkeyId]);
 });
+
+test('deleting a user cascades to their passkeys', function () {
+    $user = User::factory()->create();
+    $passkeyId = createPasskeyFor($user);
+
+    $user->delete();
+
+    $this->assertDatabaseMissing('passkeys', ['id' => $passkeyId]);
+});

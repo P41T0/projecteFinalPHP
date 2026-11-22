@@ -1,0 +1,5 @@
+minimumReleaseAge: 1440
+minimumReleaseAgeIgnoreMissingTime: false
+
+overrides:
+  vite: npm:@voidzero-dev/vite-plus-core@8.3.8000

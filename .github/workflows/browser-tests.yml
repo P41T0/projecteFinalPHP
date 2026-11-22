@@ -49,16 +49,18 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '26'
+
+      - uses: pnpm/action-setup@v4
 
       - name: Install Node Dependencies
-        run: npm i
+        run: pnpm install --frozen-lockfile
 
       - name: Install Playwright Dependencies
-        run: npm install playwright@latest
+        run: pnpm add --save-dev playwright@1.65.1
 
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+        run: pnpm exec playwright install --with-deps
 
       - name: Add `laravel-labs/starter-kit-browser-tests` Repository
         run: |
@@ -91,7 +93,7 @@ jobs:
            cp -rf vendor/laravel-labs/starter-kit-browser-tests/tests/ tests/
 
       - name: Build Assets
-        run: npm run build
+        run: pnpm run build
 
       - name: Tests
         run: php vendor/bin/pest
