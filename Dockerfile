@@ -1,8 +1,8 @@
-FROM php:8.4-apache AS php-base
+FROM php:8.6-apache AS php-base
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends libonig-dev libxml2-dev libzip-dev unzip \
-    && docker-php-ext-install bcmath dom mbstring opcache pdo_mysql xml zip \
+    && docker-php-ext-install bcmath mbstring pdo_mysql zip \
     && rm -rf /var/lib/apt/lists/*
 
 RUN a2enmod rewrite
@@ -13,7 +13,7 @@ WORKDIR /var/www/html
 
 FROM php-base AS app-build
 
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.11 /usr/bin/composer /usr/bin/composer
 
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --no-interaction --prefer-dist --no-scripts --no-autoloader
@@ -23,19 +23,20 @@ RUN rm -f bootstrap/cache/*.php \
     && composer dump-autoload --no-dev --optimize --classmap-authoritative --no-scripts \
     && php artisan package:discover --ansi
 
-FROM node:24-alpine AS frontend-build
+FROM node:26-alpine AS frontend-build
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm install --global pnpm@12.21.0
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN pnpm install --frozen-lockfile
 
 COPY resources ./resources
 COPY vite.config.js ./
 COPY public ./public
 COPY --from=app-build /var/www/html/vendor ./vendor
 
-RUN npm run build
+RUN pnpm run build
 
 FROM php-base AS app
 
@@ -48,7 +49,7 @@ RUN mkdir -p storage/framework/cache storage/framework/sessions storage/framewor
 
 FROM php-base AS app-test
 
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.11 /usr/bin/composer /usr/bin/composer
 
 COPY composer.json composer.lock ./
 RUN composer install --no-interaction --prefer-dist --no-scripts --no-autoloader

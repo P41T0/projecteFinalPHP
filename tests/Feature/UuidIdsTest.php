@@ -5,6 +5,7 @@ use App\Models\Comanda;
 use App\Models\Producte;
 use App\Models\Seccio;
 use App\Models\User;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -72,4 +73,44 @@ test('seeded application records use uuid ids and foreign keys', function () {
         ->value('id');
 
     expect(Str::isUuid($orderLineId))->toBeTrue();
+});
+
+test('demo seeding is repeatable without replacing existing records', function () {
+    Artisan::call('db:seed');
+
+    $tables = ['users', 'seccio', 'producte', 'botiga', 'comanda', 'estoc_botiga', 'linia_comanda'];
+    $ids = [];
+
+    foreach ($tables as $table) {
+        $ids[$table] = DB::table($table)->orderBy('id')->pluck('id')->all();
+        expect($ids[$table])->not->toBeEmpty();
+    }
+
+    Artisan::call('db:seed');
+
+    foreach ($tables as $table) {
+        expect(DB::table($table)->orderBy('id')->pluck('id')->all())->toBe($ids[$table]);
+    }
+
+    $this->assertDatabaseHas('seccio', ['nom' => 'Telefonia mòbil']);
+});
+
+test('demo seeding leaves a populated database unchanged', function () {
+    $user = User::factory()->create();
+
+    Artisan::call('db:seed');
+
+    $this->assertDatabaseCount('users', 1);
+    $this->assertDatabaseHas('users', ['id' => $user->id, 'admin' => false]);
+    $this->assertDatabaseCount('seccio', 0);
+    $this->assertDatabaseCount('producte', 0);
+});
+
+test('inventory rejects references to missing products and stores', function () {
+    expect(fn () => DB::table('estoc_botiga')->insert([
+        'id' => (string) Str::uuid(),
+        'producte_id' => (string) Str::uuid(),
+        'botiga_id' => (string) Str::uuid(),
+        'quantitat' => 1,
+    ]))->toThrow(QueryException::class);
 });
