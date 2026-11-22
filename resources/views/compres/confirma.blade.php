@@ -1,4 +1,5 @@
 <x-layouts::app>
+    {{-- The controller provides a state code so the view distinguishes a first confirmation from a repeated visit. --}}
     <div class="m-5 rounded-2xl border border-green-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
         <h3 class="text-center font-bold text-xl">{{ __('Compra confirmada') }}</h3>
         <div class="m-auto w-fit mt-5 mb-5">

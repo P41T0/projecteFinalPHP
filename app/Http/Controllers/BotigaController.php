@@ -23,7 +23,6 @@ class BotigaController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -31,7 +30,6 @@ class BotigaController extends Controller
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**
@@ -39,7 +37,6 @@ class BotigaController extends Controller
      */
     public function show(Botiga $botiga)
     {
-        //
     }
 
     /**
@@ -69,6 +66,7 @@ class BotigaController extends Controller
             ->pluck('producte.id')
             ->all();
 
+        // Inventory can only be changed for products already associated with this store.
         if (count($attachedIds) !== count($producteIds)) {
             throw ValidationException::withMessages([
                 'productes' => 'Un o més productes no pertanyen a aquesta botiga.',
@@ -87,6 +85,5 @@ class BotigaController extends Controller
      */
     public function destroy(Botiga $botiga)
     {
-        //
     }
 }

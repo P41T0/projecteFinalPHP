@@ -8,9 +8,11 @@ class LocalizationController extends Controller
 {
     public function index($idioma)
     {
-        App::setlocale($idioma);  // posar l'idioma per la petició actual
-        session()->put('idioma', $idioma);  // guardar l'idioma al sessión per peticiones noves
+        // Apply the locale to the current request.
+        App::setlocale($idioma);
+        // Persist the locale so subsequent requests use it too.
+        session()->put('idioma', $idioma);
 
-        return redirect()->back();  // continuar la ruta
+        return redirect()->back();
     }
 }

@@ -9,6 +9,7 @@ return new class extends Migration
 {
     public function up(): void
     {
+        // Composite indexes support the storefront and open-order lookup conditions.
         Schema::table('producte', function (Blueprint $table) {
             $table->index(['seccio_id', 'mostra_prod']);
         });
@@ -21,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         if (in_array(DB::connection()->getDriverName(), ['mysql', 'mariadb'], true)) {
-            // Foreign keys still need supporting indexes after the composite indexes are dropped.
+            // Keep a supporting index for foreign keys before dropping the composite index.
             if (! Schema::hasIndex('comanda', ['usuari_id'])) {
                 Schema::table('comanda', function (Blueprint $table) {
                     $table->index('usuari_id');

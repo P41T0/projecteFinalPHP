@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Do not overwrite an existing demo database or a partially populated installation.
         foreach (['users', 'seccio', 'producte', 'botiga', 'comanda', 'estoc_botiga', 'linia_comanda'] as $table) {
             if (DB::table($table)->exists()) {
                 $this->command?->info("Skipping demo seeding because the {$table} table already contains data.");
@@ -22,6 +23,7 @@ class DatabaseSeeder extends Seeder
             }
         }
 
+        // Seed all application data atomically so incomplete demo data is rolled back.
         DB::transaction(fn () => $this->seedData());
     }
 
