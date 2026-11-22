@@ -1,0 +1,48 @@
+# Architecture and application flows
+
+This document describes the current implementation, not a specification of future features. Routes, controllers, models, and migrations are the source of truth.
+
+## Requests and interface
+
+`public/index.php` starts Laravel. `bootstrap/app.php` loads `routes/web.php` and `routes/console.php`, registers `/up`, and adds `SetLocale` to the web middleware group. Store routes call controllers that return Blade views. Account pages are Livewire components registered in `routes/settings.php`; Fortify configures authentication views in `app/Providers/FortifyServiceProvider.php`.
+
+The interface uses Blade, Flux components, and Tailwind. Vite compiles the entry points declared in `vite.config.js`; `resources/js/passkeys.js` integrates the WebAuthn client. Product and section views select text columns according to the active locale.
+
+## Catalog and administration
+
+The home page (`inici`) loads sections and eagerly loads visible products for visible sections; the view filters hidden items. Product detail is public and displays inventory by store. Direct access to a product detail does not apply the visibility filter, so visibility is not an access restriction.
+
+Administration routes in `routes/web.php` use the `admin` middleware. `EnsureUserIsAdmin` calls `User::isAdmin()` and returns 404 for both guests and non-administrators. Administrators can create and edit products and sections and edit inventory quantities for existing stores. Empty controller methods do not imply that store creation or deletion is implemented.
+
+New products and sections are hidden by default. When a product is created, it is associated with each existing store with zero inventory. Uploaded images are stored on Laravel's public disk; a local installation may need `php artisan storage:link` to serve them.
+
+## Orders
+
+Purchase routes require authentication. `ComandaController::afegir` finds the user's first open order, or creates one using the first store ordered by population name. It adds a product with quantity 1 if it is not already present; adding it again does not increase its quantity. Creating an order requires at least one store.
+
+The cart form submits quantities and a store to `actualiza.quantitat`. The controller checks order ownership, whether the order is open, integer quantities from 0 to 10, the existence of the store, and whether submitted products belong to the order. The code intends to remove zero-quantity lines but compares strictly with integer `0`: HTTP form values may arrive as strings. Verify this case before relying on or changing it.
+
+`confirma.compres` also checks ownership: an open order with products is closed, an empty order is not closed, and a closed order is displayed again. The total uses the product's current price and pivot quantity, not a historical line price. The current flow does not implement payment or reserve or deduct stock on confirmation. Adding and confirming use state-changing `GET` routes; consider this when changing HTTP behavior or security.
+
+## Data and relationships
+
+| Table / model | Relationships and relevant data |
+| --- | --- |
+| `users` / `User` | A user has many `comanda` records via `usuari_id`; `admin` controls administrative access. |
+| `seccio` / `Seccio` | A section has many products; it has names and descriptions in three languages and `mostra_sec`. |
+| `producte` / `Producte` | Belongs to a section; has a price, optional image, `mostra_prod`, and relationships to stores and orders. |
+| `botiga` / `Botiga` | Pickup store with population name and contact details. |
+| `comanda` / `Comanda` | Belongs to a user and has a `botiga_id`; `oberta` indicates cart state. |
+| `estoc_botiga` / `EstocBotiga` | Product-store pivot with `quantitat`. |
+| `linia_comanda` / `LiniaComanda` | Product-order pivot with `quantitat`. |
+| `passkeys` / `Passkey` | WebAuthn credentials associated with users; the custom model is registered in `AppServiceProvider`. |
+
+Application models and pivots use `HasUuids`; new keys are UUIDv7. Composite indexes cover `producte(seccio_id, mostra_prod)` and `comanda(usuari_id, oberta)`. Laravel's internal tables do not necessarily use the same key format. Migrations define the actual schema, including the conversion of legacy passkey IDs; read the README before deploying it.
+
+## Authentication and locale
+
+Fortify enables registration, password reset, email verification, two-factor authentication, and passkeys in `config/fortify.php`. Account routes use `auth`, some use `verified`, and certain security settings use `password.confirm`. `User` does not currently implement `MustVerifyEmail`; do not assume that `verified` requires all users to verify their email without reviewing that contract.
+
+Passkeys are optional and require HTTPS or localhost. `APP_URL` must match the origin and `APP_KEY` must remain stable. Fortify actions and shared validation are in `app/Actions/Fortify/` and `app/Concerns/`.
+
+`/lang/{idioma}` accepts `ca`, `en`, and `es`, stores `idioma` in the session, and redirects back. `SetLocale` applies that value or the configured locale to each web request. Interface strings are translated through `lang/*.json` and `lang/{locale}/`; catalog data uses `nom`, `nom_es`, `nom_en`, and corresponding description fields.

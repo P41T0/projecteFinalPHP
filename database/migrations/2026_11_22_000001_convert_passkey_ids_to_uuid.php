@@ -27,6 +27,7 @@ return new class extends Migration
 
     public function down(): void
     {
+        // UUIDs cannot be restored to their original numeric IDs; reject unsafe rollbacks.
         foreach (DB::table('passkeys')->select('id')->cursor() as $passkey) {
             $id = ltrim((string) $passkey->id, '0');
             $id = $id === '' ? '0' : $id;

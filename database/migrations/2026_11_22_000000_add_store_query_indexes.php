@@ -21,6 +21,7 @@ return new class extends Migration
     public function down(): void
     {
         if (in_array(DB::connection()->getDriverName(), ['mysql', 'mariadb'], true)) {
+            // Foreign keys still need supporting indexes after the composite indexes are dropped.
             if (! Schema::hasIndex('comanda', ['usuari_id'])) {
                 Schema::table('comanda', function (Blueprint $table) {
                     $table->index('usuari_id');

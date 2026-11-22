@@ -1,4 +1,4 @@
-# Botiga electrònica
+# Electronics store
 
 ## Introduction
 
@@ -6,6 +6,7 @@ This application uses Laravel 13, Livewire 4, Tailwind CSS 4, Fortify, and the [
 
 ## Project structure
 
+- See the [agent guide](AGENTS.md), [architecture and application flows](docs/architecture.md), and [development and validation](docs/validation.md).
 - `app/Http/Controllers`, `app/Models`, and `app/Actions` contain the application's PHP code.
 - `resources/views/pages` contains full-page Livewire components and authentication views.
 - `resources/views/components` contains reusable Blade components and layouts.
@@ -68,7 +69,7 @@ The CI workflow also runs migrations, seeding, rollback, and the test suite agai
 
 ## Contributing
 
-Thank you for considering contributing to our starter kit! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+See [CONTRIBUTING.md](CONTRIBUTING.md) for project-specific contribution and validation guidance.
 
 ## Code of Conduct
 
