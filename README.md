@@ -31,9 +31,19 @@ Laravel follows its standard default and discards deprecation logs when `LOG_DEP
 
 Passkey sign-in is optional; password sign-in and two-factor authentication remain available. Users can register and remove passkeys from **Settings → Security**. WebAuthn requires HTTPS, except on `localhost`; set `APP_URL` to the exact origin users visit, and keep `APP_KEY` stable because it is used to derive passkey user handles.
 
-Application and passkey IDs use UUIDv7. The migrations convert older identifiers and update application relationships while preserving passkey credentials and their existing WebAuthn user handles. Laravel's internal queue, session and migration IDs retain their framework formats.
+### Upgrading application identifiers
 
-Before deploying, back up the database, stop all application instances and queue workers, and run migrations in maintenance mode. Converting existing identifiers supports MySQL and SQLite; the migration temporarily disables foreign-key checks on MySQL and must not run concurrently with application writes. Existing links containing changed IDs and queued jobs containing old IDs must be replaced or processed before migration. Affected database sessions are removed; users must sign in again. Keep `APP_KEY` and any `PASSKEYS_USER_HANDLE_SECRET` unchanged. The identifier conversion is irreversible: restore the backup to recover old IDs. Rollback refuses to remove preserved passkey user handles while any remain.
+Application entities, pivots, and passkeys use UUIDv7 identifiers. The migrations replace older identifiers, including numeric passkey IDs, and update application relationships; existing UUIDv7 IDs remain unchanged. Laravel's internal queue, session, and migration IDs retain their framework formats.
+
+Before deploying the migrations:
+
+1. Back up the database and verify that it can be restored. Keep `APP_KEY` and any `PASSKEYS_USER_HANDLE_SECRET` unchanged.
+2. Process or replace queued jobs containing old IDs, and plan to update existing links and external references containing changed IDs.
+3. Stop all application instances and queue workers, and run migrations in maintenance mode. Conversion of existing IDs supports MySQL and SQLite; other database drivers fail if conversion is needed. MySQL temporarily disables foreign-key checks, so concurrent writes are unsafe.
+
+For migrated users with passkeys, the migration preserves the existing WebAuthn user handle from a stored credential. Invalid or missing credential handles cause the migration to fail rather than silently replacing them. Database sessions belonging to users whose IDs change are deleted, so those users must sign in again when using database sessions.
+
+The identifier conversion is irreversible: restore the backup to recover old IDs. Rollback refuses to remove preserved passkey user handles while any remain. If a migration fails, investigate and correct the cause before retrying; the identifier updates are transactional, although schema changes may already have been applied.
 
 The frontend uses Vite Plus and pnpm 12.21.0. Install dependencies with `pnpm install --frozen-lockfile`, then run `pnpm run dev` or `pnpm run build` with Node `^22.18.0`, `^24.11.0`, or `>=26.0.0`; Docker builds use Node 26. New dependencies must have been published at least 24 hours earlier.
 

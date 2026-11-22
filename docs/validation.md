@@ -40,4 +40,12 @@ pnpm run build
 
 For tests in a disposable container, run `docker compose --profile test run --build --rm test`. CI in `.github/workflows/tests.yml` runs Pest on PHP 8.5 and 8.6 and checks migrations, seeding, rollback, and tests with a disposable MySQL service. The browser workflow only runs when its token is available and uses an external suite; do not assume browser tests are available locally.
 
+For focused SQLite validation of identifier migration and passkey authentication in Docker, run:
+
+```powershell
+docker compose --profile test run --build --rm test php artisan test tests/Feature/UuidIdsTest.php tests/Feature/PasskeyIdMigrationTest.php
+```
+
+These tests cover relationship updates, unchanged UUIDv7 IDs, database-session invalidation, retry after a simulated failure, numeric passkey conversion, and authentication with a preserved WebAuthn handle. The Compose test service uses in-memory SQLite; also run these tests against a disposable MySQL database when changing the migrations, since foreign-key handling differs.
+
 Do not run `migrate:fresh`, rollback, seeders, or other potentially destructive operations against shared or production databases. Compose runs migrations and the seeder when the application starts; the seeder skips all demonstration data if any table it checks already contains data.

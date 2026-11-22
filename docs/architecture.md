@@ -37,7 +37,11 @@ The cart form submits quantities and a store to `actualiza.quantitat`. The contr
 | `linia_comanda` / `LiniaComanda` | Product-order pivot with `quantitat`. |
 | `passkeys` / `Passkey` | WebAuthn credentials associated with users; the custom model is registered in `AppServiceProvider`. |
 
-Application models and pivots use `HasUuids`; keys are UUIDv7. Migrations convert older application identifiers and their relationships, preserving the original WebAuthn user handle for migrated users. Composite indexes cover `producte(seccio_id, mostra_prod)` and `comanda(usuari_id, oberta)`. Laravel's internal tables do not necessarily use the same key format. Read the README before deploying the irreversible identifier migration.
+Application models and pivots use `HasUuids`; new keys are UUIDv7. Composite indexes cover `producte(seccio_id, mostra_prod)` and `comanda(usuari_id, oberta)`. Laravel's internal tables do not necessarily use the same key format.
+
+The identifier migrations convert legacy numeric passkey IDs and non-UUIDv7 IDs in the application tables above. The latter migration updates user references in orders and passkeys, section references in products, product and store references in inventory and orders, and order references in order lines. IDs already using UUIDv7 are left unchanged. Database sessions for users whose IDs change are deleted; links, queued payloads, and references outside these tables are not rewritten.
+
+For a migrated user with passkeys, the migration reads the WebAuthn user handle from a stored credential and saves it as base64 in `users.passkey_user_handle`. The `User` model hides this column during serialization and uses the decoded handle for passkey authentication; users without a preserved handle use the package default. A missing or invalid credential handle stops the migration. Identifier updates run in a transaction; SQLite defers foreign-key checks and MySQL temporarily disables them. Read the [README](../README.md#upgrading-application-identifiers) before deploying this irreversible migration.
 
 ## Authentication and locale
 
