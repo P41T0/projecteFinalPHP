@@ -54,6 +54,8 @@ Docker Compose runs the Laravel application with Apache and a persistent MySQL d
 
 The application is available at <http://localhost:8080>. Database migrations and seeders run when the application container starts. Use `docker compose down` to stop the services; the MySQL data remains in the `db_data` volume.
 
+The storefront and open-order lookup use composite database indexes. Existing installations must run the new migrations (`php artisan migrate --force`); Docker Compose runs them automatically on startup.
+
 Run the test suite in its own PHP container with:
 
 ```powershell
