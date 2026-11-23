@@ -12,3 +12,4 @@ class EstocBotiga extends Pivot
     protected $fillable = [
         'quantitat',
     ];
+}
