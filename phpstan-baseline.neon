@@ -1,0 +1,128 @@
+parameters:
+    ignoreErrors:
+        - identifier: trait.unused
+          count: 1
+          path: app/Actions/Fortify/PasswordValidationRules.php
+        - identifier: argument.type
+          count: 2
+          path: app/Http/Controllers/BotigaController.php
+        - identifier: foreach.nonIterable
+          count: 1
+          path: app/Http/Controllers/BotigaController.php
+        - identifier: method.nonObject
+          count: 7
+          path: app/Http/Controllers/BotigaController.php
+        - identifier: missingType.return
+          count: 7
+          path: app/Http/Controllers/BotigaController.php
+        - identifier: offsetAccess.nonOffsetAccessible
+          count: 2
+          path: app/Http/Controllers/BotigaController.php
+        - identifier: argument.type
+          count: 2
+          path: app/Http/Controllers/ComandaController.php
+        - identifier: assign.propertyType
+          count: 2
+          path: app/Http/Controllers/ComandaController.php
+        - identifier: binaryOp.invalid
+          count: 3
+          path: app/Http/Controllers/ComandaController.php
+        - identifier: foreach.nonIterable
+          count: 4
+          path: app/Http/Controllers/ComandaController.php
+        - identifier: method.nonObject
+          count: 15
+          path: app/Http/Controllers/ComandaController.php
+        - identifier: missingType.return
+          count: 10
+          path: app/Http/Controllers/ComandaController.php
+        - identifier: offsetAccess.nonOffsetAccessible
+          count: 3
+          path: app/Http/Controllers/ComandaController.php
+        - identifier: property.nonObject
+          count: 14
+          path: app/Http/Controllers/ComandaController.php
+        - identifier: property.notFound
+          count: 4
+          path: app/Http/Controllers/ComandaController.php
+        - identifier: larastan.relationExistence
+          count: 1
+          path: app/Http/Controllers/IniciController.php
+        - identifier: missingType.return
+          count: 3
+          path: app/Http/Controllers/IniciController.php
+        - identifier: argument.type
+          count: 1
+          path: app/Http/Controllers/LocalizationController.php
+        - identifier: missingType.parameter
+          count: 1
+          path: app/Http/Controllers/LocalizationController.php
+        - identifier: missingType.return
+          count: 1
+          path: app/Http/Controllers/LocalizationController.php
+        - identifier: assign.propertyType
+          count: 16
+          path: app/Http/Controllers/ProducteController.php
+        - identifier: method.nonObject
+          count: 7
+          path: app/Http/Controllers/ProducteController.php
+        - identifier: missingType.iterableValue
+          count: 1
+          path: app/Http/Controllers/ProducteController.php
+        - identifier: missingType.return
+          count: 7
+          path: app/Http/Controllers/ProducteController.php
+        - identifier: assign.propertyType
+          count: 12
+          path: app/Http/Controllers/SeccioController.php
+        - identifier: method.nonObject
+          count: 5
+          path: app/Http/Controllers/SeccioController.php
+        - identifier: missingType.return
+          count: 7
+          path: app/Http/Controllers/SeccioController.php
+        - identifier: argument.type
+          count: 1
+          path: app/Http/Middleware/EnsureUserIsAdmin.php
+        - identifier: return.type
+          count: 1
+          path: app/Http/Middleware/EnsureUserIsAdmin.php
+        - identifier: argument.type
+          count: 1
+          path: app/Http/Middleware/SetLocale.php
+        - identifier: return.type
+          count: 1
+          path: app/Http/Middleware/SetLocale.php
+        - identifier: method.nonObject
+          count: 6
+          path: app/Http/Middleware/SetSecurityHeaders.php
+        - identifier: return.type
+          count: 1
+          path: app/Http/Middleware/SetSecurityHeaders.php
+        - identifier: missingType.return
+          count: 1
+          path: app/Livewire/Actions/Logout.php
+        - identifier: missingType.return
+          count: 1
+          path: app/Models/Botiga.php
+        - identifier: missingType.return
+          count: 2
+          path: app/Models/Comanda.php
+        - identifier: missingType.return
+          count: 3
+          path: app/Models/Producte.php
+        - identifier: missingType.return
+          count: 1
+          path: app/Models/Seccio.php
+        - identifier: missingType.property
+          count: 2
+          path: app/Models/User.php
+        - identifier: missingType.return
+          count: 2
+          path: app/Models/User.php
+        - identifier: property.phpDocType
+          count: 2
+          path: app/Models/User.php
+        - identifier: argument.type
+          count: 1
+          path: app/Providers/FortifyServiceProvider.php

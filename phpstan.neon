@@ -1,7 +1,11 @@
 includes:
     - vendor/larastan/larastan/extension.neon
+    - phpstan-baseline.neon
 
 parameters:
     level: max
     paths:
         - app
+    excludePaths:
+        analyseAndScan:
+            - app/Examples/VulnerableCodeExamples.php
