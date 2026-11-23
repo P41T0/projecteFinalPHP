@@ -11,6 +11,11 @@ class Botiga extends Model
 
     protected $table = 'botiga';
 
+    protected $fillable = [
+        'nom',
+        'poblacio',
+    ];
+
     public function productes()
     {
         // The estoc_botiga pivot stores the available quantity for each product.

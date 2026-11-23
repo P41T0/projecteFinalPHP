@@ -1,0 +1,10 @@
+node_modules/
+vendor/
+public/build/
+bootstrap/cache/
+storage/
+.env
+.env.example
+pint.json
+composer.json
+composer.lock

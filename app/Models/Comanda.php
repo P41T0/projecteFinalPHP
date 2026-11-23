@@ -11,6 +11,12 @@ class Comanda extends Model
 
     protected $table = 'comanda';
 
+    protected $fillable = [
+        'usuari_id',
+        'botiga_id',
+        'oberta',
+    ];
+
     public function usuari()
     {
         return $this->belongsTo(User::class, 'usuari_id');

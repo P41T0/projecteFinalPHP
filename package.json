@@ -8,7 +8,9 @@
     },
     "scripts": {
         "build": "vp build",
-        "dev": "vp dev"
+        "dev": "vp dev",
+        "format": "prettier --write 'resources/**/*.{css,js,vue}'",
+        "format:check": "prettier --check 'resources/**/*.{css,js,vue}'"
     },
     "dependencies": {
         "@laravel/passkeys": "^0.4.1",
@@ -18,5 +20,8 @@
         "tailwindcss": "4.3.5",
         "vite": "npm:@voidzero-dev/vite-plus-core@8.3.8000",
         "vite-plus": "1.7.0"
+    },
+    "devDependencies": {
+        "prettier": "^3.4.2"
     }
 }

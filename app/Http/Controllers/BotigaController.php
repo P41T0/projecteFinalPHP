@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Botiga;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class BotigaController extends Controller
@@ -38,6 +39,7 @@ class BotigaController extends Controller
      */
     public function edit(Botiga $botiga)
     {
+        abort_unless(Auth::check() && Auth::user()->isAdmin(), 403);
         return View(
             'botigues.edit',
 
@@ -49,6 +51,8 @@ class BotigaController extends Controller
      */
     public function update(Request $request, Botiga $botiga)
     {
+        abort_unless(Auth::check() && Auth::user()->isAdmin(), 403);
+
         $validated = $request->validate([
             'productes' => ['required', 'array', 'min:1'],
             'productes.*' => ['required', 'integer', 'min:0'],
@@ -77,5 +81,8 @@ class BotigaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Botiga $botiga) {}
+    public function destroy(Botiga $botiga)
+    {
+        abort_unless(Auth::check() && Auth::user()->isAdmin(), 403);
+    }
 }

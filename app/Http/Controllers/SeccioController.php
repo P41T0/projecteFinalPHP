@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Seccio;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class SeccioController extends Controller
@@ -23,6 +24,7 @@ class SeccioController extends Controller
      */
     public function create()
     {
+        abort_unless(Auth::check() && Auth::user()->isAdmin(), 403);
         return view('seccions.create');
     }
 
@@ -31,6 +33,8 @@ class SeccioController extends Controller
      */
     public function store(Request $request)
     {
+        abort_unless(Auth::check() && Auth::user()->isAdmin(), 403);
+
         $request->validate(
             [
                 'nom' => 'required|string|max:100',
@@ -69,6 +73,7 @@ class SeccioController extends Controller
      */
     public function edit(Seccio $seccio)
     {
+        abort_unless(Auth::check() && Auth::user()->isAdmin(), 403);
         return View(
             'seccions.edit',
             ['seccio' => $seccio]
@@ -80,6 +85,8 @@ class SeccioController extends Controller
      */
     public function update(Request $request, Seccio $seccio)
     {
+        abort_unless(Auth::check() && Auth::user()->isAdmin(), 403);
+
         $request->validate(
             [
                 'nom' => 'required|string|max:100',
@@ -111,5 +118,8 @@ class SeccioController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Seccio $seccio) {}
+    public function destroy(Seccio $seccio)
+    {
+        abort_unless(Auth::check() && Auth::user()->isAdmin(), 403);
+    }
 }

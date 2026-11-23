@@ -8,6 +8,7 @@ use App\Models\Seccio;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use RuntimeException;
 
@@ -28,6 +29,7 @@ class ProducteController extends Controller
      */
     public function create()
     {
+        abort_unless(Auth::check() && Auth::user()->isAdmin(), 403);
         return view('productes.create', ['seccions' => Seccio::all()]);
     }
 
@@ -36,6 +38,8 @@ class ProducteController extends Controller
      */
     public function store(Request $request)
     {
+        abort_unless(Auth::check() && Auth::user()->isAdmin(), 403);
+
         $request->validate(
             [
                 'nom' => 'required|string|max:100',
@@ -93,6 +97,7 @@ class ProducteController extends Controller
      */
     public function edit(Producte $producte)
     {
+        abort_unless(Auth::check() && Auth::user()->isAdmin(), 403);
         return View(
             'productes.edit',
             ['producte' => $producte, 'seccions' => Seccio::all()]
@@ -104,6 +109,8 @@ class ProducteController extends Controller
      */
     public function update(Request $request, Producte $producte)
     {
+        abort_unless(Auth::check() && Auth::user()->isAdmin(), 403);
+
         $request->validate(
             [
                 'nom' => 'required|string|max:100',
@@ -178,5 +185,8 @@ class ProducteController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Producte $producte) {}
+    public function destroy(Producte $producte)
+    {
+        abort_unless(Auth::check() && Auth::user()->isAdmin(), 403);
+    }
 }

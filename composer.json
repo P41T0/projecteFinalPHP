@@ -59,6 +59,10 @@
         "test:lint": [
             "pint --parallel --test"
         ],
+        "test:format": [
+            "pint --parallel --test",
+            "pnpm run format:check"
+        ],
         "test": [
             "@php artisan config:clear --ansi",
             "@test:lint",

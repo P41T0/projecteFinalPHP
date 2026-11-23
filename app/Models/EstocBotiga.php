@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 class EstocBotiga extends Pivot
 {
     use HasUuids;
-}
+
+    protected $fillable = [
+        'quantitat',
+    ];

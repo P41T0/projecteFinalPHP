@@ -52,3 +52,78 @@ Fortify enables registration, password reset, email verification, two-factor aut
 Passkeys are optional and require HTTPS or localhost. `APP_URL` must match the origin and `APP_KEY` must remain stable. Fortify actions and shared validation are in `app/Actions/Fortify/` and `app/Concerns/`.
 
 `/lang/{idioma}` accepts `ca`, `en`, and `es`, stores `idioma` in the session, and redirects back. `SetLocale` applies that value or the configured locale to each web request. Interface strings are translated through `lang/*.json` and `lang/{locale}/`; catalog data uses `nom`, `nom_es`, `nom_en`, and corresponding description fields.
+
+## Security
+
+The application implements comprehensive security measures:
+
+### Security Headers
+
+`app/Http/Middleware/SetSecurityHeaders.php` applies critical HTTP security headers globally:
+- `X-Content-Type-Options: nosniff` - Prevents MIME sniffing attacks
+- `X-Frame-Options: DENY` - Prevents clickjacking
+- `X-XSS-Protection: 1; mode=block` - Mitigates XSS attacks
+- `Strict-Transport-Security: max-age=31536000` - Enforces HTTPS
+- `Content-Security-Policy` - Prevents injection attacks
+- `Referrer-Policy` - Controls referrer information
+
+### Mass Assignment Protection
+
+All Eloquent models define `$fillable` to prevent unauthorized property assignment:
+- `Producte`, `Comanda`, `Botiga`, `Seccio`, `LiniaComanda`, `EstocBotiga`
+
+### Authorization
+
+Administrative routes enforce authorization via `EnsureUserIsAdmin` middleware and explicit checks:
+- Controllers use `abort_unless(Auth::user()->isAdmin(), 403);`
+- Order operations verify ownership before modification
+- All data-modifying operations check permissions
+
+### Input Validation
+
+All user inputs are validated:
+- Controllers use `$request->validate()`
+- Product and section creation requires validation
+- Cart updates validate quantities (0-10 range) and store existence
+- Order confirmation validates order state and ownership
+
+### Database Security
+
+- All database queries use parameterized binding to prevent SQL injection
+- Models use Eloquent's ORM which handles parameter escaping
+- Relationships are properly defined and type-hinted
+- UUIDs prevent ID enumeration attacks
+
+### Code Security Tests
+
+The application includes 13 comprehensive security analysis tests in `tests/Security/StaticAnalysisTest.php`:
+
+1. **No dangerous functions** - Detects eval, exec, system, unserialize, etc.
+2. **No weak random functions** - Prevents use of mt_rand/rand for security
+3. **No SQL injection patterns** - Finds string concatenation in queries
+4. **Mass assignment protection** - Verifies $fillable/$guarded defined
+5. **No unescaped output** - Checks for unescaped Blade output
+6. **Authorization checks** - Validates admin/owner verification
+7. **No sensitive data logging** - Prevents credentials in logs
+8. **Input validation** - Ensures request validation used
+9. **No hardcoded credentials** - Finds hardcoded secrets
+10. **No path traversal** - Validates file operations
+11. **CSRF protection** - Verifies form tokens
+12. **Security headers** - Confirms headers configured
+13. **Parameterized queries** - Checks for safe query binding
+
+See [Static Analysis Guide](static-analysis.md) for detailed test information and [Security Test Mapping](../SECURITY_TESTS_MAPPING.md) for coverage details.
+
+### Code Formatting & Linting
+
+The application uses two complementary formatters:
+
+- **Pint** (PHP): Enforces Laravel coding standards
+- **Prettier** (JavaScript/CSS): Maintains consistent frontend code style
+
+Both tools are integrated into the test suite and can be run via:
+```bash
+composer test:format
+```
+
+See [Formatting Documentation](formatting.md) for configuration and usage details.

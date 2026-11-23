@@ -22,9 +22,32 @@ For every code change, explain what it does in the pull request description or a
 
 ## Before opening a pull request
 
-- Run the relevant focused tests, `composer test:lint`, and, when appropriate, `composer test` and `pnpm run build`. See [validation](docs/validation.md) for commands and test locations.
+- Run the relevant focused tests, `composer test:lint`, `composer test:format`, and when appropriate `composer test` and `pnpm run build`. See [validation](docs/validation.md) for commands and test locations.
 - Check authorization and order ownership when changing protected routes. Preserve the supported `ca`, `es`, and `en` translations when changing user-facing text.
+- Run security tests if changing any authentication, authorization, database queries, or input handling code.
 - Describe the change, list checks performed and any limitations, and include screenshots for visible interface changes.
 - Mention migrations, configuration changes, and deployment or rollback precautions when applicable. Do not commit credentials, `.env`, or generated dependencies.
+
+### Code Quality Checks
+
+Before submitting a pull request, ensure:
+
+1. **Formatting** - Run `composer test:format` (checks both Pint and Prettier)
+   - PHP code passes Pint linting
+   - JavaScript/CSS passes Prettier formatting
+
+2. **Security** - Run `./vendor/bin/pest tests/Security/StaticAnalysisTest.php`
+   - All 13 security checks pass
+   - No dangerous functions or SQL injection patterns
+   - Authorization and validation in place
+
+3. **Tests** - Run `composer test`
+   - All tests pass
+   - New behavior has test coverage
+   - Existing tests still pass
+
+4. **Build** - Run `pnpm run build`
+   - Frontend assets build without errors
+   - No TypeScript or syntax errors
 
 For suspected security vulnerabilities, follow [SECURITY.md](SECURITY.md) instead of opening a public issue.

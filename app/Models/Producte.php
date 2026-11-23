@@ -11,6 +11,19 @@ class Producte extends Model
 
     protected $table = 'producte';
 
+    protected $fillable = [
+        'nom',
+        'nom_es',
+        'nom_en',
+        'descripcio',
+        'descripcio_es',
+        'descripcio_en',
+        'preu_unitari',
+        'foto',
+        'seccio_id',
+        'mostra_prod',
+    ];
+
     public function Seccio()
     {
         return $this->belongsTo(Seccio::class);

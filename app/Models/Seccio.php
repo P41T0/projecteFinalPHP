@@ -11,6 +11,12 @@ class Seccio extends Model
 
     protected $table = 'seccio';
 
+    protected $fillable = [
+        'nom',
+        'nom_es',
+        'nom_en',
+    ];
+
     public function productes()
     {
         return $this->hasMany(Producte::class);
