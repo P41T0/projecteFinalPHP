@@ -19,8 +19,8 @@ class FormattingTest extends TestCase
         $this->assertEquals(
             0,
             $returnCode,
-            'PHP code formatting check with Pint failed. ' .
-            'Run: pint --fix' . "\n" .
+            'PHP code formatting check with Pint failed. '.
+            'Run: pint --fix'."\n".
             implode("\n", $output)
         );
     }
@@ -46,8 +46,8 @@ class FormattingTest extends TestCase
         $this->assertEquals(
             0,
             $returnCode,
-            'JavaScript/CSS formatting check with Prettier failed. ' .
-            'Run: pnpm run format' . "\n" .
+            'JavaScript/CSS formatting check with Prettier failed. '.
+            'Run: pnpm run format'."\n".
             implode("\n", $output)
         );
     }

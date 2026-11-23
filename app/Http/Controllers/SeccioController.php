@@ -25,6 +25,7 @@ class SeccioController extends Controller
     public function create()
     {
         abort_unless(Auth::check() && Auth::user()->isAdmin(), 403);
+
         return view('seccions.create');
     }
 
@@ -74,6 +75,7 @@ class SeccioController extends Controller
     public function edit(Seccio $seccio)
     {
         abort_unless(Auth::check() && Auth::user()->isAdmin(), 403);
+
         return View(
             'seccions.edit',
             ['seccio' => $seccio]

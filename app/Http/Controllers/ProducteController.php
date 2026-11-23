@@ -30,6 +30,7 @@ class ProducteController extends Controller
     public function create()
     {
         abort_unless(Auth::check() && Auth::user()->isAdmin(), 403);
+
         return view('productes.create', ['seccions' => Seccio::all()]);
     }
 
@@ -98,6 +99,7 @@ class ProducteController extends Controller
     public function edit(Producte $producte)
     {
         abort_unless(Auth::check() && Auth::user()->isAdmin(), 403);
+
         return View(
             'productes.edit',
             ['producte' => $producte, 'seccions' => Seccio::all()]

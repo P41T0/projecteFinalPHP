@@ -40,6 +40,7 @@ class BotigaController extends Controller
     public function edit(Botiga $botiga)
     {
         abort_unless(Auth::check() && Auth::user()->isAdmin(), 403);
+
         return View(
             'botigues.edit',
 

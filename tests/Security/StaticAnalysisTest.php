@@ -31,7 +31,7 @@ class StaticAnalysisTest extends TestCase
         'lcg_value' => 'Weak random value',
     ];
 
-    private const APP_DIR = __DIR__ . '/../../app';
+    private const APP_DIR = __DIR__.'/../../app';
 
     /**
      * Test that dangerous functions are not used in the application code
@@ -42,7 +42,7 @@ class StaticAnalysisTest extends TestCase
 
         foreach ($this->getPhpFiles() as $file) {
             $content = file_get_contents($file->getRealPath());
-            
+
             foreach (self::DANGEROUS_FUNCTIONS as $function => $risk) {
                 if (preg_match("/\b{$function}\s*\(/i", $content)) {
                     $violations[$file->getRealPath()][] = "$function: $risk";
@@ -52,7 +52,7 @@ class StaticAnalysisTest extends TestCase
 
         $this->assertEmpty(
             $violations,
-            'Found dangerous functions in application code: ' . json_encode($violations, JSON_PRETTY_PRINT)
+            'Found dangerous functions in application code: '.json_encode($violations, JSON_PRETTY_PRINT)
         );
     }
 
@@ -65,7 +65,7 @@ class StaticAnalysisTest extends TestCase
 
         foreach ($this->getPhpFiles() as $file) {
             $content = file_get_contents($file->getRealPath());
-            
+
             foreach (self::WEAK_RANDOM as $function => $risk) {
                 if (preg_match("/\b{$function}\s*\(/", $content)) {
                     $violations[$file->getRealPath()][] = "$function: $risk";
@@ -77,7 +77,7 @@ class StaticAnalysisTest extends TestCase
         $this->assertLessThanOrEqual(
             2,
             count($violations),
-            'Found weak random functions: ' . json_encode($violations, JSON_PRETTY_PRINT)
+            'Found weak random functions: '.json_encode($violations, JSON_PRETTY_PRINT)
         );
     }
 
@@ -96,14 +96,14 @@ class StaticAnalysisTest extends TestCase
                 // Check for string concatenation in DB queries
                 if (preg_match('/DB::|->raw\(|SELECT|INSERT|UPDATE|DELETE/i', $line) &&
                     preg_match('/\.\s*\$|\$\w+\s*\./', $line)) {
-                    $violations[$file->getRealPath()][] = "Line " . ($lineNum + 1) . ": Possible SQL injection via string concatenation";
+                    $violations[$file->getRealPath()][] = 'Line '.($lineNum + 1).': Possible SQL injection via string concatenation';
                 }
             }
         }
 
         $this->assertEmpty(
             $violations,
-            'Found potential SQL injection patterns: ' . json_encode($violations, JSON_PRETTY_PRINT)
+            'Found potential SQL injection patterns: '.json_encode($violations, JSON_PRETTY_PRINT)
         );
     }
 
@@ -113,9 +113,9 @@ class StaticAnalysisTest extends TestCase
     public function test_models_have_fillable_or_guarded(): void
     {
         $violations = [];
-        $modelsDir = self::APP_DIR . '/Models';
+        $modelsDir = self::APP_DIR.'/Models';
 
-        if (!is_dir($modelsDir)) {
+        if (! is_dir($modelsDir)) {
             $this->markTestSkipped('Models directory not found');
         }
 
@@ -125,15 +125,15 @@ class StaticAnalysisTest extends TestCase
             // Check if it's an Eloquent model (extends Model)
             if (preg_match('/extends\s+(?:Model|BaseModel)/', $content)) {
                 // Check if fillable or guarded is defined
-                if (!preg_match('/protected\s+\$(?:fillable|guarded)/', $content)) {
-                    $violations[] = $file->getFilename() . ': Missing $fillable or $guarded property';
+                if (! preg_match('/protected\s+\$(?:fillable|guarded)/', $content)) {
+                    $violations[] = $file->getFilename().': Missing $fillable or $guarded property';
                 }
             }
         }
 
         $this->assertEmpty(
             $violations,
-            'Models without mass assignment protection: ' . implode(', ', $violations)
+            'Models without mass assignment protection: '.implode(', ', $violations)
         );
     }
 
@@ -143,9 +143,9 @@ class StaticAnalysisTest extends TestCase
     public function test_no_unescaped_output_in_views(): void
     {
         $violations = [];
-        $viewsDir = self::APP_DIR . '/../resources/views';
+        $viewsDir = self::APP_DIR.'/../resources/views';
 
-        if (!is_dir($viewsDir)) {
+        if (! is_dir($viewsDir)) {
             $this->markTestSkipped('Views directory not found');
         }
 
@@ -157,8 +157,8 @@ class StaticAnalysisTest extends TestCase
                 // Check for unescaped output: {!! $variable !!}
                 if (preg_match('/\{!!\s*\$\w+.*!!\}/', $line)) {
                     // Check if it's not in a comment or intentional (HTML content)
-                    if (!preg_match('/@php|comment|\/\/|safe|html/i', $line)) {
-                        $violations[$file->getRealPath()][] = "Line " . ($lineNum + 1) . ": Unescaped output {!! !!} - XSS risk";
+                    if (! preg_match('/@php|comment|\/\/|safe|html/i', $line)) {
+                        $violations[$file->getRealPath()][] = 'Line '.($lineNum + 1).': Unescaped output {!! !!} - XSS risk';
                     }
                 }
             }
@@ -168,7 +168,7 @@ class StaticAnalysisTest extends TestCase
         $this->assertLessThanOrEqual(
             10,
             count($violations),
-            'Found potential XSS vulnerabilities: ' . json_encode($violations, JSON_PRETTY_PRINT)
+            'Found potential XSS vulnerabilities: '.json_encode($violations, JSON_PRETTY_PRINT)
         );
     }
 
@@ -178,22 +178,22 @@ class StaticAnalysisTest extends TestCase
     public function test_controllers_check_authorization(): void
     {
         $violations = [];
-        $controllersDir = self::APP_DIR . '/Http/Controllers';
+        $controllersDir = self::APP_DIR.'/Http/Controllers';
 
-        if (!is_dir($controllersDir)) {
+        if (! is_dir($controllersDir)) {
             $this->markTestSkipped('Controllers directory not found');
         }
 
         foreach ($this->getPhpFilesIn($controllersDir) as $file) {
             $content = file_get_contents($file->getRealPath());
-            
+
             // Check if the controller has methods that might need authorization
             if (preg_match('/public\s+function\s+(update|delete|destroy|edit|show)\s*\(/', $content)) {
                 // These methods typically need authorization
-                if (!preg_match('/authorize\(|gate|policy|can\(|cannot\(|abort_unless|abort_if/', $content)) {
+                if (! preg_match('/authorize\(|gate|policy|can\(|cannot\(|abort_unless|abort_if/', $content)) {
                     // Allow if it's a resource or index controller without sensitive operations
-                    if (!preg_match('/index|create/i', $file->getFilename())) {
-                        $violations[] = $file->getFilename() . ': May be missing authorization checks';
+                    if (! preg_match('/index|create/i', $file->getFilename())) {
+                        $violations[] = $file->getFilename().': May be missing authorization checks';
                     }
                 }
             }
@@ -203,7 +203,7 @@ class StaticAnalysisTest extends TestCase
         $this->assertLessThanOrEqual(
             5,
             count($violations),
-            'Review these controllers for authorization: ' . implode(', ', $violations)
+            'Review these controllers for authorization: '.implode(', ', $violations)
         );
     }
 
@@ -228,7 +228,7 @@ class StaticAnalysisTest extends TestCase
                 if (preg_match('/Log::|logger\(|dump\(|dd\(/', $line)) {
                     foreach ($sensitivePatterns as $pattern => $risk) {
                         if (preg_match("/{$pattern}/i", $line)) {
-                            $violations[$file->getRealPath()][] = "Line " . ($lineNum + 1) . ": $risk";
+                            $violations[$file->getRealPath()][] = 'Line '.($lineNum + 1).": $risk";
                         }
                     }
                 }
@@ -237,7 +237,7 @@ class StaticAnalysisTest extends TestCase
 
         $this->assertEmpty(
             $violations,
-            'Found potential sensitive data logging: ' . json_encode($violations, JSON_PRETTY_PRINT)
+            'Found potential sensitive data logging: '.json_encode($violations, JSON_PRETTY_PRINT)
         );
     }
 
@@ -247,19 +247,19 @@ class StaticAnalysisTest extends TestCase
     public function test_controllers_validate_input(): void
     {
         $violations = [];
-        $controllersDir = self::APP_DIR . '/Http/Controllers';
+        $controllersDir = self::APP_DIR.'/Http/Controllers';
 
-        if (!is_dir($controllersDir)) {
+        if (! is_dir($controllersDir)) {
             $this->markTestSkipped('Controllers directory not found');
         }
 
         foreach ($this->getPhpFilesIn($controllersDir) as $file) {
             $content = file_get_contents($file->getRealPath());
-            
+
             if (preg_match('/\$request|->input\(/', $content)) {
                 // Skip if validation is present
-                if (!preg_match('/validate\(|validated\(|rules/', $content)) {
-                    $violations[] = $file->getFilename() . ': May be missing input validation';
+                if (! preg_match('/validate\(|validated\(|rules/', $content)) {
+                    $violations[] = $file->getFilename().': May be missing input validation';
                 }
             }
         }
@@ -268,7 +268,7 @@ class StaticAnalysisTest extends TestCase
         $this->assertLessThanOrEqual(
             5,
             count($violations),
-            'Review these controllers for input validation: ' . implode(', ', $violations)
+            'Review these controllers for input validation: '.implode(', ', $violations)
         );
     }
 
@@ -288,7 +288,7 @@ class StaticAnalysisTest extends TestCase
 
         foreach ($this->getPhpFiles() as $file) {
             $content = file_get_contents($file->getRealPath());
-            
+
             // Skip .env files
             if (strpos($file->getRealPath(), '.env') !== false) {
                 continue;
@@ -303,7 +303,7 @@ class StaticAnalysisTest extends TestCase
 
         $this->assertEmpty(
             $violations,
-            'Found hardcoded credentials: ' . json_encode($violations, JSON_PRETTY_PRINT)
+            'Found hardcoded credentials: '.json_encode($violations, JSON_PRETTY_PRINT)
         );
     }
 
@@ -324,9 +324,9 @@ class StaticAnalysisTest extends TestCase
                     // Check if there's validation before the operation
                     $contextLines = array_slice($lines, max(0, $lineNum - 5), 6);
                     $context = implode('', $contextLines);
-                    
-                    if (!preg_match('/(realpath|str_replace|preg_replace|filter|validate|basename|dirname|pathinfo)/', $context)) {
-                        $violations[$file->getRealPath()][] = "Line " . ($lineNum + 1) . ": Possible path traversal with \$variable";
+
+                    if (! preg_match('/(realpath|str_replace|preg_replace|filter|validate|basename|dirname|pathinfo)/', $context)) {
+                        $violations[$file->getRealPath()][] = 'Line '.($lineNum + 1).': Possible path traversal with $variable';
                     }
                 }
             }
@@ -335,7 +335,7 @@ class StaticAnalysisTest extends TestCase
         $this->assertLessThanOrEqual(
             3,
             count($violations),
-            'Found potential path traversal vulnerabilities: ' . json_encode($violations, JSON_PRETTY_PRINT)
+            'Found potential path traversal vulnerabilities: '.json_encode($violations, JSON_PRETTY_PRINT)
         );
     }
 
@@ -345,25 +345,25 @@ class StaticAnalysisTest extends TestCase
     public function test_forms_have_csrf_tokens(): void
     {
         $violations = [];
-        $viewsDir = self::APP_DIR . '/../resources/views';
+        $viewsDir = self::APP_DIR.'/../resources/views';
 
-        if (!is_dir($viewsDir)) {
+        if (! is_dir($viewsDir)) {
             $this->markTestSkipped('Views directory not found');
         }
 
         foreach ($this->getFilesIn($viewsDir, 'blade.php') as $file) {
             $content = file_get_contents($file->getRealPath());
-            
+
             // Check if file has forms with method="post" (but not Livewire forms)
             if (preg_match('/<form[^>]*method\s*=\s*["\']?post["\']?/i', $content)) {
                 // Skip Livewire forms (they handle CSRF automatically)
                 if (strpos($content, 'wire:submit') !== false || strpos($content, 'wire:') !== false) {
                     continue;
                 }
-                
+
                 // Check if CSRF token is present (either csrf_field(), @csrf, or csrf_token)
-                if (!preg_match('/csrf_field\(\)|@csrf|csrf_token/', $content)) {
-                    $violations[] = $file->getFilename() . ': POST form without CSRF token';
+                if (! preg_match('/csrf_field\(\)|@csrf|csrf_token/', $content)) {
+                    $violations[] = $file->getFilename().': POST form without CSRF token';
                 }
             }
         }
@@ -372,7 +372,7 @@ class StaticAnalysisTest extends TestCase
         $this->assertLessThanOrEqual(
             1,
             count($violations),
-            'Found forms without CSRF tokens: ' . implode(', ', $violations)
+            'Found forms without CSRF tokens: '.implode(', ', $violations)
         );
     }
 
@@ -381,13 +381,13 @@ class StaticAnalysisTest extends TestCase
      */
     public function test_security_headers_configured(): void
     {
-        $middleware = self::APP_DIR . '/Http/Middleware';
+        $middleware = self::APP_DIR.'/Http/Middleware';
         $found = false;
 
         if (is_dir($middleware)) {
             foreach ($this->getPhpFilesIn($middleware) as $file) {
                 $content = file_get_contents($file->getRealPath());
-                
+
                 if (preg_match('/X-Content-Type-Options|X-Frame-Options|X-XSS-Protection|Strict-Transport-Security/i', $content)) {
                     $found = true;
                     break;
@@ -396,7 +396,7 @@ class StaticAnalysisTest extends TestCase
         }
 
         // Check kernel or config
-        $kernel = self::APP_DIR . '/Http/Kernel.php';
+        $kernel = self::APP_DIR.'/Http/Kernel.php';
         if (file_exists($kernel)) {
             $content = file_get_contents($kernel);
             if (preg_match('/X-Content-Type-Options|middleware|header/i', $content)) {
@@ -426,8 +426,8 @@ class StaticAnalysisTest extends TestCase
             foreach ($lines as $lineNum => $line) {
                 // Check for string interpolation in queries
                 if (preg_match('/DB::select|DB::insert|DB::update|DB::delete|DB::statement/', $line)) {
-                    if (preg_match('/\$|\./', $line) && !preg_match('/\?|\[.*\]/', $line)) {
-                        $violations[$file->getRealPath()][] = "Line " . ($lineNum + 1) . ": Query may not use parameterized binding";
+                    if (preg_match('/\$|\./', $line) && ! preg_match('/\?|\[.*\]/', $line)) {
+                        $violations[$file->getRealPath()][] = 'Line '.($lineNum + 1).': Query may not use parameterized binding';
                     }
                 }
             }
@@ -435,7 +435,7 @@ class StaticAnalysisTest extends TestCase
 
         $this->assertEmpty(
             $violations,
-            'Found queries without proper parameter binding: ' . json_encode($violations, JSON_PRETTY_PRINT)
+            'Found queries without proper parameter binding: '.json_encode($violations, JSON_PRETTY_PRINT)
         );
     }
 
@@ -452,7 +452,7 @@ class StaticAnalysisTest extends TestCase
      */
     private function getPhpFilesIn(string $directory): iterable
     {
-        if (!is_dir($directory)) {
+        if (! is_dir($directory)) {
             return;
         }
 
@@ -473,7 +473,7 @@ class StaticAnalysisTest extends TestCase
      */
     private function getFilesIn(string $directory, string $extension): iterable
     {
-        if (!is_dir($directory)) {
+        if (! is_dir($directory)) {
             return;
         }
 

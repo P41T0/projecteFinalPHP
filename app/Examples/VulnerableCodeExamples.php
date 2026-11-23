@@ -2,16 +2,18 @@
 
 /**
  * VULNERABLE CODE EXAMPLES - For Security Test Verification
- * 
+ *
  * This file contains intentionally vulnerable code patterns that demonstrate
  * security issues. It's used to verify that security tests can detect these problems.
- * 
+ *
  * ⚠️ WARNING: This file contains examples of BAD practices. Never use these patterns
  * in production code. This is for testing purposes only.
  */
 
 namespace App\Examples\VulnerableCode;
 
+use App\Models\Producte;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
@@ -36,7 +38,7 @@ class DangerousFunctionsExample
     public function vulnerableExec($filename)
     {
         // Never do this!
-        exec("rm " . $filename);
+        exec('rm '.$filename);
     }
 
     /**
@@ -54,7 +56,8 @@ class DangerousFunctionsExample
     public function vulnerableShellExec($userInput)
     {
         // Never do this!
-        $result = shell_exec("echo " . $userInput);
+        $result = shell_exec('echo '.$userInput);
+
         return $result;
     }
 
@@ -64,7 +67,7 @@ class DangerousFunctionsExample
     public function vulnerablePassthru($file)
     {
         // Never do this!
-        passthru("cat " . $file);
+        passthru('cat '.$file);
     }
 
     /**
@@ -92,6 +95,7 @@ class DangerousFunctionsExample
     {
         // Never do this!
         $object = unserialize($userData);
+
         return $object;
     }
 }
@@ -109,6 +113,7 @@ class WeakRandomExample
     {
         // Never use for security!
         $token = mt_rand(1, 1000000);
+
         return $token;
     }
 
@@ -119,6 +124,7 @@ class WeakRandomExample
     {
         // Never use for security!
         $secret = rand(100000, 999999);
+
         return $secret;
     }
 
@@ -130,6 +136,7 @@ class WeakRandomExample
         // Never do this!
         srand(time());
         $value = rand();
+
         return $value;
     }
 
@@ -139,7 +146,8 @@ class WeakRandomExample
     public function vulnerableLcgValue()
     {
         // Never use for security!
-        $token = (int)(lcg_value() * 1000000);
+        $token = (int) (lcg_value() * 1000000);
+
         return $token;
     }
 }
@@ -156,7 +164,8 @@ class SQLInjectionExample
     public function vulnerableSQLRaw($userId)
     {
         // Never do this!
-        $user = \DB::select("SELECT * FROM users WHERE id = " . $userId);
+        $user = \DB::select('SELECT * FROM users WHERE id = '.$userId);
+
         return $user;
     }
 
@@ -167,6 +176,7 @@ class SQLInjectionExample
     {
         // Never do this!
         $user = \DB::select("SELECT * FROM users WHERE username = '$username'");
+
         return $user;
     }
 
@@ -176,7 +186,7 @@ class SQLInjectionExample
     public function vulnerableSQLUpdate($id, $email)
     {
         // Never do this!
-        \DB::update("UPDATE users SET email = '" . $email . "' WHERE id = " . $id);
+        \DB::update("UPDATE users SET email = '".$email."' WHERE id = ".$id);
     }
 
     /**
@@ -185,7 +195,7 @@ class SQLInjectionExample
     public function vulnerableSQLDelete($id)
     {
         // Never do this!
-        \DB::delete("DELETE FROM users WHERE id = " . $id);
+        \DB::delete('DELETE FROM users WHERE id = '.$id);
     }
 }
 
@@ -196,7 +206,7 @@ class SQLInjectionExample
 class VulnerableModel extends Model
 {
     protected $table = 'vulnerable_models';
-    
+
     // ❌ VULNERABLE: No $fillable or $guarded protection
     // Any property can be mass assigned!
 }
@@ -213,8 +223,9 @@ class VulnerableAuthorizationController
      */
     public function deletePost($postId)
     {
-        $post = \App\Models\Producte::find($postId);
+        $post = Producte::find($postId);
         $post->delete(); // No check if user owns this post!
+
         return redirect()->back();
     }
 
@@ -224,8 +235,9 @@ class VulnerableAuthorizationController
      */
     public function updatePost(Request $request, $postId)
     {
-        $post = \App\Models\Producte::find($postId);
+        $post = Producte::find($postId);
         $post->update($request->all()); // No check if user is admin!
+
         return redirect()->back();
     }
 
@@ -236,7 +248,8 @@ class VulnerableAuthorizationController
     public function createProduct(Request $request)
     {
         // No: abort_unless(Auth::user()->isAdmin(), 403);
-        $product = \App\Models\Producte::create($request->all());
+        $product = Producte::create($request->all());
+
         return redirect()->back();
     }
 }
@@ -250,29 +263,29 @@ class HardcodedCredentialsExample
     /**
      * ❌ VULNERABLE: Hardcoded password
      */
-    protected $password = "superSecretPassword123";
+    protected $password = 'superSecretPassword123';
 
     /**
      * ❌ VULNERABLE: Hardcoded API token
      */
-    protected $token = "sk_live_abcd1234efgh5678";
+    protected $token = 'sk_live_abcd1234efgh5678';
 
     /**
      * ❌ VULNERABLE: Hardcoded API key
      */
-    protected $api_key = "AIzaSyDxDi1Hpyf3h4K5lm6noPqRsTuVwXyZ1234";
+    protected $api_key = 'AIzaSyDxDi1Hpyf3h4K5lm6noPqRsTuVwXyZ1234';
 
     /**
      * ❌ VULNERABLE: Hardcoded secret
      */
-    protected $secret = "my_app_secret_key_12345";
+    protected $secret = 'my_app_secret_key_12345';
 
     /**
      * ❌ VULNERABLE: Database password in code
      */
     public function connect()
     {
-        $password = "db_password_root_123";
+        $password = 'db_password_root_123';
         // connect to database
     }
 }
@@ -292,6 +305,7 @@ class PathTraversalExample
         $filename = $request->input('filename');
         // Never do this!
         $content = file_get_contents($filename);
+
         return $content;
     }
 
@@ -313,7 +327,7 @@ class PathTraversalExample
     {
         $file = $request->input('file');
         // Never do this!
-        include($file);
+        include $file;
     }
 
     /**
@@ -323,7 +337,7 @@ class PathTraversalExample
     {
         $file = $request->input('file');
         // Never do this!
-        require_once($file);
+        require_once $file;
     }
 }
 
@@ -339,11 +353,12 @@ class MissingValidationController
     public function storeWithoutValidation(Request $request)
     {
         // No: $request->validate([...]);
-        $user = \App\Models\User::create([
+        $user = User::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'age' => $request->input('age'),
         ]);
+
         return $user;
     }
 
@@ -353,8 +368,9 @@ class MissingValidationController
     public function updateWithoutValidation(Request $request, $id)
     {
         // No: $validated = $request->validate([...]);
-        $post = \App\Models\Producte::find($id);
+        $post = Producte::find($id);
         $post->update($request->all());
+
         return $post;
     }
 }
@@ -370,7 +386,7 @@ class SensitiveDataLoggingExample
      */
     public function login(Request $request)
     {
-        $user = \App\Models\User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)->first();
         // Never do this!
         \Log::info('User login attempt', $user->toArray());
         // Password is now in logs!
@@ -424,7 +440,7 @@ class InsecureRandomizationExample
      */
     public function requestPasswordReset($email)
     {
-        $user = \App\Models\User::where('email', $email)->first();
+        $user = User::where('email', $email)->first();
         // Never do this!
         $token = mt_rand(100000, 999999); // Easily guessable!
         // Send password reset email with this weak token
