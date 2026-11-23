@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 class LiniaComanda extends Pivot
 {
     use HasUuids;
+
+    protected $fillable = [
+        'quantitat',
+    ];
 }

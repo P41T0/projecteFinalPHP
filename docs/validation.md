@@ -19,6 +19,12 @@ php artisan test tests/Feature/StoreEndpointsTest.php
 # Check PHP formatting without changing files
 composer test:lint
 
+# Check all formatting (PHP + JavaScript/CSS)
+composer test:format
+
+# Security analysis tests
+./vendor/bin/pest tests/Security/StaticAnalysisTest.php
+
 # Clear configuration, check formatting, and run the complete suite
 composer test
 
@@ -27,6 +33,64 @@ pnpm run build
 ```
 
 `composer lint` applies Pint and may modify files; `composer test:lint` only checks formatting. Feature tests use Pest and `RefreshDatabase` through `tests/Pest.php`. By default, `phpunit.xml` configures in-memory SQLite, array session and cache stores, array mail, and a synchronous queue. Do not assume an SQLite test validates every MySQL behavior.
+
+### Code Quality Tests
+
+#### Formatting Tests
+
+Run all formatting checks (Pint for PHP, Prettier for JavaScript/CSS):
+
+```powershell
+composer test:format
+```
+
+Or individually:
+```powershell
+# PHP formatting check
+composer test:lint
+
+# JavaScript/CSS formatting check
+pnpm run format:check
+
+# Fix formatting
+composer lint:fix && pnpm run format
+```
+
+See [Formatting Documentation](../docs/formatting.md) for detailed configuration and usage.
+
+#### Security Analysis Tests
+
+The application includes 13 comprehensive security tests covering common PHP/Laravel vulnerabilities:
+
+```powershell
+./vendor/bin/pest tests/Security/StaticAnalysisTest.php
+```
+
+Security tests verify:
+1. No dangerous functions (eval, exec, system, etc.)
+2. No weak random functions used for security
+3. No SQL injection patterns
+4. Models have proper mass assignment protection
+5. No unescaped output in views
+6. Controllers check authorization
+7. No sensitive data logging
+8. Input validation on all controllers
+9. No hardcoded credentials
+10. No path traversal vulnerabilities
+11. CSRF protection on forms
+12. Security headers configured
+13. Database queries use parameterized binding
+
+See [Security Analysis Guide](../docs/static-analysis.md) and [Security Test Mapping](../SECURITY_TESTS_MAPPING.md) for detailed information.
+
+#### Formatting Test File
+
+Location: `tests/Feature/FormattingTest.php`
+
+Tests:
+- `test_php_code_passes_pint()` - Verifies PHP code passes Pint linting
+- `test_js_css_code_passes_prettier()` - Verifies JavaScript/CSS passes Prettier
+- `test_pint_and_prettier_do_not_conflict()` - Validates configuration consistency
 
 Run the full Pint check in Docker with:
 
@@ -40,10 +104,10 @@ The lint workflow runs the same non-mutating check on pushes and pull requests t
 
 | Change | Starting point |
 | --- | --- |
-| Catalog, administration, inventory, or cart | `tests/Feature/StoreEndpointsTest.php`: validation, permissions, ownership, data, and queries. |
+| Catalog, administration, inventory, or cart | `tests/Feature/StoreEndpointsTest.php`: malformed input, admin-only pages and writes for guests and non-administrators, authentication, ownership, unchanged data on rejection, and queries. |
 | Product image uploads | `tests/Feature/StoreEndpointsTest.php`: rejected disguised and malformed files, size and dimension limits, supported formats, and generated storage names. |
 | Locale or error pages | `tests/Feature/LocalizationTest.php`, `tests/Feature/ErrorPagesTest.php`. |
-| Login, registration, recovery, or two-factor authentication | `tests/Feature/Auth/` and `tests/Feature/Settings/TwoFactorAuthenticationTest.php`. |
+| Login, registration, recovery, or two-factor authentication | `tests/Feature/Auth/` and `tests/Feature/Settings/TwoFactorAuthenticationTest.php`; registration tests cover invalid input, duplicate emails, and rejected admin assignment. |
 | Profile, appearance, password, or passkeys | `tests/Feature/Settings/`. |
 | UUIDs or passkey migration | `tests/Feature/UuidIdsTest.php`, `tests/Feature/PasskeyIdMigrationTest.php`; run these on both SQLite and a disposable MySQL database. |
 

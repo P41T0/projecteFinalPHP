@@ -1,0 +1,65 @@
+rules:
+  - id: laravel-sql-injection
+    pattern-either:
+      - pattern: DB::raw($X)
+      - pattern: DB::select($X . $...)
+      - pattern: DB::insert($X . $...)
+      - pattern: DB::update($X . $...)
+      - pattern: DB::delete($X . $...)
+    message: Potential SQL injection vulnerability
+    languages: [php]
+    severity: ERROR
+
+  - id: laravel-unsafe-redirect
+    pattern-either:
+      - pattern: return redirect($X)
+      - pattern: return redirect()->to($X)
+    message: Unsafe redirect - validate user input before redirecting
+    languages: [php]
+    severity: WARNING
+
+  - id: laravel-unvalidated-input
+    pattern-either:
+      - pattern: $request->input($X)
+      - pattern: request()->input($X)
+      - pattern: $_GET[$X]
+      - pattern: $_POST[$X]
+    message: Unvalidated user input detected
+    languages: [php]
+    severity: WARNING
+
+  - id: php-code-execution
+    pattern-either:
+      - pattern: eval(...)
+      - pattern: assert(...)
+      - pattern: system(...)
+      - pattern: exec(...)
+      - pattern: shell_exec(...)
+    message: Potential code execution vulnerability
+    languages: [php]
+    severity: ERROR
+
+  - id: php-weak-random
+    pattern-either:
+      - pattern: mt_rand()
+      - pattern: rand()
+    message: Use random_int() or random_bytes() for cryptographic randomness
+    languages: [php]
+    severity: WARNING
+
+  - id: laravel-missing-csrf
+    pattern: |
+      (?P<form><form[^>]*method\s*=\s*["\']?post["\']?[^>]*>)(?!(?:.|[\r\n])*@csrf)
+    message: CSRF token missing in form
+    languages: [html]
+    severity: ERROR
+
+  - id: php-hardcoded-credentials
+    pattern-either:
+      - pattern: $password = "..."
+      - pattern: $token = "..."
+      - pattern: $api_key = "..."
+      - pattern: $secret = "..."
+    message: Hardcoded credentials detected
+    languages: [php]
+    severity: ERROR

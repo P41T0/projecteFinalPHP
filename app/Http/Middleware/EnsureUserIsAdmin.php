@@ -2,16 +2,21 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class EnsureUserIsAdmin
 {
+    /**
+     * @param  Closure(Request): Response  $next
+     */
     public function handle(Request $request, Closure $next): Response
     {
         // Hide administration routes from non-administrators by returning 404.
-        abort_unless($request->user()?->isAdmin(), 404);
+        $user = $request->user();
+        abort_unless($user instanceof User && $user->isAdmin(), 404);
 
         return $next($request);
     }

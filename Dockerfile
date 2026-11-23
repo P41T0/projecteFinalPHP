@@ -24,7 +24,7 @@ RUN rm -f bootstrap/cache/*.php \
     && composer dump-autoload --no-dev --optimize --classmap-authoritative --no-scripts \
     && php artisan package:discover --ansi
 
-FROM node:26-alpine AS frontend-build
+FROM node:26-bookworm-slim AS frontend-build
 
 WORKDIR /app
 
@@ -51,11 +51,13 @@ RUN mkdir -p storage/framework/cache storage/framework/sessions storage/framewor
 FROM php-base AS app-test
 
 COPY --from=composer:2.11 /usr/bin/composer /usr/bin/composer
+COPY --from=frontend-build /usr/local/ /usr/local/
 
 COPY composer.json composer.lock ./
 RUN composer install --no-interaction --prefer-dist --no-scripts --no-autoloader
 
 COPY . .
+COPY --from=frontend-build /app/node_modules /var/www/html/node_modules
 RUN rm -f bootstrap/cache/*.php \
     && cp .env.example .env \
     && composer dump-autoload --optimize --no-scripts \

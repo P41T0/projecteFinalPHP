@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 function endpointSection(array $overrides = []): Seccio
 {
@@ -211,25 +212,100 @@ test('admin pages render populated models and are restricted to administrators',
         route('seccions.edit', $section),
     ];
 
-    foreach ($adminRoutes as $url) {
+    foreach ([...$adminRoutes, route('modifElems')] as $url) {
         $this->get($url)
             ->assertNotFound()
             ->assertSee('404')
             ->assertSee(__('Pàgina no trobada'));
     }
-    $this->put(route('seccions.store'))->assertNotFound();
+    $this->actingAs(User::factory()->create());
 
-    $this->actingAs(User::factory()->create())
-        ->get(route('productes.select'))
-        ->assertNotFound()
-        ->assertSee(__('Pàgina no trobada'));
-    $this->put(route('seccions.store'))->assertNotFound();
+    foreach ([...$adminRoutes, route('modifElems')] as $url) {
+        $this->get($url)
+            ->assertNotFound()
+            ->assertSee('404')
+            ->assertSee(__('Pàgina no trobada'));
+    }
 
     $this->actingAs(endpointAdmin());
 
     foreach ($adminRoutes as $url) {
         $this->get($url)->assertOk();
     }
+});
+
+test('administration writes reject guests and non administrators without changing data', function () {
+    $section = endpointSection();
+    $product = endpointProduct($section);
+    $store = endpointStore();
+    $store->productes()->attach($product->id, ['quantitat' => 3]);
+
+    $requests = [
+        [route('botigues.update', $store), ['productes' => [$product->id => 9]]],
+        [route('productes.store'), endpointProductPayload($section->id)],
+        [route('productes.update', $product), endpointProductPayload($section->id, ['nom' => 'Changed'])],
+        [route('seccions.store'), endpointSectionPayload()],
+        [route('seccions.update', $section), endpointSectionPayload(['nom' => 'Changed'])],
+    ];
+
+    $assertUnchanged = function () use ($product, $section, $store) {
+        $this->assertDatabaseCount('producte', 1);
+        $this->assertDatabaseCount('seccio', 1);
+        $this->assertDatabaseHas('producte', $product->getAttributes());
+        $this->assertDatabaseHas('seccio', $section->getAttributes());
+        $this->assertDatabaseHas('estoc_botiga', [
+            'botiga_id' => $store->id,
+            'producte_id' => $product->id,
+            'quantitat' => 3,
+        ]);
+    };
+
+    foreach ($requests as [$url, $payload]) {
+        $this->putJson($url, $payload)->assertNotFound();
+        $assertUnchanged();
+    }
+
+    $user = User::factory()->create();
+    expect($user->isAdmin())->toBeFalse();
+    $this->actingAs($user);
+
+    foreach ($requests as [$url, $payload]) {
+        $this->putJson($url, $payload)->assertNotFound();
+        $assertUnchanged();
+    }
+});
+
+test('catalog creation and updates reject malformed fields without writing', function () {
+    $section = endpointSection();
+    $product = endpointProduct($section);
+    $this->actingAs(endpointAdmin());
+
+    $invalidSection = endpointSectionPayload([
+        'nomEs' => ['not a string'],
+        'nomEn' => str_repeat('x', 101),
+        'descripcioEn' => '',
+    ]);
+    foreach ([route('seccions.store'), route('seccions.update', $section)] as $url) {
+        $this->putJson($url, $invalidSection)
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['nomEs', 'nomEn', 'descripcioEn']);
+    }
+
+    $invalidProduct = endpointProductPayload((string) Str::uuid7(), [
+        'nom' => ['not a string'],
+        'descripcioEs' => str_repeat('x', 256),
+        'preu' => 'not-a-price',
+    ]);
+    foreach ([route('productes.store'), route('productes.update', $product)] as $url) {
+        $this->putJson($url, $invalidProduct)
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['nom', 'descripcioEs', 'preu', 'seccio']);
+    }
+
+    $this->assertDatabaseCount('producte', 1);
+    $this->assertDatabaseCount('seccio', 1);
+    $this->assertDatabaseHas('producte', ['id' => $product->id, 'nom' => $product->nom, 'preu_unitari' => 100]);
+    $this->assertDatabaseHas('seccio', ['id' => $section->id, 'nom' => $section->nom]);
 });
 
 test('section endpoints accept valid values and reject invalid values', function () {
@@ -417,6 +493,120 @@ test('inventory endpoint only accepts nonnegative quantities for products in tha
     ]);
 });
 
+test('inventory rejects malformed quantities and mixed associated and unassociated products', function () {
+    $section = endpointSection();
+    $product = endpointProduct($section);
+    $otherProduct = endpointProduct($section, ['nom' => 'Altre producte']);
+    $store = endpointStore();
+    $store->productes()->attach($product->id, ['quantitat' => 3]);
+    $this->actingAs(endpointAdmin());
+
+    foreach ([null, 'not-an-array', []] as $products) {
+        $this->putJson(route('botigues.update', $store), ['productes' => $products])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('productes');
+    }
+
+    foreach (['1.5', ['invalid'], -1] as $quantity) {
+        $this->putJson(route('botigues.update', $store), ['productes' => [$product->id => $quantity]])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors("productes.{$product->id}");
+    }
+
+    $this->putJson(route('botigues.update', $store), [
+        'productes' => [$product->id => 9, $otherProduct->id => 1],
+    ])->assertUnprocessable()->assertJsonValidationErrors('productes');
+
+    $this->assertDatabaseHas('estoc_botiga', [
+        'botiga_id' => $store->id,
+        'producte_id' => $product->id,
+        'quantitat' => 3,
+    ]);
+    $this->assertDatabaseMissing('estoc_botiga', [
+        'botiga_id' => $store->id,
+        'producte_id' => $otherProduct->id,
+    ]);
+});
+
+test('cart writes require authentication and reject invalid input without changing the order', function () {
+    $section = endpointSection();
+    $product = endpointProduct($section);
+    $otherProduct = endpointProduct($section, ['nom' => 'Altre producte']);
+    $store = endpointStore();
+    $owner = User::factory()->create();
+    $order = new Comanda;
+    $order->usuari_id = $owner->id;
+    $order->botiga_id = $store->id;
+    $order->save();
+    $order->productes()->attach($product->id, ['quantitat' => 3]);
+    $url = route('actualiza.quantitat', $order);
+    $valid = ['productes' => [$product->id => 5], 'botiga' => $store->id];
+
+    $this->postJson($url, $valid)->assertUnauthorized();
+    $this->get(route('confirma.compres', $order))->assertRedirect(route('login'));
+    $this->actingAs($owner);
+
+    foreach ([null, 'invalid', []] as $products) {
+        $this->postJson($url, ['productes' => $products, 'botiga' => $store->id])
+            ->assertUnprocessable()->assertJsonValidationErrors('productes');
+    }
+    foreach ([-1, 11, '1.5', ['invalid']] as $quantity) {
+        $this->postJson($url, ['productes' => [$product->id => $quantity], 'botiga' => $store->id])
+            ->assertUnprocessable()->assertJsonValidationErrors("productes.{$product->id}");
+    }
+    foreach (['not-a-uuid', (string) Str::uuid7(), ['invalid']] as $storeId) {
+        $this->postJson($url, ['productes' => [$product->id => 5], 'botiga' => $storeId])
+            ->assertUnprocessable()->assertJsonValidationErrors('botiga');
+    }
+    $this->postJson($url, [
+        'productes' => [$product->id => 5, $otherProduct->id => 1],
+        'botiga' => $store->id,
+    ])->assertUnprocessable()->assertJsonValidationErrors('productes');
+
+    $this->actingAs(User::factory()->create())
+        ->postJson($url, $valid)->assertForbidden();
+    $this->get(route('confirma.compres', $order))->assertForbidden();
+
+    $this->assertDatabaseHas('comanda', ['id' => $order->id, 'botiga_id' => $store->id, 'oberta' => true]);
+    $this->assertDatabaseHas('linia_comanda', ['comanda_id' => $order->id, 'producte_id' => $product->id, 'quantitat' => 3]);
+    $this->assertDatabaseMissing('linia_comanda', ['comanda_id' => $order->id, 'producte_id' => $otherProduct->id]);
+});
+
+test('cart quantities accept the maximum and a closed order cannot be modified', function () {
+    $section = endpointSection();
+    $product = endpointProduct($section);
+    $store = endpointStore();
+    $owner = User::factory()->create();
+    $order = new Comanda;
+    $order->usuari_id = $owner->id;
+    $order->botiga_id = $store->id;
+    $order->save();
+    $order->productes()->attach($product->id, ['quantitat' => 1]);
+    $this->actingAs($owner);
+
+    $this->postJson(route('actualiza.quantitat', $order), [
+        'productes' => [$product->id => '10'],
+        'botiga' => $store->id,
+    ])->assertRedirect(route('comprarNP'));
+    $this->assertDatabaseHas('linia_comanda', [
+        'comanda_id' => $order->id,
+        'producte_id' => $product->id,
+        'quantitat' => 10,
+    ]);
+
+    $order->oberta = false;
+    $order->save();
+    $this->postJson(route('actualiza.quantitat', $order), [
+        'productes' => [$product->id => 0],
+        'botiga' => $store->id,
+    ])->assertRedirect(route('confirma.compres', $order->id));
+    $this->assertDatabaseHas('linia_comanda', [
+        'comanda_id' => $order->id,
+        'producte_id' => $product->id,
+        'quantitat' => 10,
+    ]);
+});
+
 test('cart endpoints require authentication, enforce ownership, and validate quantities', function () {
     $section = endpointSection();
     $product = endpointProduct($section);
@@ -446,6 +636,26 @@ test('cart endpoints require authentication, enforce ownership, and validate qua
         'comanda_id' => $order->id,
         'producte_id' => $product->id,
         'quantitat' => 4,
+    ]);
+
+    $otherProduct = endpointProduct($section, ['nom' => 'Accessori addicional']);
+    $order->productes()->attach($otherProduct->id, ['quantitat' => 2]);
+
+    $this->postJson(route('actualiza.quantitat', $order), [
+        'productes' => [
+            $product->id => '0',
+            $otherProduct->id => 2,
+        ],
+        'botiga' => $store->id,
+    ])->assertRedirect(route('comprarNP'));
+    $this->assertDatabaseMissing('linia_comanda', [
+        'comanda_id' => $order->id,
+        'producte_id' => $product->id,
+    ]);
+    $this->assertDatabaseHas('linia_comanda', [
+        'comanda_id' => $order->id,
+        'producte_id' => $otherProduct->id,
+        'quantitat' => 2,
     ]);
 
     $this->postJson(route('actualiza.quantitat', $order), [

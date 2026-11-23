@@ -6,6 +6,8 @@ use App\Models\Botiga;
 use App\Models\Producte;
 use App\Models\Seccio;
 use Closure;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Session;
@@ -16,7 +18,7 @@ class ProducteController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
         $producte = Producte::all();
 
@@ -26,17 +28,22 @@ class ProducteController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
+        $this->authorizeAdmin();
+
         return view('productes.create', ['seccions' => Seccio::all()]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        $request->validate(
+        $this->authorizeAdmin();
+
+        /** @var array{nom: string, nomEs: string, nomEn: string, descripcio: string, descripcioEs: string, descripcioEn: string, imatge?: UploadedFile|null, preu: int|float|string, seccio: string} $validated */
+        $validated = $request->validate(
             [
                 'nom' => 'required|string|max:100',
                 'nomEs' => 'required|string|max:100',
@@ -54,17 +61,18 @@ class ProducteController extends Controller
             ]
         );
         $producte = new Producte;
-        $producte->nom = $request->input('nom');
-        $producte->nom_es = $request->input('nomEs');
-        $producte->nom_en = $request->input('nomEn');
-        $producte->descripcio = $request->input('descripcio');
-        $producte->descripcio_es = $request->input('descripcioEs');
-        $producte->descripcio_en = $request->input('descripcioEn');
-        $producte->seccio_id = $request->input('seccio');
-        if ($request->hasFile('imatge')) {
-            $producte->foto = $this->storeImage($request->file('imatge'));
+        $producte->nom = $validated['nom'];
+        $producte->nom_es = $validated['nomEs'];
+        $producte->nom_en = $validated['nomEn'];
+        $producte->descripcio = $validated['descripcio'];
+        $producte->descripcio_es = $validated['descripcioEs'];
+        $producte->descripcio_en = $validated['descripcioEn'];
+        $producte->seccio_id = $validated['seccio'];
+        $image = $validated['imatge'] ?? null;
+        if ($image instanceof UploadedFile) {
+            $producte->foto = $this->storeImage($image);
         }
-        $producte->preu_unitari = $request->input('preu');
+        $producte->preu_unitari = (float) $validated['preu'];
         $producte->mostra_prod = false;
         $producte->save();
         // Initialize stock to zero in every store before the product becomes visible.
@@ -83,16 +91,15 @@ class ProducteController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Producte $producte)
-    {
-        //
-    }
+    public function show(Producte $producte): void {}
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Producte $producte)
+    public function edit(Producte $producte): View
     {
+        $this->authorizeAdmin();
+
         return View(
             'productes.edit',
             ['producte' => $producte, 'seccions' => Seccio::all()]
@@ -102,9 +109,12 @@ class ProducteController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Producte $producte)
+    public function update(Request $request, Producte $producte): RedirectResponse
     {
-        $request->validate(
+        $this->authorizeAdmin();
+
+        /** @var array{nom: string, nomEs: string, nomEn: string, descripcio: string, descripcioEs: string, descripcioEn: string, imatge?: UploadedFile|null, preu: int|float|string, seccio: string} $validated */
+        $validated = $request->validate(
             [
                 'nom' => 'required|string|max:100',
                 'nomEs' => 'required|string|max:100',
@@ -122,24 +132,28 @@ class ProducteController extends Controller
             ]
         );
 
-        $producte->nom = $request->input('nom');
-        $producte->nom_es = $request->input('nomEs');
-        $producte->nom_en = $request->input('nomEn');
-        $producte->descripcio = $request->input('descripcio');
-        $producte->descripcio_es = $request->input('descripcioEs');
-        $producte->descripcio_en = $request->input('descripcioEn');
-        $producte->seccio_id = $request->input('seccio');
-        if ($request->hasFile('imatge')) {
-            $producte->foto = $this->storeImage($request->file('imatge'));
+        $producte->nom = $validated['nom'];
+        $producte->nom_es = $validated['nomEs'];
+        $producte->nom_en = $validated['nomEn'];
+        $producte->descripcio = $validated['descripcio'];
+        $producte->descripcio_es = $validated['descripcioEs'];
+        $producte->descripcio_en = $validated['descripcioEn'];
+        $producte->seccio_id = $validated['seccio'];
+        $image = $validated['imatge'] ?? null;
+        if ($image instanceof UploadedFile) {
+            $producte->foto = $this->storeImage($image);
         }
-        $producte->preu_unitari = $request->input('preu');
-        $producte->mostra_prod = $request->input('mostraProd') ? true : false;
+        $producte->preu_unitari = (float) $validated['preu'];
+        $producte->mostra_prod = $request->boolean('mostraProd');
         $producte->save();
         Session::flash('message', 'producte modificat !');
 
         return redirect()->route('productes.select');
     }
 
+    /**
+     * @return array<int, string|Closure>
+     */
     private function imageRules(): array
     {
         return [
@@ -158,7 +172,7 @@ class ProducteController extends Controller
 
                 $image = @imagecreatefromstring($contents);
                 if ($image === false) {
-                    $fail('validation.image')->translate();
+                    $fail((string) __('validation.image'));
                 }
             },
         ];
@@ -178,5 +192,8 @@ class ProducteController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Producte $producte) {}
+    public function destroy(Producte $producte): void
+    {
+        $this->authorizeAdmin();
+    }
 }

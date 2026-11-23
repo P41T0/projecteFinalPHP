@@ -37,3 +37,20 @@ test('correct password must be provided to update password', function () {
 
     $response->assertHasErrors(['current_password']);
 });
+
+test('password update requires authentication and rejects an unconfirmed password', function () {
+    $this->get(route('user-password.edit'))->assertRedirect(route('login'));
+
+    $user = User::factory()->create();
+    $oldPassword = $user->password;
+    $this->actingAs($user);
+
+    Livewire::test('pages::settings.password')
+        ->set('current_password', 'password')
+        ->set('password', 'new-password')
+        ->set('password_confirmation', 'different-password')
+        ->call('updatePassword')
+        ->assertHasErrors(['password']);
+
+    expect($user->fresh()->password)->toBe($oldPassword);
+});

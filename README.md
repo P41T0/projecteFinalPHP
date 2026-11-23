@@ -81,21 +81,99 @@ The Compose configuration does not persist the application's uploaded files: `st
 
 The storefront and open-order lookup use composite database indexes. Existing installations must run the new migrations (`php artisan migrate --force`); Docker Compose runs them automatically on startup.
 
+## Testing
+
+### Run All Tests
+
 Run the test suite in its own PHP container with:
 
 ```powershell
 docker compose --profile test run --build --rm test
 ```
 
-To check PHP formatting without modifying files, run:
+This runs all tests including:
+- Security analysis tests (13 comprehensive checks)
+- Formatting tests (PHP, JavaScript, CSS)
+- Feature and unit tests
+- Pest test suite
+
+### Code Quality & Formatting
+
+#### PHP Code Formatting (Pint)
+
+Check PHP formatting without modifying files:
 
 ```powershell
 docker compose --profile test run --build --rm test composer test:lint
 ```
 
-The lint workflow runs this Pint check on pushes to and pull requests targeting `develop` or `main`; formatting violations fail the job. See the [validation guide](docs/validation.md) for additional checks.
+Fix PHP formatting:
 
-The CI workflow also runs migrations, seeding, rollback, and the test suite against MySQL 26.10. These checks use a disposable database, not the existing `db_data` volume.
+```powershell
+docker compose --profile test run --build --rm test composer lint:fix
+```
+
+#### JavaScript & CSS Formatting (Prettier)
+
+Check JavaScript/CSS formatting:
+
+```powershell
+pnpm run format:check
+```
+
+Fix JavaScript/CSS formatting:
+
+```powershell
+pnpm run format
+```
+
+#### Check All Formatting (Pint + Prettier)
+
+Run both PHP and JavaScript/CSS formatting checks:
+
+```bash
+composer test:format
+```
+
+### Security Testing
+
+The application includes a comprehensive security analysis suite with 13 tests covering:
+
+- Dangerous functions (eval, exec, system, etc.)
+- Weak random functions
+- SQL injection patterns
+- Mass assignment vulnerabilities
+- Input validation
+- Authorization checks
+- Sensitive data logging
+- Hardcoded credentials
+- Path traversal vulnerabilities
+- CSRF protection
+- Security headers
+- Database query parameters
+
+Run security tests only:
+
+```bash
+./vendor/bin/pest tests/Security/StaticAnalysisTest.php
+```
+
+For detailed security information, see:
+- [Security Analysis Guide](docs/static-analysis.md)
+- [Security Test Mapping](SECURITY_TESTS_MAPPING.md)
+- [Vulnerable Code Examples](VULNERABLE_EXAMPLES_TEST_RESULTS.md)
+- [Security Fix Report](SECURITY_FIX_REPORT.md)
+
+### Code Formatting Guide
+
+See [Formatting Documentation](docs/formatting.md) for:
+- Pint (PHP) and Prettier (JavaScript/CSS) configuration
+- How to run formatters locally
+- CI/CD integration
+- Conflict avoidance strategies
+- Troubleshooting
+
+The lint workflow runs Pint checks on pushes to and pull requests targeting `develop` or `main`; formatting violations fail the job. See the [validation guide](docs/validation.md) for additional checks.
 
 ## Contributing
 

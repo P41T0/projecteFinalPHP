@@ -4,8 +4,17 @@ use App\Models\Seccio;
 use App\Models\User;
 
 test('guests are redirected to the login page', function () {
-    $response = $this->get(route('dashboard'));
-    $response->assertRedirect(route('login'));
+    foreach ([
+        route('dashboard'),
+        route('contacte'),
+        route('comprarNP'),
+        route('profile.edit'),
+        route('user-password.edit'),
+        route('appearance.edit'),
+        route('two-factor.show'),
+    ] as $url) {
+        $this->get($url)->assertRedirect(route('login'));
+    }
 });
 
 test('authenticated dashboard shows the same storefront as the home page', function () {
