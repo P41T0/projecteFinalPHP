@@ -28,6 +28,35 @@ test('profile information can be updated', function () {
     expect($user->email_verified_at)->toBeNull();
 });
 
+test('a guest cannot replay an authenticated profile update', function () {
+    $user = User::factory()->create();
+    $page = $this->actingAs($user)->get(route('profile.edit'))->assertOk();
+    preg_match_all('/wire:snapshot="([^"]+)"/', $page->getContent(), $matches);
+
+    $snapshot = null;
+    foreach ($matches[1] as $encoded) {
+        $candidate = html_entity_decode($encoded, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $data = json_decode($candidate, true);
+        if (($data['memo']['name'] ?? null) === 'pages::settings.profile') {
+            $snapshot = $candidate;
+            break;
+        }
+    }
+    expect($snapshot)->not->toBeNull();
+
+    $this->post(route('logout'))->assertRedirect();
+    $this->withHeader('X-Livewire', 'true')
+        ->postJson(app('livewire')->getUpdateUri(), [
+            'components' => [[
+                'snapshot' => $snapshot,
+                'updates' => ['name' => 'Changed', 'email' => 'changed@example.test'],
+                'calls' => [['path' => '', 'method' => 'updateProfileInformation', 'params' => []]],
+            ]],
+        ])->assertUnauthorized();
+
+    $this->assertDatabaseHas('users', ['id' => $user->id, 'name' => $user->name, 'email' => $user->email]);
+});
+
 test('profile updates require authentication and reject invalid or duplicate data', function () {
     $this->get(route('profile.edit'))->assertRedirect(route('login'));
 

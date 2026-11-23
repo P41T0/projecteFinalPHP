@@ -212,19 +212,20 @@ test('admin pages render populated models and are restricted to administrators',
         route('seccions.edit', $section),
     ];
 
-    foreach ($adminRoutes as $url) {
+    foreach ([...$adminRoutes, route('modifElems')] as $url) {
         $this->get($url)
             ->assertNotFound()
             ->assertSee('404')
             ->assertSee(__('Pàgina no trobada'));
     }
-    $this->put(route('seccions.store'))->assertNotFound();
+    $this->actingAs(User::factory()->create());
 
-    $this->actingAs(User::factory()->create())
-        ->get(route('productes.select'))
-        ->assertNotFound()
-        ->assertSee(__('Pàgina no trobada'));
-    $this->put(route('seccions.store'))->assertNotFound();
+    foreach ([...$adminRoutes, route('modifElems')] as $url) {
+        $this->get($url)
+            ->assertNotFound()
+            ->assertSee('404')
+            ->assertSee(__('Pàgina no trobada'));
+    }
 
     $this->actingAs(endpointAdmin());
 
@@ -247,25 +248,31 @@ test('administration writes reject guests and non administrators without changin
         [route('seccions.update', $section), endpointSectionPayload(['nom' => 'Changed'])],
     ];
 
+    $assertUnchanged = function () use ($product, $section, $store) {
+        $this->assertDatabaseCount('producte', 1);
+        $this->assertDatabaseCount('seccio', 1);
+        $this->assertDatabaseHas('producte', $product->getAttributes());
+        $this->assertDatabaseHas('seccio', $section->getAttributes());
+        $this->assertDatabaseHas('estoc_botiga', [
+            'botiga_id' => $store->id,
+            'producte_id' => $product->id,
+            'quantitat' => 3,
+        ]);
+    };
+
     foreach ($requests as [$url, $payload]) {
         $this->putJson($url, $payload)->assertNotFound();
+        $assertUnchanged();
     }
 
-    $this->actingAs(User::factory()->create());
+    $user = User::factory()->create();
+    expect($user->isAdmin())->toBeFalse();
+    $this->actingAs($user);
 
     foreach ($requests as [$url, $payload]) {
         $this->putJson($url, $payload)->assertNotFound();
+        $assertUnchanged();
     }
-
-    $this->assertDatabaseCount('producte', 1);
-    $this->assertDatabaseCount('seccio', 1);
-    $this->assertDatabaseHas('producte', ['id' => $product->id, 'nom' => $product->nom]);
-    $this->assertDatabaseHas('seccio', ['id' => $section->id, 'nom' => $section->nom]);
-    $this->assertDatabaseHas('estoc_botiga', [
-        'botiga_id' => $store->id,
-        'producte_id' => $product->id,
-        'quantitat' => 3,
-    ]);
 });
 
 test('catalog creation and updates reject malformed fields without writing', function () {
