@@ -28,6 +28,29 @@ test('profile information can be updated', function () {
     expect($user->email_verified_at)->toBeNull();
 });
 
+test('profile updates require authentication and reject invalid or duplicate data', function () {
+    $this->get(route('profile.edit'))->assertRedirect(route('login'));
+
+    $user = User::factory()->create();
+    $other = User::factory()->create();
+    $this->actingAs($user);
+
+    Livewire::test('pages::settings.profile')
+        ->set('name', '')
+        ->set('email', 'not-an-email')
+        ->call('updateProfileInformation')
+        ->assertHasErrors(['name', 'email']);
+
+    Livewire::test('pages::settings.profile')
+        ->set('name', 'Valid name')
+        ->set('email', $other->email)
+        ->call('updateProfileInformation')
+        ->assertHasErrors(['email']);
+
+    expect($user->fresh()->name)->toBe($user->name)
+        ->and($user->fresh()->email)->toBe($user->email);
+});
+
 test('email verification status is unchanged when email address is unchanged', function () {
     $user = User::factory()->create();
 
