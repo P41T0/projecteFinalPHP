@@ -14,13 +14,15 @@ class FormattingTest extends TestCase
         $output = [];
         $returnCode = 0;
 
-        exec('pint --test 2>&1', $output, $returnCode);
+        $pint = escapeshellarg(base_path('vendor/bin/pint'));
+
+        exec(escapeshellarg(PHP_BINARY).' '.$pint.' --test 2>&1', $output, $returnCode);
 
         $this->assertEquals(
             0,
             $returnCode,
             'PHP code formatting check with Pint failed. '.
-            'Run: pint --fix'."\n".
+            'Run: composer lint'."\n".
             implode("\n", $output)
         );
     }
