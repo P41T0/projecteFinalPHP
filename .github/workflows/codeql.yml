@@ -17,7 +17,7 @@ permissions:
 
 jobs:
   analyze:
-    name: Analyze PHP
+    name: Analyze GitHub Actions
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -31,12 +31,12 @@ jobs:
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
-          languages: php
+          languages: actions
           queries: security-extended
           tools: latest
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
         with:
-          category: "/language:php"
+          category: "/language:actions"
           upload: true
