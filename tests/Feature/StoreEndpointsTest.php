@@ -448,6 +448,26 @@ test('cart endpoints require authentication, enforce ownership, and validate qua
         'quantitat' => 4,
     ]);
 
+    $otherProduct = endpointProduct($section, ['nom' => 'Accessori addicional']);
+    $order->productes()->attach($otherProduct->id, ['quantitat' => 2]);
+
+    $this->postJson(route('actualiza.quantitat', $order), [
+        'productes' => [
+            $product->id => '0',
+            $otherProduct->id => 2,
+        ],
+        'botiga' => $store->id,
+    ])->assertRedirect(route('comprarNP'));
+    $this->assertDatabaseMissing('linia_comanda', [
+        'comanda_id' => $order->id,
+        'producte_id' => $product->id,
+    ]);
+    $this->assertDatabaseHas('linia_comanda', [
+        'comanda_id' => $order->id,
+        'producte_id' => $otherProduct->id,
+        'quantitat' => 2,
+    ]);
+
     $this->postJson(route('actualiza.quantitat', $order), [
         'productes' => [$product->id => 11],
         'botiga' => $store->id,

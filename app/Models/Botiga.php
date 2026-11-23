@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Botiga extends Model
 {
@@ -16,7 +17,10 @@ class Botiga extends Model
         'poblacio',
     ];
 
-    public function productes()
+    /**
+     * @return BelongsToMany<Producte, $this, EstocBotiga>
+     */
+    public function productes(): BelongsToMany
     {
         // The estoc_botiga pivot stores the available quantity for each product.
         return $this->belongsToMany(Producte::class, 'estoc_botiga')

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Seccio extends Model
 {
@@ -17,7 +18,10 @@ class Seccio extends Model
         'nom_en',
     ];
 
-    public function productes()
+    /**
+     * @return HasMany<Producte, $this>
+     */
+    public function productes(): HasMany
     {
         return $this->hasMany(Producte::class);
     }

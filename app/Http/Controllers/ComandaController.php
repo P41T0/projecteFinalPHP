@@ -5,20 +5,26 @@ namespace App\Http\Controllers;
 use App\Models\Botiga;
 use App\Models\Comanda;
 use App\Models\Producte;
+use App\Models\User;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class ComandaController extends Controller
 {
-    public function afegir(Producte $producte)
+    public function afegir(Producte $producte): View
     {
+        $user = Auth::user();
+        abort_unless($user instanceof User, 403);
+
         // Reuse the authenticated user's open order, or create one if it does not exist.
-        $comanda = Auth()->user()->comandes()->where('oberta', true)->first();
+        $comanda = $user->comandes()->where('oberta', true)->first();
         if (! $comanda) {
             $comanda = new Comanda;
 
-            $comanda->usuari_id = Auth()->user()->id;
+            $comanda->usuari_id = $user->id;
             // Use the first store alphabetically by population as the default pickup location.
             $comanda->botiga_id = Botiga::query()->orderBy('poblacio')->firstOrFail()->id;
             $comanda->save();
@@ -38,22 +44,20 @@ class ComandaController extends Controller
             $preuTotal += $prods->preu_unitari * $prods->pivot->quantitat;
             $numProds++;
         }
-        $usuari = Auth()->user()->id;
+        $usuari = $user->id;
         $botiga = Botiga::all();
 
         return view('compres.detall', ['numProductes' => $numProds, 'comanda' => $comanda, 'preuTotal' => $preuTotal, 'usuari' => $usuari, 'botigues' => $botiga]);
     }
 
-    public function confirmar(Comanda $comanda)
+    public function confirmar(Comanda $comanda): View
     {
         // Orders are private: a logged-in user can only confirm their own order.
         abort_unless($comanda->usuari_id === Auth::id(), 403);
 
         $missatge = '';
         $preuTotal = 0;
-        $botigues = Botiga::find($comanda->botiga_id);
-        $botiga = $botigues->poblacio;
-        $usuari = Auth()->user()->id;
+        $botiga = Botiga::findOrFail($comanda->botiga_id)->poblacio;
         if ($comanda->oberta != 1) {
             // A closed order is already confirmed and must not be changed again.
             foreach ($comanda->productes as $prods) {
@@ -64,7 +68,7 @@ class ComandaController extends Controller
             $missatge = 1;
         } else {
             // Closing the order represents the confirmation of the purchase.
-            $comanda->oberta = 0;
+            $comanda->oberta = false;
             $comanda->save();
 
             foreach ($comanda->productes as $prods) {
@@ -76,32 +80,35 @@ class ComandaController extends Controller
         return view('compres.confirma', compact('comanda', 'missatge', 'preuTotal', 'botiga'));
     }
 
-    public function canviQuantitat(Request $request, Comanda $comanda)
+    public function canviQuantitat(Request $request, Comanda $comanda): RedirectResponse
     {
         // Prevent users from modifying another user's order.
         abort_unless($comanda->usuari_id === Auth::id(), 403);
 
         if ($comanda->oberta == 1) {
+            /** @var array{productes: array<array-key, int|string>, botiga: string} $validated */
             $validated = $request->validate([
                 'productes' => ['required', 'array', 'min:1'],
                 'productes.*' => ['required', 'integer', 'min:0', 'max:10'],
                 'botiga' => ['required', 'uuid', 'exists:botiga,id'],
             ]);
+            $productes = $validated['productes'];
 
-            $producteIds = array_keys($validated['productes']);
+            $producteIds = array_keys($productes);
             $attachedIds = $comanda->productes()
                 ->whereIn('producte.id', $producteIds)
                 ->pluck('producte.id')
                 ->all();
 
             // Reject submitted products that are not actually lines of this order.
-            if (count($attachedIds) !== count($producteIds)) {
+            if (count($attachedIds) !== count($productes)) {
                 throw ValidationException::withMessages([
                     'productes' => 'Un o més productes no pertanyen a aquesta comanda.',
                 ]);
             }
 
-            foreach ($validated['productes'] as $producteId => $quantitat) {
+            foreach ($productes as $producteId => $quantitat) {
+                $quantitat = (int) $quantitat;
                 if ($quantitat === 0) {
                     // Quantity zero removes the product from the pivot table.
                     $comanda->productes()->detach($producteId);
@@ -126,35 +133,35 @@ class ComandaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() {}
+    public function index(): void {}
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create() {}
+    public function create(): void {}
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {}
+    public function store(Request $request): void {}
 
     /**
      * Display the specified resource.
      */
-    public function show(Comanda $comanda) {}
+    public function show(Comanda $comanda): void {}
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Comanda $comanda) {}
+    public function edit(Comanda $comanda): void {}
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Comanda $comanda) {}
+    public function update(Request $request, Comanda $comanda): void {}
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Comanda $comanda) {}
+    public function destroy(Comanda $comanda): void {}
 }

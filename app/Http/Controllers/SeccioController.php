@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Seccio;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class SeccioController extends Controller
@@ -12,7 +13,7 @@ class SeccioController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
         $seccio = Seccio::all();
 
@@ -22,9 +23,9 @@ class SeccioController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
-        abort_unless(Auth::check() && Auth::user()->isAdmin(), 403);
+        $this->authorizeAdmin();
 
         return view('seccions.create');
     }
@@ -32,11 +33,12 @@ class SeccioController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        abort_unless(Auth::check() && Auth::user()->isAdmin(), 403);
+        $this->authorizeAdmin();
 
-        $request->validate(
+        /** @var array{nom: string, nomEs: string, nomEn: string, descripcio: string, descripcioEs: string, descripcioEn: string} $validated */
+        $validated = $request->validate(
             [
                 'nom' => 'required|string|max:100',
                 'nomEs' => 'required|string|max:100',
@@ -51,12 +53,12 @@ class SeccioController extends Controller
             ]
         );
         $seccio = new Seccio;
-        $seccio->nom = $request->input('nom');
-        $seccio->nom_es = $request->input('nomEs');
-        $seccio->nom_en = $request->input('nomEn');
-        $seccio->descripcio = $request->input('descripcio');
-        $seccio->descripcio_es = $request->input('descripcioEs');
-        $seccio->descripcio_en = $request->input('descripcioEn');
+        $seccio->nom = $validated['nom'];
+        $seccio->nom_es = $validated['nomEs'];
+        $seccio->nom_en = $validated['nomEn'];
+        $seccio->descripcio = $validated['descripcio'];
+        $seccio->descripcio_es = $validated['descripcioEs'];
+        $seccio->descripcio_en = $validated['descripcioEn'];
         $seccio->mostra_sec = false;
         $seccio->save();
         Session::flash('message', 'seccio modificada !');
@@ -67,14 +69,14 @@ class SeccioController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Seccio $seccio) {}
+    public function show(Seccio $seccio): void {}
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Seccio $seccio)
+    public function edit(Seccio $seccio): View
     {
-        abort_unless(Auth::check() && Auth::user()->isAdmin(), 403);
+        $this->authorizeAdmin();
 
         return View(
             'seccions.edit',
@@ -85,11 +87,12 @@ class SeccioController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Seccio $seccio)
+    public function update(Request $request, Seccio $seccio): RedirectResponse
     {
-        abort_unless(Auth::check() && Auth::user()->isAdmin(), 403);
+        $this->authorizeAdmin();
 
-        $request->validate(
+        /** @var array{nom: string, nomEs: string, nomEn: string, descripcio: string, descripcioEs: string, descripcioEn: string} $validated */
+        $validated = $request->validate(
             [
                 'nom' => 'required|string|max:100',
                 'nomEs' => 'required|string|max:100',
@@ -104,13 +107,13 @@ class SeccioController extends Controller
             ]
         );
 
-        $seccio->nom = $request->input('nom');
-        $seccio->nom_es = $request->input('nomEs');
-        $seccio->nom_en = $request->input('nomEn');
-        $seccio->descripcio = $request->input('descripcio');
-        $seccio->descripcio_es = $request->input('descripcioEs');
-        $seccio->descripcio_en = $request->input('descripcioEn');
-        $seccio->mostra_sec = $request->input('mostraSec') ? true : false;
+        $seccio->nom = $validated['nom'];
+        $seccio->nom_es = $validated['nomEs'];
+        $seccio->nom_en = $validated['nomEn'];
+        $seccio->descripcio = $validated['descripcio'];
+        $seccio->descripcio_es = $validated['descripcioEs'];
+        $seccio->descripcio_en = $validated['descripcioEn'];
+        $seccio->mostra_sec = $request->boolean('mostraSec');
         $seccio->save();
         Session::flash('message', 'seccio modificada !');
 
@@ -120,8 +123,8 @@ class SeccioController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Seccio $seccio)
+    public function destroy(Seccio $seccio): void
     {
-        abort_unless(Auth::check() && Auth::user()->isAdmin(), 403);
+        $this->authorizeAdmin();
     }
 }

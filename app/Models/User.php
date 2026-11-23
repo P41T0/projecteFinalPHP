@@ -5,6 +5,7 @@ namespace App\Models;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
@@ -25,7 +26,6 @@ class User extends Authenticatable implements PasskeyUser
      * The attributes that are mass assignable.
      *
      * @var list<string>
-     * @var list<string>
      */
     protected $fillable = [
         'name',
@@ -36,7 +36,6 @@ class User extends Authenticatable implements PasskeyUser
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var list<string>
      * @var list<string>
      */
     protected $hidden = [
@@ -52,9 +51,7 @@ class User extends Authenticatable implements PasskeyUser
 
     /**
      * Get the attributes that should be cast.
-     * Get the attributes that should be cast.
      *
-     * @return array<string, string>
      * @return array<string, string>
      */
     protected function casts(): array
@@ -62,6 +59,7 @@ class User extends Authenticatable implements PasskeyUser
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'admin' => 'boolean',
         ];
     }
 
@@ -92,13 +90,16 @@ class User extends Authenticatable implements PasskeyUser
         return $this->defaultPasskeyUserHandle();
     }
 
-    public function comandes()
+    /**
+     * @return HasMany<Comanda, $this>
+     */
+    public function comandes(): HasMany
     {
         return $this->hasMany(Comanda::class, 'usuari_id');
     }
 
-    public function isAdmin()
+    public function isAdmin(): bool
     {
-        return $this->admin;
+        return (bool) $this->admin;
     }
 }

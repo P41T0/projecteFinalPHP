@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\App;
 
 class LocalizationController extends Controller
 {
-    public function index($idioma)
+    public function index(string $idioma): RedirectResponse
     {
         // Apply the locale to the current request.
         App::setlocale($idioma);
